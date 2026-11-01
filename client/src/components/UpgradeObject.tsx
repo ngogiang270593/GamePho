@@ -1,0 +1,11 @@
+export function UpgradeObject({ name, level = 0 }: { name: string; level?: number }) {
+  const pot = name.includes('Nồi'); const stove = name.includes('Bếp'); const television = name.includes('bóng');
+  return <svg viewBox="0 0 240 170" role="img" aria-label={`${name} cấp ${level}`}>
+    <path d="M0 143H240V170H0Z" fill="#baa078" /><path d="M0 140H240" stroke="#967d58" strokeWidth="6" /><ellipse cx="120" cy="141" rx="69" ry="12" fill="#7f80632b" />
+    {pot ? <g stroke="#6f8171" strokeWidth="3"><path d="M58 65H182V116Q120 151 58 116Z" fill="#91a18a" /><ellipse cx="120" cy="64" rx="62" ry="20" fill="#bdc5a8" /><ellipse cx="120" cy="64" rx="53" ry="13" fill="#c4a16c" stroke="#d8c28d" /><path d="M49 83H59M181 83H191" strokeWidth="9" /><path className="room-steam" d="M89 39q-13-15 0-28M120 36q-13-15 0-28M151 39q-13-15 0-28" stroke="#fff6d6" fill="none" /></g>
+    : stove ? <g stroke="#7c826a" strokeWidth="3"><rect x="47" y="79" width="145" height="51" rx="9" fill="#95a18b" /><path d="M47 87H192" stroke="#d8d9b9" /><circle cx="80" cy="111" r="7" fill="#d6bc81" /><circle cx="160" cy="111" r="7" fill="#d6bc81" /><path d="M83 72q-12-21 2-36q-1 14 11 16q14 13 0 25M126 72q-10-17 6-29q-1 15 11 17q7 10-3 17" fill="#d3a25b" stroke="#c48d51" /><path d="M66 79H175M64 66H175" strokeWidth="5" /><path d="M69 131v12M171 131v12" strokeWidth="6" /></g>
+    : television ? <g stroke="#6f7b63" strokeWidth="3"><rect x="40" y="36" width="160" height="93" rx="9" fill="#889780" /><rect x="50" y="46" width="129" height="71" rx="4" fill="#d0d6af" /><path d="M65 104l12-43h76l12 43ZM114 61v43" stroke="#9da881" fill="none" /><circle cx="188" cy="61" r="4" fill="#dbbc7c" /><path d="M77 130l-8 13M166 130l8 13M109 35L94 18M121 35l18-22" strokeWidth="5" /></g>
+    : <g stroke="#8c7856" strokeWidth="3"><path d="M65 55H175V137H65Z" fill="#bd9e6e" /><path d="M77 39H162V97H77Z" fill="#b2bc8e" /><path d="M85 54h69M85 68h69M85 82h69" stroke="#e4d9ae" /><path d="M62 104H179M74 136v10M168 136v10" strokeWidth="6" /><path d="M104 26Q120 6 135 26" fill="none" stroke="#e1c883" strokeWidth="7" /></g>}
+    {level > 0 && <g transform="translate(209 24)"><circle r="17" fill="#e9c77d" stroke="#ab8c50" strokeWidth="2" /><text y="5" textAnchor="middle" fontWeight="800" fontSize="14" fill="#917443">{level}</text></g>}
+  </svg>;
+}

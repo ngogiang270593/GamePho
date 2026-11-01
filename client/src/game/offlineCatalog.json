@@ -1,0 +1,1524 @@
+{
+  "menu": [
+    {
+      "id": 1,
+      "name": "Phở bò tái",
+      "phoType": 0,
+      "basePrice": 45000,
+      "isAvailable": true,
+      "description": "Nước dùng trong, thịt bò tái mềm."
+    },
+    {
+      "id": 2,
+      "name": "Phở bò chín",
+      "phoType": 1,
+      "basePrice": 45000,
+      "isAvailable": true,
+      "description": "Thịt bò chín thơm, đậm vị."
+    },
+    {
+      "id": 3,
+      "name": "Phở gà",
+      "phoType": 2,
+      "basePrice": 40000,
+      "isAvailable": true,
+      "description": "Gà xé mềm cùng nước dùng thanh."
+    },
+    {
+      "id": 4,
+      "name": "Phở đặc biệt",
+      "phoType": 3,
+      "basePrice": 65000,
+      "isAvailable": true,
+      "description": "Đầy đủ topping theo phong cách quán."
+    },
+    {
+      "id": 5,
+      "name": "Phở tái nạm",
+      "phoType": 0,
+      "basePrice": 50000,
+      "isAvailable": true,
+      "description": "Tái mềm và nạm bò."
+    },
+    {
+      "id": 6,
+      "name": "Phở bò viên",
+      "phoType": 1,
+      "basePrice": 48000,
+      "isAvailable": true,
+      "description": "Bò viên dai thơm."
+    },
+    {
+      "id": 7,
+      "name": "Phở gà xé",
+      "phoType": 2,
+      "basePrice": 42000,
+      "isAvailable": true,
+      "description": "Gà xé lá chanh."
+    },
+    {
+      "id": 8,
+      "name": "Phở gà trứng non",
+      "phoType": 2,
+      "basePrice": 52000,
+      "isAvailable": true,
+      "description": "Gà xé và trứng non."
+    },
+    {
+      "id": 9,
+      "name": "Phở đặc biệt Xóm",
+      "phoType": 3,
+      "basePrice": 70000,
+      "isAvailable": true,
+      "description": "Đủ loại thịt cho ngày đói bụng."
+    }
+  ],
+  "toppings": [
+    {
+      "id": 1,
+      "name": "Hành lá",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 2,
+      "name": "Giá đỗ",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 3,
+      "name": "Rau thơm",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 4,
+      "name": "Chanh",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 5,
+      "name": "Ớt tươi",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 6,
+      "name": "Quẩy giòn",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 7,
+      "name": "Trứng gà",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 8,
+      "name": "Thịt bò thêm",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 9,
+      "name": "Gà xé thêm",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 10,
+      "name": "Bò viên",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 11,
+      "name": "Nạm bò",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 12,
+      "name": "Gân bò",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 13,
+      "name": "Sách bò",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 14,
+      "name": "Hành phi",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 15,
+      "name": "Tiêu xay",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 16,
+      "name": "Tương ớt",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 17,
+      "name": "Tương đen",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 18,
+      "name": "Sa tế",
+      "price": 5000,
+      "isAvailable": true
+    },
+    {
+      "id": 19,
+      "name": "Nước béo",
+      "price": 5000,
+      "isAvailable": true
+    }
+  ],
+  "upgrades": [
+    {
+      "id": 1,
+      "name": "Nồi nước dùng lớn",
+      "description": "Mỗi cấp tăng thêm 5 khách có thể phục vụ mỗi ngày.",
+      "category": "Kitchen",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 150000.0,
+      "effectValue": 5,
+      "isPurchased": false
+    },
+    {
+      "id": 2,
+      "name": "Nồi nước dùng lớn",
+      "description": "Mỗi cấp tăng thêm 5 khách có thể phục vụ mỗi ngày.",
+      "category": "Kitchen",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 300000.0,
+      "effectValue": 10,
+      "isPurchased": false
+    },
+    {
+      "id": 3,
+      "name": "Nồi nước dùng lớn",
+      "description": "Mỗi cấp tăng thêm 5 khách có thể phục vụ mỗi ngày.",
+      "category": "Kitchen",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 450000.0,
+      "effectValue": 15,
+      "isPurchased": false
+    },
+    {
+      "id": 4,
+      "name": "Bếp nấu nhanh",
+      "description": "Giảm thời gian phục vụ món.",
+      "category": "Kitchen",
+      "level": 1,
+      "maxLevel": 5,
+      "cost": 120000.0,
+      "effectValue": 1,
+      "isPurchased": false
+    },
+    {
+      "id": 5,
+      "name": "Bếp nấu nhanh",
+      "description": "Giảm thời gian phục vụ món.",
+      "category": "Kitchen",
+      "level": 2,
+      "maxLevel": 5,
+      "cost": 240000.0,
+      "effectValue": 2,
+      "isPurchased": false
+    },
+    {
+      "id": 6,
+      "name": "Bếp nấu nhanh",
+      "description": "Giảm thời gian phục vụ món.",
+      "category": "Kitchen",
+      "level": 3,
+      "maxLevel": 5,
+      "cost": 360000.0,
+      "effectValue": 3,
+      "isPurchased": false
+    },
+    {
+      "id": 7,
+      "name": "Bàn ghế nhựa",
+      "description": "Tăng sức chứa quán.",
+      "category": "Furniture",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 80000.0,
+      "effectValue": 10,
+      "isPurchased": false
+    },
+    {
+      "id": 8,
+      "name": "Bàn ghế nhựa",
+      "description": "Tăng sức chứa quán.",
+      "category": "Furniture",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 160000.0,
+      "effectValue": 20,
+      "isPurchased": false
+    },
+    {
+      "id": 9,
+      "name": "Bàn ghế nhựa",
+      "description": "Tăng sức chứa quán.",
+      "category": "Furniture",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 240000.0,
+      "effectValue": 30,
+      "isPurchased": false
+    },
+    {
+      "id": 10,
+      "name": "Biển hiệu sáng",
+      "description": "Tăng lượng khách vãng lai.",
+      "category": "Marketing",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 200000.0,
+      "effectValue": 12,
+      "isPurchased": false
+    },
+    {
+      "id": 11,
+      "name": "Biển hiệu sáng",
+      "description": "Tăng lượng khách vãng lai.",
+      "category": "Marketing",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 400000.0,
+      "effectValue": 24,
+      "isPurchased": false
+    },
+    {
+      "id": 12,
+      "name": "Biển hiệu sáng",
+      "description": "Tăng lượng khách vãng lai.",
+      "category": "Marketing",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 600000.0,
+      "effectValue": 36,
+      "isPurchased": false
+    },
+    {
+      "id": 13,
+      "name": "Thuê nhân viên",
+      "description": "Tăng tốc độ phục vụ.",
+      "category": "Staff",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 250000.0,
+      "effectValue": 25,
+      "isPurchased": false
+    },
+    {
+      "id": 14,
+      "name": "Thuê nhân viên",
+      "description": "Tăng tốc độ phục vụ.",
+      "category": "Staff",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 500000.0,
+      "effectValue": 50,
+      "isPurchased": false
+    },
+    {
+      "id": 15,
+      "name": "Thuê nhân viên",
+      "description": "Tăng tốc độ phục vụ.",
+      "category": "Staff",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 750000.0,
+      "effectValue": 75,
+      "isPurchased": false
+    },
+    {
+      "id": 16,
+      "name": "Máy thanh toán",
+      "description": "Giảm sai sót khi thu tiền.",
+      "category": "Technology",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 180000.0,
+      "effectValue": 8,
+      "isPurchased": false
+    },
+    {
+      "id": 17,
+      "name": "Máy thanh toán",
+      "description": "Giảm sai sót khi thu tiền.",
+      "category": "Technology",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 360000.0,
+      "effectValue": 16,
+      "isPurchased": false
+    },
+    {
+      "id": 18,
+      "name": "Máy thanh toán",
+      "description": "Giảm sai sót khi thu tiền.",
+      "category": "Technology",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 540000.0,
+      "effectValue": 24,
+      "isPurchased": false
+    },
+    {
+      "id": 19,
+      "name": "Khu vực xem bóng đá",
+      "description": "Thu hút nhóm khách xem bóng đá.",
+      "category": "Entertainment",
+      "level": 1,
+      "maxLevel": 3,
+      "cost": 300000.0,
+      "effectValue": 18,
+      "isPurchased": false
+    },
+    {
+      "id": 20,
+      "name": "Khu vực xem bóng đá",
+      "description": "Thu hút nhóm khách xem bóng đá.",
+      "category": "Entertainment",
+      "level": 2,
+      "maxLevel": 3,
+      "cost": 600000.0,
+      "effectValue": 36,
+      "isPurchased": false
+    },
+    {
+      "id": 21,
+      "name": "Khu vực xem bóng đá",
+      "description": "Thu hút nhóm khách xem bóng đá.",
+      "category": "Entertainment",
+      "level": 3,
+      "maxLevel": 3,
+      "cost": 900000.0,
+      "effectValue": 54,
+      "isPurchased": false
+    },
+    {
+      "id": 22,
+      "name": "Bếp nấu nhanh",
+      "description": "Giảm thời gian phục vụ món.",
+      "category": "Kitchen",
+      "level": 4,
+      "maxLevel": 5,
+      "cost": 480000.0,
+      "effectValue": 4,
+      "isPurchased": false
+    },
+    {
+      "id": 23,
+      "name": "Bếp nấu nhanh",
+      "description": "Giảm thời gian phục vụ món.",
+      "category": "Kitchen",
+      "level": 5,
+      "maxLevel": 5,
+      "cost": 600000.0,
+      "effectValue": 5,
+      "isPurchased": false
+    }
+  ],
+  "achievements": [
+    {
+      "id": 1,
+      "name": "Tô phở đầu tiên",
+      "description": "Bán được tô phở đầu tiên.",
+      "code": "FIRST_BOWL",
+      "targetValue": 1,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 2,
+      "name": "Bếp đông khách",
+      "description": "Bán được 10 tô phở.",
+      "code": "BOWLS_10",
+      "targetValue": 10,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 3,
+      "name": "Vua phở",
+      "description": "Bán được 100 tô phở.",
+      "code": "BOWLS_100",
+      "targetValue": 100,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 4,
+      "name": "Trăm tô mỗi ngày",
+      "description": "Bán được 500 tô phở.",
+      "code": "BOWLS_500",
+      "targetValue": 500,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 5,
+      "name": "Phục vụ chuẩn bài",
+      "description": "Phục vụ chính xác 10 đơn.",
+      "code": "ACCURATE_10",
+      "targetValue": 10,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 6,
+      "name": "Không sai một ly",
+      "description": "Phục vụ chính xác 50 đơn.",
+      "code": "ACCURATE_50",
+      "targetValue": 50,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 7,
+      "name": "Dập drama",
+      "description": "Xử lý thành công 1 drama.",
+      "code": "DRAMA_1",
+      "targetValue": 1,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 8,
+      "name": "Chuyên gia hòa giải",
+      "description": "Xử lý thành công 10 drama.",
+      "code": "DRAMA_10",
+      "targetValue": 10,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 9,
+      "name": "Ghi bàn mở màn",
+      "description": "Ghi bàn trong một sự kiện bóng đá.",
+      "code": "GOAL_1",
+      "targetValue": 1,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 10,
+      "name": "Vua sân cỏ",
+      "description": "Ghi được 10 bàn.",
+      "code": "GOAL_10",
+      "targetValue": 10,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 11,
+      "name": "Đồng tiền đầu tiên",
+      "description": "Kiếm được 100.000 đồng.",
+      "code": "MONEY_100K",
+      "targetValue": 100000,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 12,
+      "name": "Hốt bạc",
+      "description": "Kiếm được 1.000.000 đồng.",
+      "code": "MONEY_1M",
+      "targetValue": 1000000,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 13,
+      "name": "Lên xu hướng",
+      "description": "Đạt 100 điểm viral.",
+      "code": "VIRAL_100",
+      "targetValue": 100,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 14,
+      "name": "Hiện tượng hẻm",
+      "description": "Đạt 1.000 điểm viral.",
+      "code": "VIRAL_1K",
+      "targetValue": 1000,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": 15,
+      "name": "Ngôi sao xóm phở",
+      "description": "Đạt 5.000 điểm viral.",
+      "code": "VIRAL_5K",
+      "targetValue": 5000,
+      "currentValue": 0,
+      "isUnlocked": false,
+      "unlockedAt": null
+    }
+  ],
+  "profiles": [
+    {
+      "key": "bay",
+      "type": 0,
+      "name": "Chú Bảy Húp Sạch",
+      "patienceBonus": 12,
+      "greeting": "Cho chú tô nóng nha. Tô sạch là lời khen chân thành nhất!",
+      "happy": "Húp sạch rồi! Chủ quán khỏi rửa… à vẫn phải rửa nha!",
+      "unhappy": "Ủa chú gọi món kia. Chú húp kỹ chứ không húp đại nghen."
+    },
+    {
+      "key": "ba-gia",
+      "type": 0,
+      "name": "Cô Ba Xin Thêm Giá",
+      "patienceBonus": 15,
+      "greeting": "Cô ăn như mọi bữa. Thêm chút giá là cô vui cả ngày.",
+      "happy": "Nước trong, giá giòn! Chiều cô đem bó rau vườn qua.",
+      "unhappy": "Con ơi, hình như tô của cô đi lạc qua bàn bên rồi."
+    },
+    {
+      "key": "nam-dep",
+      "type": 0,
+      "name": "Bác Năm Dép Tổ Ong",
+      "patienceBonus": 20,
+      "greeting": "Từ từ làm con, bác còn đang tìm chiếc dép bên trái.",
+      "happy": "Ngon, ấm bụng. Dép cũng tìm thấy rồi, ngày đẹp quá!",
+      "unhappy": "Bác không vội, nhưng món này chưa đúng ý bác gọi."
+    },
+    {
+      "key": "teo",
+      "type": 1,
+      "name": "Anh Tèo Tốc Hành",
+      "patienceBonus": -8,
+      "greeting": "Cho anh tô gọn lẹ. Hôm nay anh giao đồ, đừng để bụng giao réo!",
+      "happy": "Nạp đủ năng lượng! Chuyến này anh giao luôn lời khen cho cả hẻm.",
+      "unhappy": "Anh cần đúng món để còn chạy đơn. Mình kiểm tra lại nha."
+    },
+    {
+      "key": "ship-lac",
+      "type": 1,
+      "name": "Chị Na Không Lạc Đường",
+      "patienceBonus": -5,
+      "greeting": "Chị tìm đúng hẻm rồi. Mong tô phở cũng tìm đúng bàn chị!",
+      "happy": "Định vị chuẩn nhất hôm nay: ngay cạnh nồi phở này.",
+      "unhappy": "Chắc món này rẽ nhầm ngõ rồi em. Cho chị xem lại đơn nhé."
+    },
+    {
+      "key": "bin-pin",
+      "type": 1,
+      "name": "Bin Pin Còn Một Vạch",
+      "patienceBonus": -10,
+      "greeting": "Điện thoại còn một vạch, bụng thì hết pin. Cứu anh tô phở!",
+      "happy": "Bụng đầy pin, điện thoại vẫn đỏ. Nhưng đời đẹp hơn rồi!",
+      "unhappy": "Đơn chưa đúng, mà pin anh không đủ để mở họp khẩn đâu."
+    },
+    {
+      "key": "sau",
+      "type": 2,
+      "name": "Chú Sáu Bù Giờ",
+      "patienceBonus": 5,
+      "greeting": "Cho chú tô trước giờ bóng lăn. Lượt này đừng bù giờ lâu quá!",
+      "happy": "Tô này xứng đáng vào đội hình tiêu biểu!",
+      "unhappy": "VAR đâu? Chú gọi tái mà sao tô này trông như đổi chiến thuật?"
+    },
+    {
+      "key": "hung-var",
+      "type": 2,
+      "name": "Hùng VAR Miệng",
+      "patienceBonus": 0,
+      "greeting": "Anh nhìn đơn kỹ lắm, nhưng chuyện việt vị thì anh hay nhìn nhầm.",
+      "happy": "Bàn này hợp lệ. Công nhận tuyệt phẩm nước dùng!",
+      "unhappy": "Khoan trao bàn thắng, mình xem lại topping đã nhé."
+    },
+    {
+      "key": "dat-khung",
+      "type": 2,
+      "name": "Đạt Sút Trúng Khung Cửa",
+      "patienceBonus": 8,
+      "greeting": "Anh chỉ sút trúng cửa nhà. Ăn xong nhớ chỉ đường ra sân nha.",
+      "happy": "Phở vào đúng dạ dày. Ước gì bóng cũng vào đúng lưới!",
+      "unhappy": "Món hơi lệch mục tiêu, giống cú sút của anh. Mình sửa được mà."
+    },
+    {
+      "key": "ti-top",
+      "type": 3,
+      "name": "Tí Tóp Tóp",
+      "patienceBonus": -4,
+      "greeting": "A lô cả nhà! Máy quay ăn trước ba giây, người thật ăn sau nha!",
+      "happy": "Quay được đúng một giây, ngon quá nên quên quay tiếp!",
+      "unhappy": "Cả nhà ơi khoan… món chưa đúng. Cho quán cơ hội kiểm tra nhé."
+    },
+    {
+      "key": "phuc-review",
+      "type": 3,
+      "name": "Phúc Rì Viu",
+      "patienceBonus": -2,
+      "greeting": "Mình review bằng vị giác, hôm nay quyết không chấm cái ghế nữa.",
+      "happy": "Đánh giá ngắn gọn: còn tô nữa không?",
+      "unhappy": "Mình gọi món khác. Sửa đơn trước, sửa video sau nha."
+    },
+    {
+      "key": "mi-filter",
+      "type": 3,
+      "name": "Mi Không Cần Filter",
+      "patienceBonus": 2,
+      "greeting": "Ánh sáng đẹp rồi, phở ngon là khỏi cần hiệu ứng luôn!",
+      "happy": "Nước dùng trong hơn cả filter yêu thích của mình!",
+      "unhappy": "Màu đẹp nhưng đơn hơi sai. Filter không sửa được topping đâu."
+    },
+    {
+      "key": "tam",
+      "type": 4,
+      "name": "Cô Tám Tin Nóng",
+      "patienceBonus": -5,
+      "greeting": "Cô chỉ nghe chuyện thôi, không kể ai đâu… trừ nhóm xóm mình.",
+      "happy": "Tin nóng: phở ngon! Tin này cô cho phép cả hẻm biết.",
+      "unhappy": "Tô này chưa đúng. Cô chưa đăng nhóm đâu, con xem lại trước nha."
+    },
+    {
+      "key": "tu-wifi",
+      "type": 4,
+      "name": "Dì Tư Wi-Fi Mạnh",
+      "patienceBonus": 0,
+      "greeting": "Mạng nhà dì bắt được từ đầu ngõ. Chuyện xóm cũng vậy.",
+      "happy": "Tín hiệu tốt: ngon năm vạch!",
+      "unhappy": "Món bị mất kết nối với đơn dì gọi rồi con."
+    },
+    {
+      "key": "lan-hong",
+      "type": 4,
+      "name": "Cô Lan Hóng Có Chọn Lọc",
+      "patienceBonus": 5,
+      "greeting": "Cô hóng chuyện vui thôi, chuyện buồn để cô phụ một tay.",
+      "happy": "Có chuyện đáng kể rồi: bếp mình ngày càng ngon!",
+      "unhappy": "Chưa đúng món, con sửa giúp cô. Hóng thì hóng, mình vẫn phải công bằng."
+    },
+    {
+      "key": "linh-deadline",
+      "type": 5,
+      "name": "Linh Chạy Deadline",
+      "patienceBonus": -4,
+      "greeting": "Deadline dí sau lưng, bụng réo phía trước. Cho em tô cứu trợ!",
+      "happy": "Tô phở cứu một chiếc deadline! Em về gõ tiếp đây.",
+      "unhappy": "Em chọn món kia, chắc deadline làm ai cũng hơi rối. Mình sửa nha."
+    },
+    {
+      "key": "khoi-hoc",
+      "type": 5,
+      "name": "Khôi Học Từ Mai",
+      "patienceBonus": 8,
+      "greeting": "Hôm nay em ăn lấy sức. Mai em học, lần này mai thật!",
+      "happy": "Ngon quá! Em quyết tâm… mai quay lại.",
+      "unhappy": "Đơn chưa đúng, mà em không thể trì hoãn cơn đói tới mai đâu."
+    },
+    {
+      "key": "vy-cuoi",
+      "type": 5,
+      "name": "Vy Cuối Tháng",
+      "patienceBonus": 12,
+      "greeting": "Ví mỏng nhưng tinh thần dày. Cho em đúng món em chọn nhé.",
+      "happy": "Ăn no mà vẫn đủ tiền về. Hôm nay em giàu niềm vui!",
+      "unhappy": "Em tính tiền kỹ lắm, cho em đúng tô đã gọi nha."
+    },
+    {
+      "key": "chu-binh",
+      "type": 6,
+      "name": "Chú Bình Soi Topping",
+      "patienceBonus": -12,
+      "greeting": "Chú hơi kỹ tính, chứ không khó thương. Cứ đúng đơn là chú vui.",
+      "happy": "Đúng từng topping! Chú đã soi và chú công nhận.",
+      "unhappy": "Chú phát hiện chi tiết chưa khớp. Mình đối chiếu lại đơn nhé."
+    },
+    {
+      "key": "co-hanh",
+      "type": 6,
+      "name": "Cô Hạnh Không Hành",
+      "patienceBonus": -8,
+      "greeting": "Tên cô có Hạnh, tô cô đừng có hành. Mình nhớ khác nhau nha!",
+      "happy": "Không một cọng hành lạc. Cô rất hạnh phúc!",
+      "unhappy": "Tên cô không phải yêu cầu topping đâu con. Xem lại giúp cô nhé."
+    },
+    {
+      "key": "anh-chuan",
+      "type": 6,
+      "name": "Anh Chuẩn Từng Sợi",
+      "patienceBonus": -10,
+      "greeting": "Anh gọi sao ăn vậy. Đừng thêm bất ngờ, anh dễ giật mình.",
+      "happy": "Chuẩn vị, chuẩn đơn, chuẩn luôn cái bụng vui!",
+      "unhappy": "Bất ngờ này anh chưa đặt. Mình làm đúng yêu cầu giúp anh nha."
+    },
+    {
+      "key": "bo",
+      "type": 7,
+      "name": "Bé Bo Không Hành",
+      "patienceBonus": 18,
+      "greeting": "Con tìm hành giỏi lắm! Nhưng hôm nay con muốn tìm thịt cơ.",
+      "happy": "Con chấm nhiều sao hơn số bài tập con làm được!",
+      "unhappy": "Cô chú ơi tô này khác hình con chọn. Con báo mẹ kiểm tra nha."
+    },
+    {
+      "key": "me-min",
+      "type": 7,
+      "name": "Mẹ Mít Và Biệt Đội Đói",
+      "patienceBonus": 15,
+      "greeting": "Nhà chị ba người, ba cái bụng cùng biểu tình. Mình nấu đúng đơn nha.",
+      "happy": "Biệt đội đã yên lặng. Đây là lời khen lớn nhất của nhà chị!",
+      "unhappy": "Bọn nhỏ chờ hơi sốt ruột rồi, mình kiểm tra giúp chị đơn nhé."
+    },
+    {
+      "key": "ong-tam",
+      "type": 7,
+      "name": "Ông Tám Dắt Cháu Đi Chơi",
+      "patienceBonus": 22,
+      "greeting": "Ông ăn từ tốn, cháu thì hỏi liên tục. Quán cứ làm đúng món giúp ông.",
+      "happy": "Cháu ông bảo mai lại đi chơi… đúng quán này thôi.",
+      "unhappy": "Ông nhớ mình gọi món khác. Chậm chút cũng được, đúng món là vui."
+    },
+    {
+      "key": "co-sen",
+      "type": 8,
+      "name": "Cô Sen VIP Đi Dép Lào",
+      "patienceBonus": 8,
+      "greeting": "VIP là Vừa Ý Phở thôi. Đừng làm khác với khách quen nha con.",
+      "happy": "Vừa ý phở, vừa ý người. Cô sẽ quay lại thật thường.",
+      "unhappy": "Quán quý khách thì cũng nhớ đúng yêu cầu của cô nhé."
+    },
+    {
+      "key": "chu-an",
+      "type": 8,
+      "name": "Chú An Ăn Ẩn Danh",
+      "patienceBonus": 10,
+      "greeting": "Chú ăn ẩn danh mà cả hẻm cứ gọi tên. Cho chú tô như đã chọn nhé.",
+      "happy": "Giữ bí mật giùm chú: chú muốn gọi thêm một tô!",
+      "unhappy": "Chú không cần ưu tiên, chỉ cần đúng đơn thôi con."
+    },
+    {
+      "key": "hai-hat",
+      "type": 8,
+      "name": "Chị Hai Hạt Michelin Tự Trồng",
+      "patienceBonus": 5,
+      "greeting": "Nhà chị có hai chậu hạt giống, ai cũng nghe nhầm thành hai sao. Chị chỉ đến ăn phở!",
+      "happy": "Nếu hạt giống mọc nhanh như lời khen thì nhà chị thành rừng rồi!",
+      "unhappy": "Chị chưa chấm sao đâu, nhưng đơn này cần mình sửa trước nha."
+    }
+  ],
+  "days": [
+    {
+      "title": "Mùi phở gọi cả hẻm",
+      "weather": "clear",
+      "goal": "Nấu đúng 3 tô phở",
+      "target": 3,
+      "goalKind": "correct",
+      "hint": "Trà đá miễn phí giúp khách chờ lâu hơn. Cứ thong thả làm quen bếp."
+    },
+    {
+      "title": "Mưa rơi, bụng réo",
+      "weather": "rain",
+      "goal": "Phục vụ đúng 3 tô liên tiếp",
+      "target": 3,
+      "goalKind": "combo",
+      "hint": "Hơi nước dùng gặp mưa đầu mùa. Khách ghé trú mưa mang theo chuyện mới."
+    },
+    {
+      "title": "Tóp tóp ghé hẻm",
+      "weather": "breeze",
+      "goal": "Nấu đúng 4 tô phở",
+      "target": 4,
+      "goalKind": "correct",
+      "hint": "Máy quay có thể ăn trước, nhưng khách vẫn muốn phở nóng!"
+    },
+    {
+      "title": "Một hẻm, nhiều người thương",
+      "weather": "clear",
+      "goal": "Trò chuyện với 2 người hàng xóm",
+      "target": 2,
+      "goalKind": "visits",
+      "hint": "Ghé cô Ba, bà Năm hoặc tiệm Mận trước giờ mở cửa cũng được tính."
+    },
+    {
+      "title": "Đại hội hóng chuyện",
+      "weather": "rain",
+      "goal": "Giải quyết một chuyện trong xóm",
+      "target": 1,
+      "goalKind": "choices",
+      "hint": "Mở nhật ký khi có thư mới. Đồng hồ tạm nghỉ để bạn đọc và chọn."
+    },
+    {
+      "title": "Kèo bóng, kèo phở",
+      "weather": "breeze",
+      "goal": "Nấu đúng 5 tô phở",
+      "target": 5,
+      "goalKind": "correct",
+      "hint": "Có người mê bàn thắng, có người chỉ mê bàn có tương ớt."
+    },
+    {
+      "title": "Đêm đèn lồng đầu hẻm",
+      "weather": "clear",
+      "goal": "Nấu đúng 5 tô trong ngày hội",
+      "target": 5,
+      "goalKind": "correct",
+      "hint": "Khép lại bảy ngày đầu bằng một đêm vui. Những lựa chọn sẽ viết đoạn kết."
+    }
+  ],
+  "stories": [
+    {
+      "key": "cat-manager",
+      "title": "Sếp Mướp lên ca",
+      "description": "Một chú mèo chiếm ghế đẹp nhất quán. Khách bảo: ‘Sếp chưa duyệt thì tụi em chưa dám ngồi!’",
+      "actor": "co-ba",
+      "choices": [
+        {
+          "text": "Kê thêm ghế, cho sếp ngủ",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Sếp ngủ ngon. Cả quán được duyệt tăng ca… ăn phở."
+        },
+        {
+          "text": "Chụp ảnh ‘trưởng phòng kiểm tra cá’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Ảnh sếp Mướp nổi hơn ảnh chủ quán. Sếp nhận lương bằng cái vuốt đầu."
+        },
+        {
+          "text": "Làm góc riêng cho thú cưng",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Một chiếc giỏ sạch cạnh hiên vừa giữ bếp gọn vừa giữ lòng khách."
+        }
+      ]
+    },
+    {
+      "key": "qr-spinner",
+      "title": "QR quay vòng như chong chóng",
+      "description": "Anh shipper đã quét mã ba lần. Điện thoại cứ xoay, tô phở thì sắp nguội. Anh thở dài: ‘Mạng này chắc đang đi giao hàng.’",
+      "actor": "chu-tu",
+      "choices": [
+        {
+          "text": "Mời anh ăn nóng, chuyển khoản sau",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Anh quay lại trả đủ, còn dắt thêm đồng nghiệp. Niềm tin giao đúng địa chỉ."
+        },
+        {
+          "text": "Đưa mã QR dự phòng",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Mã mới chạy vèo. Anh shipper gọi bạn là chuyên gia cứu bữa trưa."
+        },
+        {
+          "text": "Quay clip ‘đợi QR chín’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Cả hẻm cười vì nồi phở sôi trước khi giao dịch thành công."
+        }
+      ]
+    },
+    {
+      "key": "mic-on",
+      "title": "Tóp Tóp quên tắt mic",
+      "description": "Tí Tóp Tóp livestream: ‘Quán này bí quyết là…’ rồi cúi xuống hỏi nhỏ có được thêm hành miễn phí không. Mic vẫn bật!",
+      "actor": "ti",
+      "choices": [
+        {
+          "text": "Thêm hành, cứu bạn một pha",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Khán giả thả tim vì chủ quán duyên. Tí hứa lần sau kiểm tra mic trước kiểm tra tóc."
+        },
+        {
+          "text": "Chỉ cách ăn phở đúng ý mình",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Buổi review thành lớp học nêm phở vui vẻ. Không ai bị ép ăn hành."
+        },
+        {
+          "text": "Treo biển ‘Hành miễn phí, drama tự trả’",
+          "money": 3000,
+          "reputation": -1,
+          "viral": 3,
+          "path": "mischief",
+          "result": "Câu nói thành meme của hẻm. Tí đỏ mặt mà vẫn xin thêm hành."
+        }
+      ]
+    },
+    {
+      "key": "gps-auntie",
+      "title": "Cô Tám dẫn đường bằng miệng",
+      "description": "Khách hỏi quán ở đâu. Cô Tám chỉ: ‘Qua nhà có con chó hay cười, rẽ chỗ cô bán chè từng giận chú Tư…’ Khách đã lạc đến sân bóng.",
+      "actor": "ba-nam",
+      "choices": [
+        {
+          "text": "Ra đầu hẻm đón khách",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Khách tới nơi an toàn. Cô Tám nhận chức trưởng ban đón tiếp."
+        },
+        {
+          "text": "Vẽ sơ đồ nhỏ treo trước hiên",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Bản đồ có tô phở thật to. Lần này chẳng ai phải hỏi con chó."
+        },
+        {
+          "text": "Làm video chỉ đường 15 giây",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Chưa kịp nói ‘đăng ký kênh’ thì khách đã đến quán."
+        }
+      ]
+    },
+    {
+      "key": "no-onion",
+      "title": "Bé Bo và hạt hành lạc",
+      "description": "Bé Bo Không Hành phát hiện một chấm xanh và mở cuộc điều tra. Hóa ra đó là hình chiếc lá in trên bát.",
+      "actor": "man",
+      "choices": [
+        {
+          "text": "Đổi bát trơn cho bé yên tâm",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Bé cấp giấy chứng nhận ‘an toàn không hành’ bằng hình vẽ ngôi sao."
+        },
+        {
+          "text": "Chỉ bé phân biệt họa tiết và rau",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Nhà điều tra nhỏ phá án thành công, thưởng cho mình một miếng thịt."
+        },
+        {
+          "text": "Vẽ huy hiệu thám tử tô phở",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Bo hứa chỉ điều tra bát nhà mình, cho cả quán được ăn yên."
+        }
+      ]
+    },
+    {
+      "key": "rain-umbrella",
+      "title": "Mưa có đôi, ô có một",
+      "description": "Mưa rào bất chợt. Hai người khách nhường nhau chiếc ô tới mức chưa ai ra khỏi hiên, phở thêm một vòng vẫn chưa xong.",
+      "actor": "co-ba",
+      "choices": [
+        {
+          "text": "Cho mượn ô của quán",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Hôm sau chiếc ô trở về cùng một bó hoa nhỏ."
+        },
+        {
+          "text": "Dọn lối khô, bọc tô mang về",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Tô phở đi qua cơn mưa vẫn ấm. Khách khen cả sự chu đáo."
+        },
+        {
+          "text": "Mời mọi người đặt tên cho cơn mưa",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "‘Mưa thêm tái’ thắng áp đảo. Dự báo thời tiết của hẻm từ đó rất đói."
+        }
+      ]
+    },
+    {
+      "key": "ai-review",
+      "title": "AI đoán nhầm hành",
+      "description": "Anh Phúc Rì Viu dùng ứng dụng nhận diện món ăn. Máy bảo tô phở là ‘vườn thực vật có hồ bơi’. Cả bàn đứng hình.",
+      "actor": "bac-sau",
+      "choices": [
+        {
+          "text": "Bày tô mới để chụp rõ nguyên liệu",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Ứng dụng cuối cùng nhận ra phở. Người thật đã ăn hết trước khi máy chấm điểm."
+        },
+        {
+          "text": "Đặt tên ảnh ‘hệ sinh thái ăn được’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Bức ảnh lan khắp nhóm xóm. Cư dân mạng xin địa chỉ khu bảo tồn."
+        },
+        {
+          "text": "Mời anh nếm trước rồi hãy chấm",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Review lần này chỉ có một câu: ‘Ăn nóng đi, đừng hỏi điện thoại!’"
+        }
+      ]
+    },
+    {
+      "key": "football-var",
+      "title": "VAR của bàn số ba",
+      "description": "Chú Bảy Húp Sạch quả quyết bóng vào rồi, chú Sáu Bù Giờ bảo chưa. Cái thìa được trưng dụng làm micro bình luận.",
+      "actor": "chu-tu",
+      "choices": [
+        {
+          "text": "Mời hai chú trà, cùng xem lại",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Hai chú thống nhất: bàn thắng chưa chắc, tô phở ngon thì chắc."
+        },
+        {
+          "text": "Mở bình chọn ‘đội nhiều thịt’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Không đội nào thua, chỉ nồi nước dùng vơi nhanh."
+        },
+        {
+          "text": "Thu phí bình luận bằng một lời khen",
+          "money": 3000,
+          "reputation": -1,
+          "viral": 3,
+          "path": "mischief",
+          "result": "Chú Sáu khen bếp có phong độ ổn định. Chú Bảy đề nghị ký hợp đồng dài hạn."
+        }
+      ]
+    },
+    {
+      "key": "herb-swap",
+      "title": "Hội nghị xin thêm giá",
+      "description": "Cô Ba Xin Thêm Giá mang mớ rau vườn nhà. Cô đề nghị hợp tác chiến lược: rau đổi phở, tình làng nghĩa xóm tính riêng.",
+      "actor": "co-ba",
+      "choices": [
+        {
+          "text": "Nhận rau sạch, mời cô một tô",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Cô vui vẻ hứa chọn rau kỹ. Sổ quán có thêm một dòng rất ấm."
+        },
+        {
+          "text": "Thử một tô với rau theo mùa",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Khách thích sự tươi mới. Bạn ghi lại tỉ lệ thay vì nấu theo cảm hứng."
+        },
+        {
+          "text": "Giới thiệu ‘nhà tài trợ rau thơm’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Cô Ba ký tên lên rổ giá bằng nét chữ nắn nót."
+        }
+      ]
+    },
+    {
+      "key": "sleepy-delivery",
+      "title": "Shipper giao nhầm giấc ngủ",
+      "description": "Anh Tèo Tốc Hành ôm túi giao hàng ngủ gật. Điện thoại reo, anh giật mình hỏi nồi nước dùng: ‘Anh nhận hàng giùm em?’",
+      "actor": "ti",
+      "choices": [
+        {
+          "text": "Mời nước và cho anh nghỉ ít phút",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Anh tỉnh táo rồi mới lên đường. Bữa trưa bớt vội một chút."
+        },
+        {
+          "text": "Gói món rõ tên, kiểm tra địa chỉ",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Đơn giao đúng người. Nồi nước dùng không phải ký nhận nữa."
+        },
+        {
+          "text": "Vẽ biển ‘nồi chưa có căn cước’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Anh Tèo cười tỉnh ngủ, xin chụp biển đem khoe đồng nghiệp."
+        }
+      ]
+    },
+    {
+      "key": "tea-vip",
+      "title": "VIP đi dép tổ ong",
+      "description": "Một vị khách giản dị gọi phở và trà đá. Cả quán đoán là giám khảo bí mật, riêng bác chỉ lo đôi dép bị mèo tha mất.",
+      "actor": "bac-sau",
+      "choices": [
+        {
+          "text": "Chăm bác như mọi khách quen",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Bác là người giữ xe đầu hẻm. Cả xóm bỗng nhận ra VIP cũng là Very Important Người Quen."
+        },
+        {
+          "text": "Nấu tô thật chuẩn, không diễn",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Bác khen nước dùng hôm nay trong. Một lời khen chậm mà nhớ lâu."
+        },
+        {
+          "text": "Trao thẻ VIP ‘Vừa Ý Phở’",
+          "money": 3000,
+          "reputation": -1,
+          "viral": 3,
+          "path": "mischief",
+          "result": "Bác vui vẻ giữ thẻ, yêu cầu quyền lợi được vuốt mèo."
+        }
+      ]
+    },
+    {
+      "key": "lantern-photo",
+      "title": "Đèn lồng và góc nghiêng",
+      "description": "Mận dựng góc chụp ảnh đèn lồng. Ba người cùng nghiêng một bên khiến chú Tư lo cái hẻm sắp lệch.",
+      "actor": "man",
+      "choices": [
+        {
+          "text": "Giúp treo đèn cho cả xóm",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Ai cũng có một tấm ảnh đẹp. Chú Tư xác nhận cái hẻm vẫn thẳng."
+        },
+        {
+          "text": "Bày bàn phở dưới ánh đèn ấm",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Ảnh đẹp, phở vẫn nóng. Bạn tìm ra góc bày món mới."
+        },
+        {
+          "text": "Tổ chức tạo dáng ‘húp không rung’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Ảnh nào cũng cười, ảnh nào cũng có một đôi đũa lạc khung."
+        }
+      ]
+    },
+    {
+      "key": "lucky-seat",
+      "title": "Ghế hợp vía thi cử",
+      "description": "Hai sinh viên tranh chiếc ghế từng có người ngồi ôn rồi được điểm cao. Chiếc ghế im lặng vì chưa từng đi học.",
+      "actor": "ti",
+      "choices": [
+        {
+          "text": "Kê hai ghế, chúc cả hai thi tốt",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Hai bạn cùng ôn, cùng ăn. Ghế nào cũng thành ghế may mắn."
+        },
+        {
+          "text": "Làm suất nhỏ gọn cho giờ học",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Không ai ngủ gật vì quá no. Cả hai hẹn quay lại báo kết quả."
+        },
+        {
+          "text": "Treo biển ‘buff tập trung +1’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Nhóm học kéo đến, tự nhắc nhau giữ yên để buff không bay mất."
+        }
+      ]
+    },
+    {
+      "key": "tiny-critic",
+      "title": "Chấm sao trước khi ăn",
+      "description": "Anh Phúc Rì Viu giơ tay chấm điểm khi phở còn chưa ra. Cô Tám hỏi: ‘Con chấm cái ghế hay chấm cái bụng đói?’",
+      "actor": "ba-nam",
+      "choices": [
+        {
+          "text": "Mời nếm rồi góp ý cụ thể",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Anh sửa bài thành nhận xét hữu ích. Cái ghế thở phào vì không bị đánh giá nữa."
+        },
+        {
+          "text": "Hỏi anh thích vị nào",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Một câu hỏi tử tế đổi cả giọng review. Anh thôi cố diễn nét khó tính."
+        },
+        {
+          "text": "Cho ghế bảng tên ‘chuyên gia đỡ khách’",
+          "money": 3000,
+          "reputation": -1,
+          "viral": 3,
+          "path": "mischief",
+          "result": "Ghế nhận năm sao về độ chịu đựng. Cả bàn không nhịn được cười."
+        }
+      ]
+    },
+    {
+      "key": "power-cut",
+      "title": "Cúp điện, bật chuyện",
+      "description": "Đèn vụt tắt giữa buổi. Chú Tư tuyên bố: ‘Không có Wi-Fi thì chúng ta kết nối bằng… hỏi thăm!’",
+      "actor": "chu-tu",
+      "choices": [
+        {
+          "text": "Mời khách ra hiên sáng, rót trà",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Mọi người lần đầu nhớ tên nhau thay vì tên mạng Wi-Fi."
+        },
+        {
+          "text": "Kiểm tra bếp và đèn dự phòng",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Bếp vẫn an toàn. Nhịp phục vụ chậm hơn nhưng không rối."
+        },
+        {
+          "text": "Tổ chức kể chuyện cười một phút",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Câu chuyện của chú Tư dài ba phút, may mà điện đã về."
+        }
+      ]
+    },
+    {
+      "key": "pet-influencer",
+      "title": "KOL bốn chân",
+      "description": "Tí Tóp Tóp xin quay mèo. Mèo quay lưng đúng lúc anh đọc câu mở đầu lần thứ bảy. Đạo diễn bắt đầu xin lỗi diễn viên.",
+      "actor": "ti",
+      "choices": [
+        {
+          "text": "Để mèo nghỉ, quay bữa ăn thôi",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Một clip nhẹ nhàng vẫn có người xem. Diễn viên bốn chân giữ nguyên quyền ngủ."
+        },
+        {
+          "text": "Quay cảnh hậu trường thất bại",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Lần quay hỏng lại được yêu thích nhất. Tí học được cách cười với chính mình."
+        },
+        {
+          "text": "Chọn góc sạch, cất máy khỏi bếp",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Không vướng đường phục vụ. Clip ngắn mà rõ món."
+        }
+      ]
+    },
+    {
+      "key": "pepper-dare",
+      "title": "Kèo tương ớt cấp vũ trụ",
+      "description": "Chú Sáu thách bạn ăn cay. Mới một thìa đã nhắc chuyện thời tiết nóng, dù ngoài trời đang mưa.",
+      "actor": "bac-sau",
+      "choices": [
+        {
+          "text": "Đưa nước, khuyên nêm vừa miệng",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Chú xin hòa. Cả bàn nhất trí sức khỏe thắng mọi kèo."
+        },
+        {
+          "text": "Chia tương riêng, ghi độ cay",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Từ nay ai nêm người nấy chịu, không còn tô phở ‘bất ngờ’."
+        },
+        {
+          "text": "Đặt tên kèo ‘dũng cảm có nước mắt’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Chú Sáu tự nhận giải diễn xuất chân thật nhất buổi trưa."
+        }
+      ]
+    },
+    {
+      "key": "neighborhood-song",
+      "title": "Ban nhạc không thuộc lời",
+      "description": "Cả xóm tập hát cho đêm hội. Ai cũng chắc mình đúng lời, thành ra bài hát có tới bốn phiên bản cùng lúc.",
+      "actor": "man",
+      "choices": [
+        {
+          "text": "In lời, rót trà cho cả nhóm",
+          "money": -5000,
+          "reputation": 2,
+          "viral": 0,
+          "path": "community",
+          "result": "Giọng hát chưa đều, tiếng cười thì đồng thanh."
+        },
+        {
+          "text": "Sắp giờ tập sau khi bếp đóng",
+          "money": -3000,
+          "reputation": 1,
+          "viral": 1,
+          "path": "craft",
+          "result": "Khách được yên ăn, ban nhạc có sân khấu. Chú Tư phụ trách vỗ tay đúng nhịp."
+        },
+        {
+          "text": "Đặt tên nhóm ‘Lệch Tông Nhưng Ấm’",
+          "money": 0,
+          "reputation": 0,
+          "viral": 5,
+          "path": "fame",
+          "result": "Tên nhóm hay tới mức mọi người quên tranh nhau giọng chính."
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "id": "community",
+      "title": "Người giữ lửa đầu hẻm",
+      "description": "Quán nhỏ thành nơi mọi người tìm đến cả lúc vui lẫn lúc cần một người lắng nghe. Trong ảnh cả xóm, ai cũng đứng gần nồi phở.",
+      "hint": "Tình xóm ≥14 và ít nhất bằng một nửa tay nghề.",
+      "color": "#d97154"
+    },
+    {
+      "id": "craft",
+      "title": "Bếp trưởng không cần loa",
+      "description": "Không cần quảng cáo quá lớn, khách tự nhớ đường về nhờ những tô phở đều tay. Chú Bảy chính thức ký hợp đồng húp sạch.",
+      "hint": "Tay nghề ≥18, đúng món ít nhất 85% số tô.",
+      "color": "#d5a141"
+    },
+    {
+      "id": "fame",
+      "title": "Ngôi sao phở lên sóng",
+      "description": "Cả hẻm lên hình nhưng tô phở vẫn là nhân vật chính. Tí xin làm đạo diễn, sếp Mướp yêu cầu được duyệt kịch bản.",
+      "hint": "Độ phủ ≥12; giữ tình xóm và độ quậy dưới ngưỡng kết thúc tương ứng.",
+      "color": "#9273b3"
+    },
+    {
+      "id": "meme",
+      "title": "Truyền thuyết phở meme",
+      "description": "Câu chuyện của quán trở thành bộ sưu tập ảnh chế thân thiện. Người ta ghé vì tò mò, ở lại vì tiếng cười và nước dùng nóng.",
+      "hint": "Độ quậy ≥10 và độ phủ ≥8.",
+      "color": "#528e92"
+    },
+    {
+      "id": "comeback",
+      "title": "Cú trở lại thơm lừng",
+      "description": "Có hôm lỡ tay, có lúc khách bỏ đi. Bạn vẫn mở cửa, học thêm và làm lại. Đêm hội dành tiếng vỗ tay cho người không bỏ bếp.",
+      "hint": "Hoàn thành ít nhất 4 mục tiêu, chưa đạt các nhánh phía trên.",
+      "color": "#68975c"
+    },
+    {
+      "id": "cozy",
+      "title": "Quán nhỏ, niềm vui vừa đủ",
+      "description": "Bảy ngày không cần hoàn hảo. Vẫn có chiếc ghế quen, lời chào buổi sáng và một tô phở ấm chờ người bạn mới.",
+      "hint": "Đi hết bảy ngày; không cần đạt chỉ tiêu hay kiếm thật nhiều tiền.",
+      "color": "#b68159"
+    }
+  ]
+}

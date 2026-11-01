@@ -1,0 +1,52 @@
+.village-map-nav{position:absolute;z-index:9;left:max(12px,env(safe-area-inset-left));top:28%;display:grid;gap:7px;width:142px;padding:8px;border:1px solid #b9a77c;border-radius:16px;background:#fff8e9eb;box-shadow:0 5px 15px #3f49212b}
+.village-map-nav button,.village-modal button,.village-camera-controls button{min-height:44px;padding:9px 12px;border:1px solid #ad8e60;border-radius:11px;color:#4b4e2f;background:linear-gradient(#fff2d2,#ead2a1);font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation}
+.village-map-nav button{display:flex;align-items:center;gap:7px;text-align:left;font-size:12px}
+.village-map-nav button:hover,.village-modal button:hover{background:#e6edc7}
+.village-modal button:disabled{opacity:.6;cursor:default}
+.village-map-nav button:focus-visible,.village-modal :is(button,input,select):focus-visible,.village-camera-controls button:focus-visible{outline:3px solid #487443;outline-offset:2px}
+.world-location-panel.village-modal{width:min(480px,calc(100vw - 24px));max-width:100%;max-height:84dvh;margin-left:auto;margin-right:12px;background:#fbf4e2;color:#455039}
+.village-modal .location-panel-content{padding:16px;overflow-x:hidden}
+.village-modal .location-panel-heading{padding:14px;gap:12px}
+.village-modal .location-panel-heading h2{font-size:21px}
+.village-modal .location-panel-heading>div>span{display:none}
+.village-modal :is(input,select){display:block;width:100%;min-width:0;min-height:44px;padding:8px 10px;border:1px solid #c2b18a;border-radius:9px;background:#fffdf4;color:#4d5135;font:inherit;font-size:16px}
+.village-shop-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.village-shop-filters label{min-width:0;display:grid;gap:5px;font-size:12px;font-weight:800}
+.village-shop-filters label:first-child{grid-column:1/-1}
+.village-wallet{margin:0 0 8px;padding:10px;border:1px solid #d7c599;border-radius:10px;background:#f7e7bd;font-size:13px}
+.village-muted{color:#766b4e;font-size:12px;line-height:1.5}
+.village-products,.village-activities{display:grid;gap:12px}
+.village-product{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;padding:12px;border:1px solid #d4c69e;border-radius:14px;background:#fffaf0;min-width:0}
+.village-product-art{display:grid;align-items:center;justify-items:center;overflow:hidden;min-width:0;border-radius:12px;background:#e5ebce;align-self:start;min-height:100px}
+.village-product-art>.wardrobe-item-artwork{max-width:82px;width:100%;height:110px}
+.village-product-art>span{font-size:48px}
+.village-product h3,.village-quest h3{font-size:16px;margin:0 0 5px;overflow-wrap:anywhere}
+.village-product p,.village-quest p{font-size:13px;line-height:1.6;margin:5px 0 9px}
+.village-product small{font-size:12px;font-weight:700}
+.village-product-status{color:#657848;font-weight:800}
+.village-product.rarity-rare{border-color:#82a4b0}
+.village-product.rarity-epic{border-color:#ad93bc}
+.village-product.rarity-legendary{border-color:#d5ad50}
+.village-row{display:flex;flex-wrap:wrap;gap:8px}
+.village-purchase-confirm{position:sticky;z-index:2;top:0;margin:12px 0;padding:14px;border:2px solid #a88340;border-radius:14px;background:#fff3d1;box-shadow:0 5px 18px #5b412c30}
+.village-notice{position:relative;margin:0 0 12px;padding:12px;border:1px solid #b9ca9a;border-radius:12px;background:#edf5da;color:#3c5932;font-size:14px;line-height:1.6}
+.village-load-more{margin-top:14px;width:100%}
+.village-quest{padding:15px;background:#fffaf0;border:1px solid #d2c49c;border-radius:14px}
+.village-quest>small{display:block;color:#8d7043;margin-bottom:6px}
+.village-camera-controls{position:absolute;z-index:6;top:85px;left:12px;display:flex;gap:5px}
+.village-camera-controls button{width:44px;padding:5px;font-size:22px}
+.world-map-viewport{touch-action:none}
+.village-chicken{animation:village-peck 7s ease-in-out infinite alternate}
+.village-duck{animation:village-swim 12s ease-in-out infinite alternate}
+.village-buffalo{animation:village-wander 24s ease-in-out infinite alternate}
+.village-animal-1{animation-delay:-3s}.village-animal-2{animation-delay:-5s}.village-animal-3{animation-delay:-1s}
+.village-world-paused .village-scenery *{animation-play-state:paused}
+@keyframes village-peck{0%,20%{transform:translate(0,0)}50%{transform:translate(12px,5px)}80%,100%{transform:translate(25px,-3px)}}
+@keyframes village-swim{from{transform:translate(0,0)}to{transform:translate(32px,-8px)}}
+@keyframes village-wander{from{transform:translate(0,0)}to{transform:translate(70px,-12px)}}
+@media(max-width:1100px){.village-map-nav{width:auto;top:auto;bottom:56px;left:50%;transform:translateX(-50%);display:flex;padding:6px;gap:5px}.village-map-nav button{justify-content:center;flex-direction:column;gap:2px;padding:6px 10px;font-size:13px}.village-map-nav button span{font-size:10px}.sv-fullscreen-map .map-directions,.sv-fullscreen-map .map-interaction{bottom:130px}.village-camera-controls{top:75px}.village-map-nav{max-width:calc(100% - 16px)}}
+@media(max-width:600px){.world-location-panel.village-modal{margin:auto;width:calc(100vw - 16px);max-height:88dvh}.village-modal .location-panel-content{padding:12px}.village-product{grid-template-columns:68px minmax(0,1fr);gap:9px;padding:10px}.village-map-nav{bottom:max(14px,env(safe-area-inset-bottom));width:calc(100% - 20px);justify-content:space-around}.village-map-nav button{flex:1;min-width:0}.sv-fullscreen-map .map-directions,.sv-fullscreen-map .map-interaction{bottom:94px}.sv-fullscreen-map .map-walk-hint{display:none}.sv-fullscreen-map .map-control-bar{display:none}.village-camera-controls{top:80px}.village-camera-controls button{width:42px;font-size:19px}.sv-map-wallet{max-width:58%}.village-shop-filters{gap:8px}}
+@media(max-height:500px) and (orientation:landscape){.village-map-nav{bottom:48px}.village-map-nav button{flex-direction:row}.sv-fullscreen-map .map-directions,.sv-fullscreen-map .map-interaction{bottom:110px}.world-location-panel.village-modal{max-height:94dvh}.village-camera-controls{top:74px}}
+.village-camera-controls button{min-width:44px}
+@media(prefers-reduced-motion:reduce){.village-scenery *{animation:none!important}}
+:root[data-motion='reduced'] .village-scenery *{animation:none!important}

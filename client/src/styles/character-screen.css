@@ -1,0 +1,1193 @@
+.character-wardrobe-page {
+  --wardrobe-ink: #3e5544;
+  --wardrobe-muted: #788273;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 1240px;
+  min-width: 0;
+  overflow-x: hidden;
+  height: 100%;
+  min-height: 580px;
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 22px);
+  overflow: hidden;
+  border: 1px solid #dfe1cf;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 12% 0%, #fff1d1 0, transparent 34%),
+    linear-gradient(140deg, #f8f5e9, #eef2e6 56%, #f8efdc);
+  color: var(--wardrobe-ink);
+}
+
+.character-wardrobe-page,
+.character-wardrobe-page * {
+  box-sizing: border-box;
+}
+
+.character-wardrobe-page button,
+.character-wardrobe-page input,
+.character-wardrobe-page select {
+  font: inherit;
+}
+
+.character-wardrobe-page button:focus-visible,
+.character-wardrobe-page input:focus-visible,
+.character-wardrobe-page select:focus-visible {
+  outline: 3px solid #cb9a51;
+  outline-offset: 2px;
+}
+
+.character-wardrobe-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+
+.character-wardrobe-header > div:nth-child(2) > span,
+.character-inventory-heading > div > span {
+  color: #947951;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.character-wardrobe-header h1 {
+  margin: 3px 0 0;
+  color: #385943;
+  font: 700 clamp(21px, 2.4vw, 30px) Georgia, 'Times New Roman', serif;
+}
+
+.character-wardrobe-back,
+.character-wardrobe-wallet > span,
+.character-reset-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 13px;
+  border: 1px solid #d4ddce;
+  border-radius: 12px;
+  background: #fffdf5;
+  color: #4b684f;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.character-wardrobe-wallet {
+  display: flex;
+  gap: 6px;
+}
+
+.character-wardrobe-wallet > span {
+  min-height: 38px;
+  padding: 6px 10px;
+  background: #fff6dd;
+  border-color: #e8d8ae;
+  color: #846b3b;
+  font-size: 11px;
+}
+
+.character-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid #3b684b;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #4d7955, #335d45);
+  box-shadow: 0 3px 0 #294b39;
+  color: #fff9e9;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.character-save-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 #294b39;
+}
+
+.character-wardrobe-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, .86fr) minmax(400px, 1.14fr);
+  gap: 14px;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.character-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  border: 1px solid #dde2d4;
+  border-radius: 18px;
+  background: #fffdf5e8;
+  box-shadow: 0 8px 24px #475d3c0c;
+}
+
+.character-dressing-room {
+  position: relative;
+  display: flex;
+  flex: 1 1 230px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 215px;
+  padding: 8px 10px 0;
+  border: 1px solid #d8dfce;
+  border-radius: 15px;
+  background: linear-gradient(180deg, #f6f1dc, #e5eddc 78%, #d7e5d2);
+}
+
+.character-dressing-room__scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 250px);
+  height: 100%;
+  min-height: 185px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.character-dressing-room__scene::before {
+  position: absolute;
+  right: 3%;
+  bottom: 4%;
+  left: 3%;
+  height: 17%;
+  border: 1px solid #bdab7c;
+  border-radius: 50%;
+  background: #f0e2bc;
+  box-shadow: 0 6px 10px #536c4930;
+  content: '';
+}
+
+.character-dressing-room__sun {
+  position: absolute;
+  top: 9%;
+  right: 11%;
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  background: #edcc7b9c;
+  box-shadow: 0 0 34px #e6c46a77;
+}
+
+.character-dressing-room__sprite {
+  z-index: 1;
+  width: min(57%, 135px);
+  height: auto;
+  align-self: end;
+  margin-bottom: 12%;
+  filter: drop-shadow(0 5px 3px #334a3430);
+  transition: transform .2s ease;
+}
+
+.view-three-quarter.character-dressing-room__sprite {
+  transform: translateX(4px) scale(.98);
+}
+
+.character-dressing-room__name {
+  position: absolute;
+  z-index: 2;
+  bottom: 3%;
+  left: 50%;
+  max-width: 90%;
+  overflow: hidden;
+  color: #526e50;
+  font: 700 13px Georgia, 'Times New Roman', serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.character-facing-toggle {
+  position: absolute;
+  right: 9px;
+  bottom: 9px;
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 1px solid #cbd8c5;
+  border-radius: 11px;
+  background: #ffffffd9;
+  color: #4d704f;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.character-walk-toggle {
+  position: absolute;
+  left: 9px;
+  bottom: 9px;
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 1px solid #cbd8c5;
+  border-radius: 11px;
+  background: #ffffffd9;
+  color: #4d704f;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.character-walk-toggle[aria-pressed='true'] { color: #a85e48; }
+
+.character-equipment {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.character-equipment > header,
+.character-inventory-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.character-equipment > header h2,
+.character-inventory-heading h2 {
+  margin: 0;
+  color: #405d48;
+  font: 700 17px Georgia, 'Times New Roman', serif;
+}
+
+.character-equipment > header > span {
+  color: var(--wardrobe-muted);
+  font-size: 10px;
+}
+
+.character-equipment__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.character-equipment__slot {
+  display: grid;
+  grid-template-rows: 37px auto auto;
+  justify-items: center;
+  gap: 3px;
+  min-width: 0;
+  min-height: 82px;
+  padding: 6px 4px;
+  border: 1px solid #d9e0d4;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #fff, #f4f6ed);
+  color: #5a7059;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.character-equipment__slot:hover,
+.character-equipment__slot.is-selected {
+  border-color: #8faa82;
+  box-shadow: 0 3px 10px #526b4317;
+  transform: translateY(-1px);
+}
+
+.character-equipment__slot.is-selected {
+  outline: 2px solid #91aa7f;
+  outline-offset: 1px;
+}
+
+.character-equipment__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #e8eee1;
+  font-size: 20px;
+}
+
+.character-equipment__icon .wardrobe-item-artwork {
+  width: 29px;
+  height: 35px;
+}
+
+.character-equipment__icon .wardrobe-mount-preview {
+  width: 34px;
+  height: 28px;
+}
+
+.character-equipment__slot small,
+.character-equipment__slot strong {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.character-equipment__slot small {
+  color: #73806e;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.character-equipment__slot strong {
+  color: #465e49;
+  font-size: 9px;
+}
+
+.character-panel-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.character-reset-button {
+  min-height: 42px;
+  background: #faf3e6;
+  color: #86633d;
+  cursor: pointer;
+}
+
+.character-panel--inventory {
+  gap: 10px;
+}
+
+.character-inventory-heading h2 {
+  margin-top: 3px;
+}
+
+.character-inventory-heading h2 small {
+  margin-left: 5px;
+  color: #71806d;
+  font: 700 11px ui-sans-serif, system-ui, sans-serif;
+}
+
+.character-inventory-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.character-inventory-tabs button {
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 4px;
+  border: 1px solid #d9e0d4;
+  border-radius: 10px;
+  background: #f8f8f0;
+  color: #637361;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.character-inventory-tabs button[aria-selected='true'] {
+  border-color: #68886b;
+  background: #e4eedf;
+  color: #365a43;
+  box-shadow: inset 0 0 0 1px #8ba889;
+}
+
+.character-inventory-tabs button > span {
+  margin-left: 4px;
+  color: #7d8c76;
+}
+
+.character-inventory-filters {
+  display: grid;
+  grid-template-columns: minmax(100px, 1.4fr) minmax(100px, 1fr) minmax(100px, 1fr);
+  gap: 6px;
+}
+
+.character-inventory-filters label {
+  min-width: 0;
+}
+
+.character-inventory-filters input,
+.character-inventory-filters select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 7px 9px;
+  border: 1px solid #dce1d4;
+  border-radius: 10px;
+  background: #fff;
+  color: #4e634f;
+  font-size: 11px;
+}
+
+.character-inventory-detail {
+  flex: 0 0 auto;
+}
+
+.character-item-detail {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 81px;
+  padding: 8px;
+  border: 1px solid #d8dfd3;
+  border-radius: 13px;
+  background: #f7f8f0;
+}
+
+.character-item-detail.is-empty {
+  grid-template-columns: 42px 1fr;
+  min-height: 61px;
+  color: #778273;
+  font-size: 11px;
+}
+
+.character-item-detail.is-empty > span {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: #e8eddf;
+  font-size: 20px;
+}
+
+.character-item-detail.is-empty p {
+  margin: 0;
+}
+
+.character-item-detail__art {
+  display: grid;
+  place-items: center;
+  width: 55px;
+  height: 63px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e8eddf;
+}
+
+.character-item-detail__art .wardrobe-item-artwork {
+  width: 45px;
+  height: 60px;
+}
+
+.character-item-detail__art .wardrobe-mount-preview {
+  width: 53px;
+  height: 43px;
+}
+
+.character-item-detail__copy {
+  min-width: 0;
+}
+
+.character-item-detail__copy > span,
+.character-item-detail__copy > small {
+  color: #7c826c;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.character-item-detail__copy h3 {
+  overflow: hidden;
+  margin: 2px 0;
+  color: #425d48;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.character-item-detail__copy p {
+  overflow: hidden;
+  margin: 0 0 2px;
+  color: #718073;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.character-equip-button {
+  min-width: 90px;
+  min-height: 42px;
+  padding: 7px 10px;
+  border: 1px solid #557b5a;
+  border-radius: 10px;
+  background: #527b59;
+  color: #fffdf1;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.character-equip-button.is-equipped {
+  border-color: #d3ccba;
+  background: #f8f3e7;
+  color: #846b4d;
+}
+
+.character-inventory-scroll {
+  flex: 1 1 0;
+  min-height: 70px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #bdc9b3 #f2f4ea;
+}
+
+.character-inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px;
+  padding: 2px 3px 6px;
+}
+
+.character-inventory-item {
+  display: grid;
+  grid-template-rows: 67px auto auto auto;
+  justify-items: start;
+  gap: 3px;
+  min-width: 0;
+  min-height: 120px;
+  padding: 7px;
+  border: 1px solid #d7dfd1;
+  border-radius: 13px;
+  background: #fff;
+  color: #435b49;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.character-inventory-item:hover {
+  box-shadow: 0 4px 12px #435a3c18;
+  transform: translateY(-2px);
+}
+
+.character-inventory-item.is-selected {
+  border-color: #6f956b;
+  box-shadow: inset 0 0 0 1px #83a77c, 0 4px 12px #435a3c14;
+}
+
+.character-inventory-item__art {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 65px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: radial-gradient(ellipse at 50% 30%, #fffdf3, #e8eee2);
+}
+
+.character-inventory-item__art .wardrobe-item-artwork {
+  width: 48px;
+  height: 65px;
+}
+
+.character-inventory-item__art .wardrobe-mount-preview {
+  width: 70px;
+  height: 50px;
+}
+
+.character-inventory-item > strong {
+  width: 100%;
+  overflow: hidden;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.character-inventory-item > small,
+.character-inventory-item__status {
+  color: #758171;
+  font-size: 9px;
+}
+
+.character-inventory-item__status {
+  color: #48704f;
+  font-weight: 800;
+}
+
+.character-inventory-item.is-equipped .character-inventory-item__status {
+  color: #a26d37;
+}
+
+.character-inventory-empty {
+  margin: 20px 8px;
+  color: #788273;
+  font-size: 12px;
+  text-align: center;
+}
+
+.character-mobile-tabs,
+.character-mobile-equip {
+  display: none;
+}
+
+.character-wardrobe-page .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.character-dressing-room .studio-mount {
+  width: 45%;
+}
+
+@media (min-width: 701px) and (max-width: 1050px) {
+  .character-wardrobe-page {
+    min-height: 520px;
+    padding: 12px;
+  }
+
+  .character-wardrobe-layout {
+    grid-template-columns: minmax(275px, 1fr) minmax(320px, 1fr);
+    gap: 10px;
+  }
+
+  .character-panel {
+    gap: 9px;
+    padding: 10px;
+  }
+
+  .character-equipment__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .character-equipment__slot {
+    min-height: 72px;
+  }
+
+  .character-inventory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .character-inventory-filters {
+    grid-template-columns: minmax(90px, 1fr) minmax(95px, 1fr);
+  }
+
+  .character-inventory-filters label:first-child {
+    grid-column: 1/-1;
+  }
+}
+
+.location-character .location-panel-content {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.location-character .character-wardrobe-page {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+@media (max-width: 700px) {
+  .character-wardrobe-page {
+    height: 100dvh;
+    gap: 8px;
+    min-height: 0;
+    padding: 9px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .character-wardrobe-header {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+
+  .character-wardrobe-header > div:nth-child(2) > span {
+    font-size: 7px;
+  }
+
+  .character-wardrobe-header h1 {
+    font-size: 19px;
+  }
+
+  .character-wardrobe-header > .character-wardrobe-wallet {
+    display: none;
+  }
+
+  .character-wardrobe-header > .character-save-button {
+    display: none;
+  }
+
+  .character-wardrobe-back {
+    min-height: 42px;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .character-mobile-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    flex: 0 0 auto;
+    padding: 4px;
+    border-radius: 12px;
+    background: #e7ecdf;
+  }
+
+  .character-mobile-tabs button {
+    min-height: 42px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #65735f;
+    font-size: 12px;
+    font-weight: 850;
+  }
+
+  .character-mobile-tabs button[aria-selected='true'] {
+    background: #fffdf5;
+    box-shadow: 0 2px 7px #40523b15;
+    color: #3b6146;
+  }
+
+  .character-mobile-tabs button span {
+    margin-left: 4px;
+    color: #7e8d74;
+  }
+
+  .character-wardrobe-layout {
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .character-panel {
+    height: 100%;
+    gap: 8px;
+    padding: 9px;
+    overflow: hidden;
+    border-radius: 14px;
+  }
+
+  .character-panel.is-mobile-hidden {
+    display: none;
+  }
+
+  .character-panel--preview {
+    overflow-y: auto;
+  }
+
+  .character-dressing-room {
+    flex: 0 0 31%;
+    min-height: 170px;
+    max-height: 240px;
+  }
+
+  .character-dressing-room__scene {
+    min-height: 145px;
+  }
+
+  .character-dressing-room__sprite {
+    width: min(49%, 108px);
+    margin-bottom: 14%;
+  }
+
+  .character-equipment {
+    flex: 0 0 auto;
+  }
+
+  .character-equipment__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .character-equipment__slot {
+    grid-template-rows: 36px auto auto;
+    min-height: 72px;
+    padding: 5px 3px;
+  }
+
+  .character-equipment__slot small {
+    font-size: 9px;
+  }
+
+  .character-equipment__slot strong {
+    font-size: 9px;
+  }
+
+  .character-panel-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin-top: auto;
+    padding: 6px 0 max(3px, env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, #fffdf5 18%);
+  }
+
+  .character-panel-actions .character-reset-button,
+  .character-panel-actions .character-save-button {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  .character-panel--inventory {
+    position: relative;
+    padding-bottom: max(62px, calc(62px + env(safe-area-inset-bottom)));
+  }
+
+  .character-inventory-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .character-inventory-tabs button {
+    min-height: 40px;
+    padding: 5px 2px;
+    font-size: 9px;
+  }
+
+  .character-inventory-filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .character-inventory-filters label:first-child {
+    grid-column: 1/-1;
+  }
+
+  .character-inventory-filters input,
+  .character-inventory-filters select {
+    min-height: 40px;
+    font-size: 11px;
+  }
+
+  .character-item-detail {
+    grid-template-columns: 48px minmax(0, 1fr);
+    min-height: 68px;
+    padding: 6px;
+  }
+
+  .character-item-detail__art {
+    width: 46px;
+    height: 54px;
+  }
+
+  .character-item-detail__art .wardrobe-item-artwork {
+    width: 39px;
+    height: 52px;
+  }
+
+  .character-item-detail .character-equip-button {
+    display: none;
+  }
+
+  .character-item-detail__copy p {
+    max-width: 54vw;
+  }
+
+  .character-inventory-scroll {
+    min-height: 0;
+  }
+
+  .character-inventory-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .character-inventory-item {
+    grid-template-rows: 60px auto auto auto;
+    min-height: 112px;
+    padding: 5px;
+  }
+
+  .character-inventory-item__art {
+    min-height: 58px;
+  }
+
+  .character-inventory-item__art .wardrobe-item-artwork {
+    width: 43px;
+    height: 59px;
+  }
+
+  .character-inventory-item > strong {
+    font-size: 9px;
+  }
+
+  .character-inventory-item > small,
+  .character-inventory-item__status {
+    font-size: 8px;
+  }
+
+  .character-mobile-equip {
+    position: absolute;
+    right: 9px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    left: 9px;
+    z-index: 3;
+    display: block;
+    padding-top: 7px;
+    background: linear-gradient(transparent, #fffdf5 25%);
+  }
+
+  .character-mobile-equip .character-equip-button {
+    width: 100%;
+    min-height: 48px;
+    box-shadow: 0 3px 0 #35533d;
+    font-size: 13px;
+  }
+
+  .location-character .location-panel-content {
+    padding: 7px;
+  }
+}
+
+@media (max-width: 380px) {
+  .character-wardrobe-page {
+    padding: 7px;
+  }
+
+  .character-wardrobe-header {
+    grid-template-columns: auto 1fr;
+  }
+
+  .character-wardrobe-header > div:nth-child(2) {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .character-inventory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .character-panel-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .character-wardrobe-page {
+    height: 100dvh;
+    min-height: 0;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .character-wardrobe-header {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 7px;
+    min-height: 38px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .character-wardrobe-page {
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .character-wardrobe-header {
+    min-height: 38px;
+  }
+
+  .character-wardrobe-header h1 {
+    font-size: 17px;
+  }
+
+  .character-mobile-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .character-wardrobe-header h1 {
+    font-size: 17px;
+  }
+
+  .character-wardrobe-layout {
+    display: block;
+  }
+
+  .character-panel {
+    height: 100%;
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .character-panel.is-mobile-hidden {
+    display: none;
+  }
+
+  .character-panel--preview:not(.is-mobile-hidden) {
+    display: grid;
+    grid-template-columns: minmax(120px, .72fr) minmax(0, 1.28fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .character-dressing-room {
+    grid-row: 1 / span 2;
+    min-height: 0;
+    flex-basis: auto;
+  }
+
+  .character-dressing-room__scene {
+    min-height: 0;
+  }
+
+  .character-equipment__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 3px;
+  }
+
+  .character-equipment__slot {
+    grid-template-rows: 30px auto auto;
+    min-height: 62px;
+    padding: 3px 1px;
+  }
+
+  .character-equipment__icon {
+    width: 29px;
+    height: 29px;
+  }
+
+  .character-equipment__icon .wardrobe-item-artwork {
+    width: 24px;
+    height: 29px;
+  }
+
+  .character-equipment__slot small,
+  .character-equipment__slot strong {
+    font-size: 8px;
+  }
+
+  .character-panel-actions {
+    grid-column: 2;
+  }
+
+  .character-panel--inventory {
+    position: relative;
+    padding-bottom: max(58px, calc(58px + env(safe-area-inset-bottom)));
+    overflow: hidden;
+  }
+
+  .character-panel--inventory .character-inventory-heading {
+    display: none;
+  }
+
+  .character-panel--inventory .character-inventory-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3px;
+  }
+
+  .character-panel--inventory .character-inventory-tabs button {
+    min-height: 36px;
+    padding: 4px 2px;
+    font-size: 9px;
+  }
+
+  .character-panel--inventory .character-inventory-filters {
+    grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .character-panel--inventory .character-inventory-filters label:first-child {
+    grid-column: auto;
+  }
+
+  .character-panel--inventory .character-inventory-filters input,
+  .character-panel--inventory .character-inventory-filters select {
+    min-height: 36px;
+    padding: 5px;
+    font-size: 9px;
+  }
+
+  .character-panel--inventory .character-item-detail {
+    grid-template-columns: 40px minmax(0, 1fr);
+    min-height: 56px;
+    padding: 4px;
+  }
+
+  .character-panel--inventory .character-item-detail__art {
+    width: 38px;
+    height: 46px;
+  }
+
+  .character-panel--inventory .character-item-detail__copy p {
+    display: none;
+  }
+
+  .character-panel--inventory .character-inventory-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .character-panel--inventory .character-item-detail .character-equip-button {
+    display: none;
+  }
+
+  .character-panel--inventory .character-inventory-scroll {
+    min-height: 0;
+  }
+
+  .character-panel--inventory .character-inventory-item {
+    grid-template-rows: 52px auto auto auto;
+    min-height: 100px;
+    padding: 4px;
+  }
+
+  .character-panel--inventory .character-inventory-item__art {
+    min-height: 50px;
+  }
+
+  .character-panel--inventory .character-inventory-item__art .wardrobe-item-artwork {
+    width: 36px;
+    height: 50px;
+  }
+
+  .character-panel--inventory .character-inventory-item > strong {
+    font-size: 9px;
+  }
+
+  .character-panel--inventory .character-inventory-item > small,
+  .character-panel--inventory .character-inventory-item__status {
+    font-size: 8px;
+  }
+
+  .character-wardrobe-back {
+    min-height: 40px;
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
+  .character-mobile-equip {
+    position: absolute;
+    right: 7px;
+    bottom: max(5px, env(safe-area-inset-bottom));
+    left: 7px;
+    z-index: 3;
+    display: block;
+    padding-top: 6px;
+    background: linear-gradient(transparent, #fffdf5 25%);
+  }
+
+  .character-mobile-equip .character-equip-button {
+    width: 100%;
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-wardrobe-page *,
+  .character-wardrobe-page *::before,
+  .character-wardrobe-page *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+}

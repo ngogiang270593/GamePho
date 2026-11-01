@@ -1,0 +1,8 @@
+name = "phoxom"
+pages_build_output_dir = "dist-online"
+compatibility_date = "2026-10-27"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "xom-nha-la"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

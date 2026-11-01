@@ -1,0 +1,7 @@
+﻿.pwa-install { margin-top:16px; padding:12px; border:1px solid #bbaa87; border-radius:9px; color:#4c4d37; background:#fff8e9; font-size:.82rem; line-height:1.6; }
+.pwa-install summary { cursor:pointer; font-weight:750; }
+.pwa-install p { margin:10px 0 0; }
+.pwa-install button { margin-top:10px; padding:9px 13px; border:1px solid #315b39; border-radius:7px; color:#fff9e9; background:#315b39; font-weight:750; }
+.start-menu-content > .pwa-install { position:relative; z-index:5; max-width:440px; color:#ffe6b8; background:#3d211bd9; border-color:#bc884d80; font-size:.75rem; }
+.pwa-offline { position:fixed; z-index:1000; top:0; left:0; width:100%; padding:9px 14px; padding-top:max(9px,env(safe-area-inset-top)); text-align:center; color:#fff9e9; background:#8f3f24; font-size:.8rem; box-shadow:0 2px 8px #30170740; pointer-events:none; }
+@media(display-mode:standalone) { body { overscroll-behavior-y:none; } .shop-full-page > .location-panel-heading { padding-top:max(6px,env(safe-area-inset-top)); } }

@@ -1,0 +1,33 @@
+.forest-rig-sprite { overflow: visible; }
+.forest-rig-frames { animation: forest-rig-cycle var(--forest-duration) steps(var(--forest-frames), end) infinite; }
+.forest-rig-frames.is-controlled { animation: none; }
+.action-jump .forest-rig-frames:not(.is-controlled) { animation-iteration-count: 1; animation-fill-mode: forwards; }
+.action-jump .forest-rig-frames:not(.is-controlled) { animation-timing-function: steps(var(--forest-frames), end); }
+@keyframes forest-rig-cycle { from { transform: translateX(0); } to { transform: translateX(calc(-1 * var(--forest-width))); } }
+.forest-turnaround-motion { transform-box: view-box; transform-origin: 50% 88%; }
+.forest-turnaround-motion.is-walking { animation: forest-turnaround-walk .48s ease-in-out infinite; }
+.forest-turnaround-motion.is-running { animation: forest-turnaround-run .3s ease-in-out infinite; }
+@keyframes forest-turnaround-walk {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(2px, -6px) rotate(.45deg); }
+  50% { transform: translate(0, 0) rotate(0); }
+  75% { transform: translate(-2px, -6px) rotate(-.45deg); }
+}
+@keyframes forest-turnaround-run {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-3px, -12px) rotate(-.8deg); }
+  40% { transform: translate(0, 0) rotate(0); }
+  60% { transform: translate(3px, -12px) rotate(.8deg); }
+  80% { transform: translate(0, 0) rotate(0); }
+}
+.player-sprite.forest-map-action-sprite { overflow: hidden; }
+.forest-map-action-frames {
+  animation: forest-map-action-cycle var(--forest-map-duration) steps(3, end) infinite;
+}
+@keyframes forest-map-action-cycle {
+  from { transform: translateX(0); }
+  to { transform: translateX(-96px); }
+}
+@media (prefers-reduced-motion: reduce) { .starting-game-sprite .forest-rig-frames { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .forest-turnaround-motion { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .forest-map-action-frames { animation: none !important; } }

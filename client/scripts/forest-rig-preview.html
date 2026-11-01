@@ -1,0 +1,7 @@
+<!doctype html><html><meta charset="utf-8"><title>Forest rig renderer</title><body style="margin:0;background:#e7e9ce"><canvas id="render"></canvas><script type="module">
+import { makeForestStudio } from './forest-rig.mjs';
+window.forestStudio = makeForestStudio(document.getElementById('render'));
+window.forestStudio.setGender('male');
+window.forestStudio.render('idle',0,0);
+window.forestReady = true;
+</script></body></html>

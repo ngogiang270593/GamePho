@@ -1,0 +1,75 @@
+﻿/* Two-bowl kitchen: the scene stays clear, tools live in a bounded side lane. */
+.kitchen-game { color:#3f4938; }
+.kitchen-toolbar { display:flex; flex:none; align-items:center; gap:12px; min-height:52px; padding:7px 14px; border-bottom:1px solid #c9b990; background:#fff8e7; }
+.kitchen-toolbar button,.kitchen-panel button,.kitchen-console button,.kitchen-shift-card button { border:1px solid #bcac87; border-radius:8px; background:#fffaf0; color:#4c573c; padding:8px 11px; font-size:.8rem; font-weight:700; }
+.kitchen-toolbar nav { display:flex; gap:6px; margin-left:auto; }
+.kitchen-pot-summary { display:flex; flex-direction:column; gap:3px; text-align:left; }
+.kitchen-pot-summary span:last-child { font-size:.66rem; font-weight:500; }
+.kitchen-rhythm { font-size:.74rem; color:#657151; }
+.rhythm-rush { color:#a94a32; font-weight:800; }
+.kitchen-alert { display:flex; flex:none; justify-content:space-between; align-items:center; padding:7px 12px; background:#fff0d5; color:#873e29; font-size:.8rem; border-bottom:1px solid #cfac77; }
+.kitchen-alert button { border:0; background:none; color:inherit; font-size:1.2rem; }
+.kitchen-game .kitchen-panel { padding:12px; }
+.kitchen-panel > header { position:sticky; top:-12px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; margin-bottom:10px; background:#fff8e9; z-index:2; }
+.kitchen-panel h2 { margin:0; font-size:1rem; color:#425a40; }
+.kitchen-panel h3 { font-size:1rem; }
+.kitchen-panel p { font-size:.78rem; line-height:1.65; margin:10px 0; }
+.kitchen-panel small { font-size:.68rem; line-height:1.5; }
+.kitchen-panel > button { display:block; width:100%; margin:8px 0; }
+.kitchen-panel button[aria-pressed='true'],.kitchen-console button[aria-pressed='true'] { border-color:#647f50; background:#e0ebcc; box-shadow:inset 0 0 0 1px #647f50; }
+.kitchen-guest { display:flex; width:100%; gap:8px; margin:8px 0; padding:10px; text-align:left; }
+.kitchen-guest > svg { width:42px; height:48px; flex:none; }
+.kitchen-guest > span { display:grid; gap:3px; min-width:0; }
+.kitchen-guest em { font-size:.68rem; font-style:normal; line-height:1.5; color:#77654d; }
+.kitchen-ticket { padding:10px; border:1px dashed #b6a27a; border-radius:8px; background:#fff2d1; font-size:.78rem; }
+.kitchen-ticket p { margin:6px 0 0; }
+.kitchen-request { margin:10px 0; padding:10px; border-radius:8px; background:#eaf0de; }
+.kitchen-request div { display:flex; gap:6px; }
+.kitchen-help { color:#786d54; }
+.kitchen-choice-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:12px 0; }
+.kitchen-choice-grid button { display:grid; justify-items:center; gap:5px; font-size:.74rem; }
+.kitchen-topping-grid { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.kitchen-topping-grid button { font-size:.73rem; padding:8px; }
+.kitchen-panel > footer { position:sticky; bottom:-12px; display:grid; gap:8px; padding:12px 0; background:#fff8e9; }
+.kitchen-panel > footer > button,.kitchen-console .kitchen-primary { background:#607d4f; border-color:#526c43; color:#fff9e7; }
+.kitchen-pot-gauge > strong { font-size:2rem; display:block; }
+.kitchen-pot-gauge meter { display:block; width:100%; height:18px; }
+.kitchen-fire { display:flex; flex-wrap:wrap; gap:6px; }
+.kitchen-panel details { padding:10px 0; border-bottom:1px solid #d5c9a8; }
+.kitchen-panel summary { cursor:pointer; font-size:.8rem; font-weight:800; }
+.kitchen-panel article { padding:12px 0; border-bottom:1px dashed #d8cbae; font-size:.8rem; }
+.kitchen-panel article p { margin:5px 0; }
+.kitchen-panel input { width:100%; padding:9px; margin:8px 0; border:1px solid #bba782; border-radius:7px; font:inherit; }
+.kitchen-console { display:flex; flex:none; flex-wrap:wrap; align-items:center; gap:9px 12px; padding:8px 14px calc(8px + env(safe-area-inset-bottom)); border-top:1px solid #bca981; background:#fff6e0; }
+.kitchen-bowl-tabs { display:flex; flex:1; min-width:220px; gap:7px; }
+.kitchen-bowl-tabs > button { display:grid; flex:1; min-width:0; gap:4px; text-align:left; }
+.kitchen-bowl-tabs strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.78rem; }
+.kitchen-bowl-tabs small { color:#75674c; font-size:.66rem; }
+.kitchen-main-action { display:flex; align-items:center; gap:7px; }
+.kitchen-main-action .kitchen-primary { min-width:125px; min-height:42px; }
+.kitchen-timing { width:150px; font-size:.68rem; }
+.kitchen-timing > div { position:relative; height:12px; border:1px solid #bba477; border-radius:6px; background:#e5ca9a; overflow:hidden; margin-top:5px; }
+.kitchen-timing i { position:absolute; top:0; bottom:0; background:#82a365; }
+.kitchen-timing b { position:absolute; top:0; bottom:0; width:3px; background:#513a2d; }
+.kitchen-result-pill { max-width:240px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:.68rem!important; }
+.kitchen-shift-card { position:absolute; top:12px; left:12px; max-width:260px; padding:13px; background:#fff9e9f2; border:1px solid #c6b58a; border-radius:10px; color:#4f5e40; }
+.kitchen-shift-card p { font-size:.75rem; line-height:1.5; }
+.kitchen-shift-card a { display:block; margin-top:10px; color:#6f673e; font-size:.75rem; }
+.shop-scene[data-fire='low'] .shop-flame { opacity:.45; }
+.shop-scene[data-fire='high'] .shop-flame { filter:drop-shadow(0 0 5px #f39c36); }
+@media(max-width:600px) {
+  .kitchen-toolbar { min-height:46px; padding:5px 8px; gap:7px; }
+  .kitchen-toolbar button { padding:7px; font-size:.72rem; }
+  .kitchen-rhythm { display:none; }
+  .kitchen-game .kitchen-panel { flex-basis:40%; max-height:40%; padding:10px; }
+  .kitchen-choice-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .kitchen-choice-grid .shop-food-icon { width:36px; height:30px; }
+  .kitchen-console { padding:7px 8px calc(7px + env(safe-area-inset-bottom)); gap:6px; }
+  .kitchen-bowl-tabs { min-width:100%; }
+  .kitchen-bowl-tabs > button { padding:7px; }
+  .kitchen-main-action { flex:1; }
+  .kitchen-main-action .kitchen-primary { margin-left:auto; min-height:38px; min-width:115px; }
+  .kitchen-timing { width:145px; }
+  .kitchen-result-pill { max-width:145px; }
+  .kitchen-shift-card { max-width:205px; padding:10px; }
+}

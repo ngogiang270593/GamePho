@@ -1,0 +1,3 @@
+using server.Models.Enums;
+namespace server.Models;
+public class Customer { public int Id { get; set; } public string Name { get; set; } = ""; public CustomerType CustomerType { get; set; } public string Avatar { get; set; } = ""; public int Hunger { get; set; } public int Patience { get; set; } public int BasePatience { get; set; } public PhoType? PreferredPhoType { get; set; } public string RequiredToppings { get; set; } = ""; public bool HasLeft { get; set; } public bool IsServed { get; set; } public DateTime ArrivedAt { get; set; } public string Description { get; set; } = ""; public string Behavior { get; set; } = ""; }

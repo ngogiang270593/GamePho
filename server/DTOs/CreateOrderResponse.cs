@@ -1,0 +1,3 @@
+using server.Models.Enums;
+namespace server.DTOs;
+public sealed class CreateOrderResponse { public int RequestedServiceTimeSeconds { get; set; } public int EffectiveServiceTimeSeconds { get; set; } public int ServiceTimeReductionSeconds { get; set; } public decimal BonusMoney { get; set; } public decimal MoneyChange { get; set; } public bool DramaTriggered { get; set; } public string Message { get; set; } = ""; public int Id { get; set; } public decimal Price { get; set; } public bool IsCorrect { get; set; } public int ReputationChange { get; set; } public int ViralChange { get; set; } public DateTime CreatedAt { get; set; } }

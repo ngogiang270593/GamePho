@@ -1,0 +1,63 @@
+.uno-online-badge{font-size:10px;color:#3d7f6d;background:#e2f4eb;border-radius:8px;padding:8px;white-space:nowrap}
+.uno-online-badge.is-reconnecting{color:#8a641c;background:#fff3d4}
+.uno-online-badge.is-missing{color:#a33339;background:#fff0ed}
+.uno-config-warning{max-width:760px;margin:12px auto;padding:10px 14px;border:1px solid #e6ca82;border-radius:12px;background:#fff6dd;color:#79591d;font-size:12px;line-height:1.5}
+.uno-copy-notice{margin:8px auto;padding:8px 12px;border-radius:10px;background:#e6f4eb;color:#28725e;text-align:center;font-size:12px}
+.uno-lobby-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:18px;max-width:1050px;margin:20px auto}
+.uno-network .uno-group-lobby{width:100%;max-width:none;margin:0;padding:clamp(16px,3vw,26px);gap:13px;text-align:left}
+.uno-group-lobby h2{font-size:22px;color:#345565;margin:0;text-align:center}
+.uno-group-lobby>p{color:#59717b;font-size:12px;margin:0;text-align:center;line-height:1.5}
+.uno-group-lobby label{display:grid;text-align:left;gap:7px;font-size:12px;color:#3d5862}
+.uno-group-lobby input,.uno-group-lobby select{width:100%;min-height:46px;border:1px solid #cadbd3;border-radius:10px;padding:10px;background:#f6faf9;color:#304b59}
+.uno-group-lobby button,.uno-network button{min-height:44px;border-radius:10px}
+.uno-group-lobby form{display:grid;gap:12px}
+.uno-group-or{display:block;color:#7c8c88;font-size:11px;text-align:center}
+.uno-group-lobby small{font-size:10px;color:#668077;text-align:center}
+.uno-network .cards-error{max-width:900px;margin:12px auto}
+.uno-invite-code{display:block;font-size:clamp(28px,6vw,36px);letter-spacing:7px;color:#288367;text-align:center;user-select:all}
+.uno-invite-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.uno-waiting-room>p:first-child{color:#7b8068;font-size:10px;letter-spacing:1px}
+.uno-members-list,.uno-room-list ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.uno-members-list li{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:10px;background:#eef7f2;padding:9px 11px;border-radius:12px;text-align:left;font-size:13px}
+.uno-member-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;font-size:24px}
+.uno-member-name{font-weight:800;overflow-wrap:anywhere}
+.uno-member-state{color:#357562;font-size:11px;text-align:right}
+.uno-member-state.is-disconnected{color:#ad594e}
+.uno-profile-edit{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;padding:12px;border-radius:12px;background:#f4f8f6}
+.uno-profile-edit label{min-width:0}
+.uno-profile-edit button{grid-column:1/-1}
+.uno-room-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.uno-room-controls>*{flex:1 1 130px}
+.uno-room-controls .uno-start-button{background:#e2f4ed;color:#205e4f;border:1px solid #369b7d;box-shadow:0 3px 0 #369b7d}
+.uno-room-controls .uno-start-button:disabled{opacity:.5}
+.uno-room-list{padding:18px;background:#fff;border:1px solid #d8e6de;border-radius:20px;box-shadow:0 5px 0 #e7eee8}
+.uno-room-list-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.uno-room-list-heading span{font-size:9px;letter-spacing:1px;color:#668077}
+.uno-room-list-heading h2{margin:4px 0 0;font-size:19px;color:#345565}
+.uno-room-list-heading>b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#e2f4eb;color:#28725e}
+.uno-room-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:7px;padding:12px;border:1px solid #e1ebe5;border-radius:12px;background:#f9fcfa}
+.uno-room-list li>div{display:grid;gap:3px}
+.uno-room-list li>div strong{color:#28725e;letter-spacing:2px}
+.uno-room-list li>div span,.uno-room-list li>p{font-size:11px;color:#647a72}
+.uno-room-list li>p{grid-column:1;grid-row:2;margin:0;overflow-wrap:anywhere}
+.uno-room-list li>button{grid-column:2;grid-row:1/3;padding:0 14px}
+.uno-empty-rooms{padding:18px;text-align:center;font-size:12px;line-height:1.5;color:#61776d}
+.uno-results{width:min(100%,420px);padding:0;margin:12px auto;list-style:none;text-align:left;display:grid;gap:7px}
+.uno-results li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:#f4f8f4;font-size:12px}
+.uno-results li span{color:#62766e;white-space:nowrap}
+.uno-network .cards-match-bar{display:flex;align-items:center;gap:12px}
+.uno-network .cards-match-bar>button{margin-left:auto}
+.uno-network .cards-hand-fan{overflow-x:auto;justify-content:flex-start;overscroll-behavior-x:contain;scrollbar-width:thin}
+.uno-network .cards-hand-card{flex:0 0 auto}
+.uno-network .cards-controls>button{min-height:44px}
+.uno-network .cards-opponents{flex-wrap:wrap;display:flex}
+.uno-network .cards-opponent{flex:1 1 110px;min-width:0}
+.uno-network .cards-opponent.is-turn{outline:2px solid #dda929;outline-offset:1px}
+.uno-network .cards-round-hud>div{display:grid;gap:5px}
+.uno-network .cards-round-hud b{color:#377b68}
+.uno-neighbor-face{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#fff;font-size:24px}
+.uno-network .cards-finish{width:min(100%,560px);margin:18px auto;padding:clamp(18px,4vw,32px)}
+.uno-network .cards-finish>button{margin:5px}
+@media(max-width:760px){.uno-lobby-layout{grid-template-columns:minmax(0,1fr);max-width:520px;margin:12px auto}.uno-network .cards-game{width:100%}.uno-room-list{padding:14px}}
+@media(max-width:520px){.uno-network .cards-header{gap:7px}.uno-network .cards-header h1{font-size:19px}.uno-online-badge{font-size:9px;padding:7px 6px}.uno-network .cards-back-button{font-size:11px;padding:8px}.uno-members-list li{grid-template-columns:36px minmax(0,1fr);gap:7px}.uno-member-avatar{width:34px;height:34px;font-size:21px}.uno-member-state{grid-column:2;text-align:left;font-size:10px}.uno-profile-edit{grid-template-columns:1fr}.uno-profile-edit button{grid-column:auto}.uno-invite-actions>*{flex:1 1 130px}.uno-network .cards-table-scene{min-width:0}.uno-network .cards-opponent{flex:1 1 82px;padding:5px}.uno-neighbor-face{width:32px;height:32px;font-size:20px}.uno-results li{font-size:11px}.uno-results li span{font-size:10px}}
+@media(orientation:landscape) and (max-height:520px){.uno-network .cards-header{margin-bottom:5px;padding-bottom:5px}.uno-network .cards-table-scene{min-height:150px;padding:6px 12px}.uno-network .cards-center{min-height:100px;padding:5px}.uno-network .cards-center .color-card{height:82px;width:56px}.uno-network .cards-hand-fan{min-height:95px;padding:6px}.uno-network .cards-hand-card>.color-card{height:75px;width:52px}}

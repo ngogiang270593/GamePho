@@ -1,0 +1,199 @@
+.forest-keeper-preview {
+  min-height: 100svh;
+  padding: clamp(16px, 3vw, 36px);
+  color: #3d352c;
+  background:
+    radial-gradient(ellipse at 50% 0, #e1ebd2 0, transparent 56%),
+    #f5f0e5;
+}
+
+.forest-keeper-preview header {
+  max-width: 760px;
+  margin: 0 auto 14px;
+  text-align: center;
+}
+
+.forest-keeper-demo-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #607957;
+  font-size: .76rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.forest-keeper-preview h1 {
+  margin: 0 0 5px;
+  color: #38543a;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.forest-keeper-preview p {
+  margin: 0;
+  color: #625a4e;
+}
+
+.forest-keeper-eyebrow {
+  margin-bottom: 5px !important;
+  color: #718054 !important;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.forest-keeper-debug-toggle {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 16px;
+  padding: 8px 12px;
+  border: 1px solid #d5dac8;
+  border-radius: 999px;
+  background: #fffaf0;
+  color: #4b5c3c;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.forest-keeper-debug-toggle input {
+  accent-color: #5b7448;
+}
+
+.forest-keeper-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 3vw, 24px);
+  max-width: 820px;
+  margin: auto;
+}
+
+.forest-keeper-preview-grid article {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #d9cdb5;
+  border-radius: 22px;
+  background: #fffaf0;
+  box-shadow: 0 12px 30px #4c55351a;
+  text-align: center;
+}
+
+.forest-keeper-scene {
+  position: relative;
+  display: grid;
+  min-height: clamp(300px, 42vw, 430px);
+  place-items: end center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 100%, #f6e8c1 0 17%, transparent 17.4%),
+    linear-gradient(#d7e8d0 0 58%, #b7cf9f 58% 76%, #91ad77 76%);
+}
+
+.forest-keeper-scene::before,
+.forest-keeper-scene::after {
+  position: absolute;
+  right: -8%;
+  bottom: 18%;
+  left: -8%;
+  height: 25%;
+  border-radius: 50% 50% 0 0;
+  background: #8eaa76;
+  content: "";
+}
+
+.forest-keeper-scene::after {
+  right: -20%;
+  bottom: 8%;
+  left: 34%;
+  height: 22%;
+  background: #789763;
+}
+
+.forest-keeper-scene-sun {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 42px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f5d992;
+  box-shadow: 0 0 34px #fff3c788;
+}
+
+.forest-keeper-scene-hill {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 9%;
+  left: 0;
+  height: 20%;
+  background: linear-gradient(165deg, transparent 0 35%, #617e55 35.5% 100%);
+  opacity: .8;
+}
+
+.forest-keeper-preview-sprite {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: min(74%, 310px);
+  height: auto;
+  margin: 0 auto -2%;
+  filter: drop-shadow(0 7px 4px #39442c2b);
+}
+
+.forest-keeper-card-copy {
+  padding: 14px 12px 18px;
+}
+
+.forest-keeper-card-copy h2 {
+  margin: 0 0 7px;
+  color: #38543a;
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+}
+
+.forest-keeper-card-copy p {
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.forest-keeper-action-demo {
+  margin-top: 28px;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid #d8c89f;
+  border-radius: 18px;
+  background: #fff9e8cc;
+}
+
+.forest-keeper-action-demo header { margin-bottom: 18px; }
+.forest-keeper-action-demo h2 { margin: 4px 0 8px; color: #38543a; font: 700 clamp(1.2rem, 2.5vw, 1.7rem) Georgia, serif; }
+.forest-keeper-action-demo header p:last-child { margin: 0; color: #766b57; font-size: .84rem; }
+.forest-keeper-action-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.forest-keeper-action-controls > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.forest-keeper-action-controls button { padding: 8px 12px; border: 1px solid #c5b58b; border-radius: 999px; color: #5d674f; background: #fffdf2; font: inherit; font-size: .72rem; font-weight: 800; cursor: pointer; }
+.forest-keeper-action-controls button[aria-pressed='true'] { color: #fff9e8; background: #657d63; border-color: #526e50; }
+.forest-keeper-action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.forest-keeper-action-grid article { min-width: 0; padding: 14px; border: 1px solid #e1d7bd; border-radius: 14px; background: #f8f3e5; text-align: center; }
+.forest-keeper-action-grid h3 { margin: 0 0 8px; color: #53694e; font-size: .78rem; }
+.forest-keeper-action-scene { display: grid; place-items: center; min-height: 210px; overflow: hidden; border-radius: 10px; background: linear-gradient(#dfe8d2, #f2dfba); }
+.forest-keeper-action-scene .forest-keeper-action-sprite { width: min(100%, 190px); height: 190px; }
+.forest-keeper-map-action-scene { min-height: 170px; margin-top: 10px; background: linear-gradient(#c6d5b8, #e5d7ad); }
+.forest-keeper-map-action-scene .forest-keeper-action-sprite { width: min(100%, 170px); height: 170px; }
+.forest-keeper-action-grid small { display: block; margin-top: 7px; color: #8b7b60; font-size: .67rem; }
+
+@media (max-width: 600px) {
+  .forest-keeper-preview-grid {
+    grid-template-columns: 1fr;
+    max-width: 390px;
+  }
+
+  .forest-keeper-scene {
+    min-height: 370px;
+  }
+
+  .forest-keeper-preview-sprite {
+    width: min(68%, 280px);
+  }
+
+  .forest-keeper-action-grid { grid-template-columns: 1fr; }
+}

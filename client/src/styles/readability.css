@@ -1,0 +1,50 @@
+﻿/* Crisp typography on the game's cream surfaces, with clear action hierarchy. */
+:root { --color-muted:#665140; }
+.kitchen-game { color:#293d2d; }
+.kitchen-toolbar button,.kitchen-panel button,.kitchen-console button,.kitchen-shift-card button { color:#30462e; font-weight:800; font-size:.88rem; border-color:#95805a; box-shadow:0 1px 0 #fffdf6 inset,0 2px 3px #4e3a1b10; }
+.kitchen-pot-summary span:first-child { color:#923c1c; font-size:.95rem; font-weight:850; }
+.kitchen-pot-summary span:last-child { color:#50452f; font-size:.78rem; font-weight:650; }
+.kitchen-rhythm { color:#405238; font-weight:700; font-size:.8rem; }
+.kitchen-rhythm.rhythm-rush { color:#a12e1b; }
+.kitchen-panel h2,.kitchen-panel h3 { color:#254b32; font-size:1.15rem; font-weight:850; text-shadow:0 1px 0 #fffdf4; }
+.kitchen-panel p,.kitchen-panel article { color:#453a28; font-size:.88rem; line-height:1.65; font-weight:550; }
+.kitchen-panel small,.kitchen-help,.kitchen-guest em { color:#5e4c35; font-size:.8rem; font-weight:600; }
+.kitchen-panel summary { color:#314a30; font-size:.9rem; font-weight:800; }
+.kitchen-guest strong,.kitchen-ticket > strong { color:#283f2d; font-size:.91rem; font-weight:850; }
+.kitchen-ticket { border:1px solid #b68b44; background:#fff0c6; box-shadow:0 2px 5px #76582a12; }
+.kitchen-request { background:#e4eed5; border:1px solid #a1b68a; }
+.kitchen-choice-grid button,.kitchen-topping-grid button { font-size:.84rem; font-weight:750; }
+.kitchen-pot-gauge > strong { color:#a3421d; font-weight:900; text-shadow:0 1px 0 #fff9e8; }
+.kitchen-bowl-tabs strong { color:#29432e; font-size:.88rem; font-weight:850; }
+.kitchen-bowl-tabs small { color:#54462c; font-size:.78rem; font-weight:650; }
+.kitchen-console button[aria-pressed='true'],.kitchen-panel button[aria-pressed='true'] { color:#203d28; border-color:#47733e; background:#deedc9; box-shadow:inset 0 0 0 1px #47733e,0 2px 5px #42593318; }
+.kitchen-timing { color:#4b3a22; font-size:.78rem; font-weight:750; }
+.kitchen-main-action .kitchen-primary,.kitchen-panel > footer > button { color:#fffdf0; background:linear-gradient(#46734b,#315b39); border-color:#284c2d; font-size:.91rem; font-weight:850; text-shadow:0 1px 1px #173b27; box-shadow:0 2px 0 #203d28,0 3px 7px #223e2724; }
+.kitchen-game button:not(:disabled):hover { border-color:#91602e; filter:brightness(1.04); }
+.kitchen-game button:focus-visible { outline:3px solid #b56b23; outline-offset:2px; }
+.kitchen-game button:disabled { opacity:1; color:#71674f; background:#eae5d8; border-color:#c0b69e; text-shadow:none; box-shadow:none; }
+.kitchen-console .kitchen-result-pill { color:#365630; font-weight:800; font-size:.77rem!important; }
+.kitchen-shift-card { background:#fff9e9; border-color:#a28b60; }
+.kitchen-shift-card strong { color:#2e4d31; font-size:1rem; font-weight:850; }
+.kitchen-shift-card p,.kitchen-shift-card a { color:#58462f; font-size:.83rem; font-weight:600; }
+.shop-full-page > .location-panel-heading h1 { color:#264b33; font-weight:850; text-shadow:0 1px 0 #fff; }
+.shop-full-page .location-panel-close { color:#435032; font-weight:750; }
+.shop-scene .shop-guest-name rect { fill:#fffbed; stroke:#8b774e; stroke-width:1.4px; }
+.shop-scene .shop-guest-name text { fill:#34432a; font-weight:850; paint-order:stroke fill; stroke:#fffbed; stroke-width:.6px; }
+.shop-scene .shop-room-note { fill:#635036; stroke:#fff0cc; stroke-width:1px; paint-order:stroke fill; font-weight:700; }
+.creator-heading h1,.creator-customization h2,.creator-player-caption h2 { color:#284e35; font-weight:800; }
+.creator-name-field > span,.creator-gender-picker legend,.creator-skin-picker legend,.appearance-picker legend { color:#3b432c; font-weight:750; }
+.creator-detail-body .appearance-option > span,.creator-detail-body .creator-skin-picker small { color:#4c422d; font-weight:700; }
+.creator-appearance-details summary,.creator-preview-tools summary { color:#34512f; border-color:#99a77e; font-weight:800; }
+.creator-appearance-details summary span { color:#5c5138; }
+.world-location-panel .location-panel-heading p,.world-location-panel .location-panel-heading > div > span,.world-location-panel .location-panel-close { color:#584a32; }
+.world-location-panel .village-paper p,.world-location-panel .village-ledger p { color:#51412d; font-weight:550; }
+@media(max-width:600px) {
+  .kitchen-toolbar button { font-size:.78rem; }
+  .kitchen-bowl-tabs strong { font-size:.82rem; }
+  .kitchen-bowl-tabs small { font-size:.75rem; }
+  .kitchen-pot-summary span:first-child { font-size:.86rem; }
+  .kitchen-pot-summary span:last-child { font-size:.72rem; }
+  .kitchen-choice-grid button,.kitchen-topping-grid button { font-size:.8rem; }
+  .kitchen-timing { font-size:.73rem; }
+}

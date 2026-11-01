@@ -1,0 +1,199 @@
+/* The neighborhood is the game shell; activities open over the same map. */
+.world-layout > .startup-main { margin: 0; padding: 0; min-height: 100dvh; }
+.world-main { width: 100%; height: 100dvh; min-height: 360px; margin: 0; padding: 0; overflow: hidden; }
+.world-game { position: relative; width: 100%; height: 100%; background: #a9bb82; }
+.world-game > .world-map { display: flex; flex-direction: column; width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+.world-game .world-map-viewport { flex: 1; min-height: 0; height: auto; }
+.world-game .neighborhood-svg { display: block; width: 100%; height: 100%; }
+.world-game .map-control-bar { flex: none; min-height: 41px; padding: 9px 22px calc(9px + env(safe-area-inset-bottom)); }
+.world-game .map-place-label { top: 96px; left: 22px; padding: 8px 12px; background: #fffae9dc; }
+.world-game .map-place-label strong { font-size: .97rem; }
+.world-game .map-place-label span:last-child { font-size: .65rem; }
+.world-game .map-directions { left: 22px; bottom: 25px; grid-template-columns: repeat(3, 43px); grid-template-rows: repeat(2, 43px); }
+.world-game .map-interaction { right: 22px; bottom: 25px; }
+.world-game .map-walk-hint { display: inline-block; max-width: 240px; padding: 10px 13px; border: 1px solid #c8bfa08c; border-radius: 10px; color: #6d7154; background: #fff9e4d9; font-size: .74rem; line-height: 1.6; }
+.world-status { position: absolute; z-index: 4; top: 18px; left: 22px; display: flex; align-items: center; gap: 22px; max-width: calc(100% - 185px); padding: 10px 17px 10px 10px; border: 1px solid #c5bc9b; border-radius: 14px; color: #5e6348; background: #fff9e8ef; box-shadow: 0 6px 25px #40533718; pointer-events: none; }
+.world-status .header-character { display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; background: none; }
+.world-status .header-character-portrait { width: 42px; height: 42px; border: 1px solid #c7bea2; }
+.world-status .header-character > div { display: grid; gap: 4px; }
+.world-status .header-character small { color: #a18f6e; font-size: .52rem; font-weight: 800; letter-spacing: .12em; white-space: nowrap; }
+.world-status .header-character span { max-width: 175px; overflow: hidden; color: #4d6554; font-size: .86rem; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.world-status-stats { display: flex; align-items: center; gap: 16px; padding-left: 18px; border-left: 1px solid #ddd3b6; font-size: .74rem; white-space: nowrap; }
+.world-status-stats strong { color: #a27340; font-size: .85rem; }
+.world-map .map-minimap { z-index: 4; right: 22px; top: 18px; width: 126px; padding: 7px; pointer-events: auto; cursor: pointer; transition: background .15s, box-shadow .15s; }
+.world-map .map-minimap:hover { background: #fff9e4; box-shadow: 0 5px 22px #40533740; }
+.world-map .map-minimap span { display: flex; align-items: center; gap: 6px; color: #7a7557; font-size: .55rem; letter-spacing: .04em; }
+.world-map .map-minimap kbd { display: grid; place-items: center; width: 17px; height: 17px; border: 1px solid #c9bf9d; border-radius: 4px; font: inherit; font-size: .56rem; }
+.map-location-markers { position: absolute; inset: 0; pointer-events: none; }
+.map-location-marker { position: absolute; display: flex; align-items: center; gap: 6px; min-height: 35px; max-width: 170px; padding: 7px 10px; border: 1px solid #ac9876; border-radius: 9px; color: #685b42; background: #fff9e8ed; box-shadow: 0 3px 0 #82745326, 0 5px 13px #4b5e3620; transform: translateX(-50%); white-space: nowrap; pointer-events: auto; transition: background .15s, border-color .15s; }
+.map-location-marker::before { content: ''; position: absolute; top: -5px; left: calc(50% - 4px); width: 7px; height: 7px; border: solid #ac9876; border-width: 1px 0 0 1px; background: #fff9e8; transform: rotate(45deg); }
+.map-location-marker > span:first-child { font-size: 1rem; }
+.map-location-marker strong { overflow: hidden; font-size: .66rem; font-weight: 750; text-overflow: ellipsis; }
+.map-location-marker .marker-arrow { color: #a4946b; font-size: .71rem; }
+.map-location-marker:hover, .map-location-marker.is-nearby { border-color: #a87646; color: #865735; background: #fff0c3; }
+.map-npc { cursor: pointer; outline: none; }
+.map-npc:focus-visible .map-npc-label rect, .map-npc:hover .map-npc-label rect { fill: #ffe5a4; stroke: #94643d; stroke-width: 2; }
+.world-map[aria-hidden='true'] .player-sprite *, .world-map[aria-hidden='true'] .pet-sprite * { animation-play-state: paused !important; }
+.world-layout.is-world-route .notification-area { top: 100px; right: 170px; bottom: auto; }
+
+/* Location windows keep the neighborhood and the player's position in place. */
+.map-modal-backdrop { position: fixed; z-index: 70; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; background: #263e3180; backdrop-filter: blur(3px); }
+.world-location-panel { display: flex; flex-direction: column; width: min(1200px, 100%); max-height: calc(100dvh - 48px); overflow: hidden; border: 1px solid #c7b895; border-radius: 20px; color: #5e5849; background: #f8f4e8; box-shadow: 0 22px 90px #122d3840; outline: none; }
+.location-panel-heading { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 25px; border-bottom: 1px solid #e0d7c0; background: #fffaf0; }
+.location-panel-heading > div > span { color: #a08c66; font-size: .53rem; font-weight: 850; letter-spacing: .19em; }
+.location-panel-heading h2 { margin: 5px 0 0; color: #4c6753; font-family: Georgia, 'Times New Roman', serif; font-size: 1.5rem; }
+.location-panel-heading p { margin: 6px 0 0; color: #8c8068; font-size: .75rem; line-height: 1.5; }
+.location-panel-close { display: flex; flex: none; align-items: center; gap: 8px; min-height: 42px; padding: 10px 13px; border: 1px solid #cfc4a8; border-radius: 10px; color: #6e795b; background: #f2efdf; font-size: .76rem; font-weight: 700; }
+.location-panel-close:hover { background: #e6e9d5; }
+.location-panel-close kbd { padding: 3px 4px; border: 1px solid #d6cfb7; border-radius: 4px; color: #a29578; background: #fffaed; font: inherit; font-size: .55rem; }
+.location-panel-content { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 24px; scrollbar-width: thin; scrollbar-color: #bdbb9e #efecdc; }
+.location-panel-content > .page-card { max-width: none; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; }
+.location-panel-content .subpage h1 { font-size: 1.8rem; }
+.location-panel-content .service-aside { top: 0; }
+.location-character .creator-heading { display: none; }
+.location-character .creator-preview-sticky { top: 0; }
+.location-character .creator-workshop { box-shadow: none; }
+.location-character .creator-back { display: none; }
+.location-football, .location-settings, .location-backup, .location-help { width: min(800px, 100%); }
+.map-help > p, .map-help li { color: #7d735d; font-size: .88rem; line-height: 1.9; }
+.map-help ul { padding-left: 22px; }
+.map-help kbd, .overview-note kbd { padding: 2px 5px; border: 1px solid #d5c8a8; border-radius: 4px; color: #746547; background: #fffaea; font: inherit; font-size: .8em; }
+.location-conversation { width: min(630px, 100%); }
+.neighbor-conversation { display: flex; align-items: flex-start; gap: 22px; }
+.conversation-portrait { flex: none; width: 105px; height: 105px; padding: 5px; border: 1px solid #c8cfaf; border-radius: 50%; background: #e6ead8; }
+.neighbor-conversation p { margin: 0 0 18px; color: #71654f; font-size: .97rem; line-height: 1.95; }
+.neighbor-feature-button { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 15px; border: 1px solid #a1ac87; border-radius: 9px; color: #4e6c50; background: #e5ead3; font-size: .83rem; font-weight: 750; }
+.neighbor-feature-button:hover { background: #d4dfbd; }
+.conversation-lotus { flex: none; color: #b98983; font-size: 4rem; }
+
+/* A map and a legend, opened by M or the in-world minimap. */
+.location-overview { width: min(1000px, 100%); }
+.neighborhood-overview { display: grid; justify-items: center; gap: 18px; }
+.overview-drawing { position: relative; width: min(100%, 650px, 58dvh); aspect-ratio: 1440 / 1040; border: 1px solid #b0b58f; border-radius: 13px; background: #b1bf8e; box-shadow: 0 4px 15px #49653b13; }
+.overview-drawing > svg { display: block; width: 100%; height: 100%; border-radius: inherit; }
+.overview-pin { position: absolute; display: grid; place-items: center; width: 31px; height: 31px; padding: 0; border: 2px solid #fff6d6; border-radius: 50%; color: #fff8e5; background: #ac6644; box-shadow: 0 2px 7px #5d50344d; font-size: .77rem; font-weight: 800; transform: translate(-50%, -50%); }
+.overview-pin:hover, .overview-pin:focus-visible { color: #624b30; background: #ffe2a0; }
+.overview-map-stamp { position: absolute; bottom: 7px; left: 13px; color: #4a6745; font-size: .47rem; font-weight: 900; letter-spacing: .14em; pointer-events: none; }
+.overview-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; }
+.overview-legend > button { display: flex; align-items: center; gap: 9px; min-width: 0; min-height: 60px; padding: 10px; border: 1px solid #ded5bb; border-radius: 10px; color: #786a50; background: #fffaf0; text-align: left; }
+.overview-legend > button:hover { border-color: #adab83; background: #edf0dc; }
+.overview-number { display: grid; place-items: center; flex: none; width: 23px; height: 23px; border-radius: 50%; color: #a4714c; background: #eee2c9; font-size: .69rem; font-weight: 800; }
+.overview-location-icon { font-size: 1.3rem; }
+.overview-legend > button > span:nth-child(3) { display: grid; gap: 5px; min-width: 0; }
+.overview-legend strong { color: #5c6b50; font-size: .78rem; }
+.overview-legend small { overflow: hidden; color: #a0957c; font-size: .64rem; text-overflow: ellipsis; white-space: nowrap; }
+.overview-location-arrow { margin-left: auto; color: #ad9c77; font-size: .8rem; }
+.overview-note { margin: 0; color: #978a70; font-size: .74rem; text-align: center; line-height: 1.7; }
+.world-location-panel button:focus-visible, .world-game button:focus-visible { outline: 3px solid #8b9c6d; outline-offset: 3px; }
+
+@media (max-width: 900px) {
+  .world-status { gap: 12px; }
+  .world-status-stats { gap: 10px; padding-left: 12px; font-size: .67rem; }
+  .world-status-stats strong { font-size: .75rem; }
+  .world-status-stats .world-viral { display: none; }
+  .map-modal-backdrop { padding: 14px; }
+  .world-location-panel { max-height: calc(100dvh - 28px); border-radius: 15px; }
+  .location-panel-heading { padding: 15px 20px; }
+  .location-panel-content { padding: 20px; }
+}
+@media (max-width: 600px) {
+  .world-status { top: 10px; left: 10px; display: grid; gap: 8px; width: calc(100% - 114px); max-width: none; padding: 10px; border-radius: 12px; }
+  .world-status .header-character { gap: 8px; }
+  .world-status .header-character-portrait { width: 34px; height: 34px; }
+  .world-status .header-character small { font-size: .47rem; }
+  .world-status .header-character span { max-width: calc(100vw - 185px); font-size: .77rem; }
+  .world-status-stats { justify-content: space-between; gap: 5px; padding: 7px 0 0; border-left: 0; border-top: 1px solid #ddd3b6; font-size: .58rem; }
+  .world-status-stats strong { font-size: .66rem; }
+  .world-game .map-place-label { top: 115px; left: 10px; padding: 6px 9px; }
+  .world-game .map-place-label .map-sun { font-size: 1.2rem; }
+  .world-game .map-place-label strong { font-size: .82rem; }
+  .world-game .map-place-label span:last-child { font-size: .54rem; }
+  .world-map .map-minimap { top: 10px; right: 10px; width: 86px; padding: 6px; }
+  .world-map .map-minimap svg { height: 55px; }
+  .world-map .map-minimap span { gap: 4px; font-size: .43rem; white-space: nowrap; }
+  .world-map .map-minimap kbd { display: none; }
+  .world-game .map-directions { left: 12px; bottom: 18px; grid-template-columns: repeat(3, 39px); grid-template-rows: repeat(2, 39px); gap: 4px; }
+  .world-game .map-interaction { right: 12px; bottom: 18px; max-width: calc(100% - 155px); }
+  .world-game .map-walk-hint { padding: 8px 10px; font-size: .62rem; }
+  .world-game .map-control-bar { gap: 8px; min-height: 42px; padding: 9px 12px calc(9px + env(safe-area-inset-bottom)); }
+  .world-game .map-control-bar > span { font-size: 0; }
+  .world-game .map-control-bar kbd { margin-right: 4px; font-size: .58rem; }
+  .world-game .map-control-bar button { font-size: .65rem; }
+  .map-location-marker { gap: 5px; min-height: 34px; max-width: 160px; padding: 7px 8px; }
+  .map-location-marker strong { font-size: .61rem; }
+  .world-layout.is-world-route .notification-area { top: 175px; right: 12px; width: calc(100vw - 24px); }
+  .map-modal-backdrop { align-items: center; padding: 8px; }
+  .world-location-panel { max-height: calc(100dvh - 16px); border-radius: 13px; }
+  .location-panel-heading { gap: 10px; padding: 13px; }
+  .location-panel-heading h2 { font-size: 1.2rem; line-height: 1.3; }
+  .location-panel-heading p { font-size: .67rem; }
+  .location-panel-heading > div > span { font-size: .46rem; }
+  .location-panel-close { align-self: flex-start; gap: 6px; min-height: 38px; padding: 8px 10px; font-size: .68rem; }
+  .location-panel-close kbd { display: none; }
+  .location-panel-content { padding: 15px; }
+  .location-character .location-panel-content { padding: 10px; }
+  .location-character .creator-preview-column { padding: 16px; }
+  .location-character .creator-customization { padding: 20px 14px; }
+  .location-character .creator-preview-sticky .creator-player-caption { display: none; }
+  .neighbor-conversation { gap: 15px; }
+  .conversation-portrait { width: 70px; height: 70px; padding: 3px; }
+  .neighbor-conversation p { font-size: .86rem; }
+  .neighbor-feature-button { padding: 9px; font-size: .75rem; }
+  .overview-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .overview-legend > button { gap: 6px; min-height: 60px; padding: 8px; }
+  .overview-legend > button:last-child { grid-column: 1 / -1; }
+  .overview-number { width: 20px; height: 20px; font-size: .61rem; }
+  .overview-location-icon { display: none; }
+  .overview-legend strong { font-size: .72rem; }
+  .overview-legend small { font-size: .58rem; }
+  .overview-note { font-size: .66rem; }
+}
+@media (max-height: 500px) and (min-width: 601px) {
+  .world-game .map-place-label { display: none; }
+  .world-status { top: 10px; left: 10px; padding: 6px 10px; }
+  .world-map .map-minimap { top: 10px; right: 10px; width: 86px; }
+  .world-map .map-minimap svg { height: 48px; }
+  .world-game .map-directions { bottom: 14px; grid-template-columns: repeat(3, 33px); grid-template-rows: repeat(2, 33px); }
+  .world-game .map-interaction { bottom: 14px; }
+  .location-panel-heading { padding: 10px 16px; }
+  .location-panel-heading p { display: none; }
+}
+
+.save-slot { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0; border-bottom:1px solid #c9b58b; }
+.save-slot p { margin:6px 0 0; font-size:.9rem; }
+.save-slot-actions { display:flex; flex-wrap:wrap; gap:8px; }
+@media(max-width:540px) { .save-slot { align-items:flex-start; flex-direction:column; } }
+
+/* Readable cream paper labels with dark green/brown text, above weather shading. */
+.world-game { --map-ink:#2f4737; --map-muted:#5b513e; --map-paper:#fff9e9; }
+.world-game .world-status, .world-game .map-place-label, .world-game .map-minimap, .world-game .map-walk-hint, .world-game .map-interaction button { color:var(--map-ink); background:var(--map-paper); border-color:#a99a78; }
+.world-game .world-status .header-character small { color:var(--map-muted); font-size:.65rem; }
+.world-game .world-status .header-character span { color:var(--map-ink); }
+.world-game .world-status-stats { color:#3d4935; font-weight:700; }
+.world-game .world-status-stats strong { color:#80501f; }
+.world-game .map-place-label, .world-game .map-directions, .world-game .map-interaction { z-index:3; }
+.world-game .map-place-label span:last-child, .world-game .map-minimap span, .world-game .map-interaction small { color:var(--map-muted); font-size:.75rem; font-weight:600; }
+.world-game .map-walk-hint { color:#4b4d36; font-weight:600; }
+.world-game .map-location-markers { z-index:2; }
+.world-game .map-location-marker { color:#294c3c; background:#fffdf3; border-color:#8f7955; box-shadow:0 2px 0 #65553930,0 4px 12px #25382130; }
+.world-game .map-location-marker strong { color:#294c3c; font-size:.78rem; font-weight:850; text-shadow:0 1px 0 #fff; }
+.world-game .map-location-marker .marker-arrow { color:#8b6334; }
+.world-game .map-location-marker:hover, .world-game .map-location-marker.is-nearby { color:#5c391d; background:#ffe5aa; border-color:#8c5c2e; }
+.world-game .map-control-bar { color:#514733; background:#fff9e9; font-size:.75rem; font-weight:600; }
+.world-game .map-control-bar button, .world-game .map-control-bar kbd, .world-game .map-interaction kbd { color:#4d5036; border-color:#a79a76; }
+.world-game .world-clock, .world-game .world-goal { color:var(--map-ink); background:#fff9e9; border-color:#b0a17e; }
+.world-game .world-clock span:not(.clock-orb), .world-game .world-clock small, .world-game .world-goal small, .world-game .world-goal em { color:#5b513e; opacity:1; font-weight:600; }
+.world-game .world-clock strong, .world-game .world-goal strong { color:#2f4737; }
+.neighborhood-svg .map-ground-label { fill:#254c3b; stroke:#fffdf1; stroke-width:3px; stroke-linejoin:round; paint-order:stroke fill; font-weight:850; }
+.neighborhood-svg .map-building-sign { fill:#315f4d; stroke:#fff0c8; stroke-width:3px; }
+.neighborhood-svg .map-building-title { fill:#fff9e8; stroke:#234536; stroke-width:3px; stroke-linejoin:round; paint-order:stroke fill; }
+.neighborhood-svg .map-ground-label-backplate { fill:#fffdf1; fill-opacity:.98; stroke:#826944; stroke-width:1.8px; }
+.neighborhood-svg .map-building-subtitle { font-size:11px; }
+.neighborhood-svg .map-npc-label text { fill:#254c3b; stroke:#fffdf1; stroke-width:2px; stroke-linejoin:round; paint-order:stroke fill; font-size:12px; font-weight:850; }
+.neighborhood-svg .map-npc-label rect { fill:#fffdf3; stroke:#826944; stroke-width:1.7px; }
+.world-game .location-panel-heading p, .world-game .location-panel-heading > div > span { color:#695a41; }
+@media(max-width:540px) {
+  .world-game .map-location-marker strong { font-size:.72rem; }
+  .world-game .map-place-label span:last-child, .world-game .map-minimap span { font-size:.65rem; }
+  .world-game .world-status .header-character small { font-size:.58rem; }
+}

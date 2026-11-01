@@ -1,0 +1,16 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "lobby": {
+      ".read": true
+    },
+    "rooms": {
+      "$roomId": {
+        "public": {
+          ".read": true
+        }
+      }
+    }
+  }
+}

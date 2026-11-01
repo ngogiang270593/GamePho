@@ -1,0 +1,18 @@
+using server.Data;
+using server.Models;
+using server.Models.Enums;
+
+namespace server.Seed;
+
+public static class DatabaseSeeder
+{
+    public static void Seed(GameDbContext db)
+    {
+        if (!db.MenuItems.Any()) db.MenuItems.AddRange(new MenuItem { Name = "Phở bò", Price = 45000 }, new MenuItem { Name = "Phở gà", Price = 40000 }, new MenuItem { Name = "Quẩy", Price = 10000 });
+        if (!db.PhoMenuItems.Any()) db.PhoMenuItems.AddRange(new PhoMenuItem { Name = "Phở bò tái", PhoType = PhoType.BoTai, BasePrice = 45000, Description = "Nước dùng trong, thịt bò tái mềm." }, new PhoMenuItem { Name = "Phở bò chín", PhoType = PhoType.BoChin, BasePrice = 45000, Description = "Thịt bò chín thơm, đậm vị." }, new PhoMenuItem { Name = "Phở gà", PhoType = PhoType.PhoGa, BasePrice = 40000, Description = "Gà xé mềm cùng nước dùng thanh." }, new PhoMenuItem { Name = "Phở đặc biệt", PhoType = PhoType.PhoDacBiet, BasePrice = 65000, Description = "Đầy đủ topping theo phong cách quán." });
+        if (!db.Customers.Any()) db.Customers.AddRange(new Customer { Name = "Cô Ba hàng xóm", CustomerType = CustomerType.HangXom, Avatar = "hang-xom", Hunger = 60, Patience = 80, BasePatience = 80, PreferredPhoType = PhoType.BoChin, RequiredToppings = "Hanh,RauThom", Description = "Người hàng xóm thân thiện, thích trò chuyện.", Behavior = "Tăng uy tín nếu phục vụ đúng món." }, new Customer { Name = "Anh shipper", CustomerType = CustomerType.Shipper, Avatar = "shipper", Hunger = 90, Patience = 40, BasePatience = 40, PreferredPhoType = PhoType.PhoGa, RequiredToppings = "Chanh,Ot", Description = "Đang tranh thủ ăn giữa các chuyến giao hàng.", Behavior = "Phục vụ nhanh sẽ nhận thêm tiền boa." });
+        if (!db.Players.Any()) db.Players.Add(new Player { DisplayName = "Chủ quán mới" });
+        if (!db.RandomEvents.Any()) db.RandomEvents.AddRange(new RandomEvent { Title = "Mưa bất chợt", Description = "Cơn mưa làm khách trong hẻm ngại ra ngoài.", EventType = EventType.Weather, Options = new List<EventOption> { new() { Text = "Giảm giá cho khách trú mưa", MoneyChange = -10000, ReputationChange = 3, ViralChange = 1, ResultText = "Khách cảm động vì quán chu đáo." }, new() { Text = "Đóng cửa sớm", ResultText = "Hôm nay quán vắng khách." } } }, new RandomEvent { Title = "Video nổi tiếng", Description = "Một TikToker muốn quay video tại quán.", EventType = EventType.Social, Options = new List<EventOption> { new() { Text = "Đồng ý hợp tác", MoneyChange = -20000, ReputationChange = 2, ViralChange = 10, ResultText = "Video giúp quán được nhiều người biết đến." }, new() { Text = "Từ chối lịch sự", ViralChange = -1, ResultText = "Cơ hội quảng bá trôi qua." } } });
+        if (!db.Upgrades.Any()) { var upgrades = new[] { ("Nồi nước dùng lớn", "Tăng công suất nấu nước dùng.", UpgradeCategory.Kitchen, 150000m, 20), ("Bếp nấu nhanh", "Giảm thời gian phục vụ món.", UpgradeCategory.Kitchen, 120000m, 15), ("Bàn ghế nhựa", "Tăng sức chứa quán.", UpgradeCategory.Furniture, 80000m, 10), ("Biển hiệu sáng", "Tăng lượng khách vãng lai.", UpgradeCategory.Marketing, 200000m, 12), ("Thuê nhân viên", "Tăng tốc độ phục vụ.", UpgradeCategory.Staff, 250000m, 25), ("Máy thanh toán", "Giảm sai sót khi thu tiền.", UpgradeCategory.Technology, 180000m, 8), ("Khu vực xem bóng đá", "Thu hút nhóm khách xem bóng đá.", UpgradeCategory.Entertainment, 300000m, 18) }; foreach (var item in upgrades) for (var level = 1; level <= 3; level++) db.Upgrades.Add(new Upgrade { Name = item.Item1, Description = item.Item2, Category = item.Item3, Level = level, MaxLevel = 3, Cost = item.Item4 * level, EffectValue = item.Item5 * level, IsPurchased = false }); } db.SaveChanges();
+    }
+}

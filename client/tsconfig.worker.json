@@ -1,0 +1,1 @@
+{ "extends": "./tsconfig.json", "include": ["cloudflare/**/*.ts"], "references": [] }

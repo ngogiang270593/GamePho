@@ -1,0 +1,18 @@
+.virtual-joystick{position:absolute;z-index:7;left:max(16px,env(safe-area-inset-left));bottom:110px;width:116px;height:116px;display:grid;place-items:center;border-radius:50%;border:2px solid #bba77c99;background:radial-gradient(circle,#f7edcf66,#8a986344);box-shadow:inset 0 0 18px #fff5d744,0 3px 12px #33452b26;touch-action:none;user-select:none;-webkit-user-select:none;transition:background .12s}
+.virtual-joystick.is-active{background:radial-gradient(circle,#fff1c099,#82965f66);border-color:#e9d69a}
+.joystick-knob{position:absolute;width:48px;height:48px;border-radius:50%;border:2px solid #a48b53;background:linear-gradient(#f2e0accc,#b6bc87cc);box-shadow:0 3px 6px #43502d33;pointer-events:none}
+.joystick-cross{font-size:64px;color:#697c4c55;pointer-events:none}
+.map-directions[hidden]{display:none!important}
+.touch-action-buttons{position:absolute;z-index:7;right:max(16px,env(safe-area-inset-right));bottom:110px;display:flex;gap:9px}
+.touch-action-buttons button{min-width:56px;min-height:48px;padding:8px;border:1px solid #ad9564;border-radius:14px;background:#fff3d4de;color:#425635;font:inherit;font-size:12px;font-weight:800;touch-action:none;user-select:none}
+.touch-action-buttons button:active{background:#dfebbd;transform:translateY(1px)}
+.touch-controls-active .map-minimap{display:none}
+.sv-fullscreen-map .touch-controls-active .map-interaction{right:max(16px,env(safe-area-inset-right));bottom:180px;max-width:180px}
+.touch-controls-active .map-interaction button{min-height:48px;max-width:100%;padding:9px 12px}
+.touch-controls-active .map-interaction kbd{display:none}
+.touch-controls-active .map-interaction button:disabled{opacity:.8}
+.touch-controls-active .map-interaction small{max-width:145px;white-space:normal}
+.movement-hint{position:absolute;z-index:6;top:140px;left:50%;transform:translateX(-50%);max-width:calc(100% - 36px);padding:8px 12px;border-radius:10px;background:#fff8e4e8;color:#6a4b2e;font-size:12px;pointer-events:none}
+@media(min-width:600px) and (min-height:600px){.virtual-joystick{width:152px;height:152px;bottom:140px;left:max(24px,env(safe-area-inset-left))}.joystick-knob{width:60px;height:60px}.touch-action-buttons{bottom:140px;right:max(24px,env(safe-area-inset-right));gap:14px}.touch-action-buttons button{min-width:66px;min-height:56px;font-size:14px}.sv-fullscreen-map .touch-controls-active .map-interaction{bottom:216px;right:24px}}
+@media(orientation:landscape) and (max-height:500px){.virtual-joystick{width:100px;height:100px;bottom:110px}.joystick-knob{width:44px;height:44px}.touch-action-buttons{bottom:110px}.sv-fullscreen-map .touch-controls-active .map-interaction{bottom:174px}.movement-hint{top:65px}}
+@media(prefers-reduced-motion:reduce){.virtual-joystick,.touch-action-buttons button{transition:none;transform:none}}

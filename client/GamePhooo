@@ -1,0 +1,118 @@
+﻿import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { NeighborSprite } from '../components/NeighborSprite';
+import { useGameStore } from '../context/GameContext';
+import { useJourneyPause } from '../context/JourneyContext';
+import { CARD_CAST, CARD_COLORS, CARD_ROOMS, COLOR_NAMES, COLOR_SHAPES, FACE_MARKS, FACE_NAMES, canPlayCard, cardName, type CardColor, type CardDifficulty, type CardMode, type CardSnapshot, type PlayingCard } from '../game/cards';
+import { runLocalRequest } from '../services/offline/storage';
+import { playUiSound } from '../services/audioService';
+import '../styles/cards.css';
+
+const MODES: { id: CardMode; name: string; mark: string; detail: string }[] = [
+  { id: 'quick', name: 'Đấu nhanh', mark: '✦', detail: 'Bạn và 2 máy · 7 lá' },
+  { id: 'adventure', name: 'Phiêu lưu', mark: '↷', detail: '8 bàn · mở người và phòng' },
+  { id: 'bots', name: 'Đấu với máy', mark: '◈', detail: '1–3 máy · ba độ khó' },
+  { id: 'friends', name: 'Chuyển máy', mark: '◎', detail: '2–4 người · che tay bài' },
+  { id: 'daily', name: 'Thử thách ngày', mark: '✧', detail: 'Mỗi ngày một luật mới' },
+];
+
+function CardFace({ card }: { card?: PlayingCard }) {
+  if (!card) return <span className="color-card card-back" aria-hidden="true"><strong>✦</strong><small>XÓM MÌNH</small></span>;
+  return <span className={`color-card card-${card.color ?? 'wild'}`}><span className="card-corner">{FACE_MARKS[card.face] ?? card.face}<small>{card.color ? COLOR_SHAPES[card.color] : '✦'}</small></span><strong>{FACE_MARKS[card.face] ?? card.face}</strong><small className="card-caption">{FACE_NAMES[card.face] ?? COLOR_NAMES[card.color!]}</small><span className="card-bottom" aria-hidden="true">{FACE_MARKS[card.face] ?? card.face}</span></span>;
+}
+
+export function CardRoomPage() {
+  const { character, soundEnabled } = useGameStore();
+  useJourneyPause(true);
+  const [snapshot, setSnapshot] = useState<CardSnapshot | null>(null);
+  const [mode, setMode] = useState<CardMode>('quick');
+  const [variant, setVariant] = useState<'basic' | 'expanded'>('basic');
+  const [opponents, setOpponents] = useState(2), [difficulty, setDifficulty] = useState<CardDifficulty>('medium');
+  const [room, setRoom] = useState('cafe'), [botCharacter, setBotCharacter] = useState('co-ba');
+  const [initialCards, setInitialCards] = useState(7), [turnSeconds, setTurnSeconds] = useState(0), [stack, setStack] = useState(false);
+  const [names, setNames] = useState(Array.from({ length: 10 }, (_, i) => i === 0 ? '' : `Bạn ${i + 1}`));
+  const [busy, setBusy] = useState(false), [error, setError] = useState(''), [now, setNow] = useState(Date.now());
+  const [selected, setSelected] = useState<PlayingCard | null>(null), [chosenColor, setChosenColor] = useState<CardColor>('red'), [target, setTarget] = useState(1);
+  const [showRules, setShowRules] = useState(false), [showLog, setShowLog] = useState(false), [confirmQuit, setConfirmQuit] = useState(false), [privateScreen, setPrivateScreen] = useState(false);
+
+  const live = useRef(false), pending = useRef(false), offset = useRef(0), current = useRef(snapshot); current.current = snapshot;
+  const request = async (action: string, body: Record<string, unknown> = {}) => await runLocalRequest('POST', '/cards/' + action, body, {}) as CardSnapshot;
+  function receive(data: CardSnapshot) {
+    if (!live.current || (current.current?.revision ?? 0) > data.revision) return;
+    offset.current = data.now - Date.now(); current.current = data; setSnapshot(data);
+  }
+  async function act(action: string, body: Record<string, unknown> = {}) {
+    if (pending.current) return false;
+    pending.current = true; setBusy(true); setError('');
+    try { receive(await request(action, body)); if (soundEnabled && ['play', 'one', 'start'].includes(action)) playUiSound('success'); return true; }
+    catch (cause) { if (live.current) setError(cause instanceof Error ? cause.message : 'Không lưu được bàn chơi.'); return false; }
+    finally { pending.current = false; if (live.current) setBusy(false); }
+  }
+  useEffect(() => {
+    live.current = true; void request('open').then(receive).catch(cause => { if (live.current) setError(cause.message); });
+    let reading = false;
+    const timer = window.setInterval(() => {
+      if (!current.current || pending.current || reading || document.hidden) return;
+      reading = true; void request('state').then(receive).catch(cause => { if (live.current) setError(cause.message); }).finally(() => { reading = false; });
+    }, 450);
+    const clock = window.setInterval(() => setNow(Date.now()), 100);
+    const hide = () => { if ((current.current?.progress.active?.players.filter(p => p.human).length ?? 0) > 1) { setPrivateScreen(true); setSelected(null); void request('hide').then(receive).catch(() => {}); } };
+    const visibility = () => { if (document.hidden) hide(); };
+    window.addEventListener('pagehide', hide); document.addEventListener('visibilitychange', visibility);
+    return () => { live.current = false; window.clearInterval(timer); window.clearInterval(clock); window.removeEventListener('pagehide', hide); document.removeEventListener('visibilitychange', visibility); void request('hide').catch(() => {}); };
+  }, []);
+
+  const p = snapshot?.progress, m = p?.active, playing = m?.status === 'playing';
+  const basic = m?.status === 'playing' || m?.status === 'finished' ? m.rules.variant === 'basic' : variant === 'basic' && mode !== 'adventure' && mode !== 'daily';
+  const viewer = m ? m.onePending?.player ?? (m.mode === 'friends' ? m.turn : 0) : 0;
+  const person = m?.players[viewer], hidden = Boolean(m?.handoff || privateScreen);
+  const myTurn = Boolean(playing && m!.turn === viewer && person?.human && !hidden && !m!.onePending);
+  const hand = !hidden ? person?.hand ?? [] : [], serverNow = now + offset.current;
+  useEffect(() => { setSelected(null); }, [m?.turn, m?.id, hidden]);
+
+  async function start() {
+    setSelected(null); setConfirmQuit(false); setPrivateScreen(false);
+    await act('start', { mode, variant, opponents, difficulty, room, character: botCharacter, initialCards, turnSeconds, stack, names: names.map((name, i) => name || (i === 0 ? character.displayName || 'Bạn' : `Bạn ${i + 1}`)) });
+  }
+
+  async function playCard(card: PlayingCard) {
+    if (!m || !canPlayCard(m, viewer, card)) return;
+    if (card.color === null && card.face !== 'random') { setSelected(card); setTarget(m.players.findIndex((_, i) => i !== viewer)); return; }
+    await act('play', { player: viewer, cardId: card.id });
+  }
+
+  const today = new Date(serverNow + 7 * 3600000).toISOString().slice(0, 10);
+
+  return <section className={`cards-game room-${playing ? m!.room : room}`} aria-label="Sắc màu xóm mình">
+    <header className="cards-header"><Link to="/map">← Về xóm</Link><div><span>GÓC VUI SAU CA BÁN</span><h1>Sắc màu <em>xóm mình</em></h1></div><button onClick={() => setShowRules(!showRules)} aria-expanded={showRules}>? Luật chơi</button></header>
+    {error && <div role="alert" className="cards-error">{error}<button onClick={() => setError('')} aria-label="Đóng lỗi">×</button></div>}
+    {showRules && <section className="cards-rules"><h2>{basic ? 'UNO cơ bản · 108 lá · đua tới 500 điểm' : 'Sắc màu mở rộng · 116 lá'}</h2><p>Mỗi lượt đánh cùng màu hoặc cùng số/ký hiệu. Rút một lá thì chỉ được đánh lá vừa rút, hoặc bỏ lượt.</p><button onClick={() => setShowRules(false)}>Đã hiểu</button></section>}
+    {!snapshot ? <div className="cards-loading">Đang xếp bàn…{error && <button onClick={() => void act('open')}>Thử lại</button>}</div> : !m || m.status === 'abandoned' ? <>
+      <div className="cards-lobby-hero"><div><span className="cards-eyebrow">MỘT CHIẾC BÀN · BỐN SẮC MÀU · CẢ XÓM VUI</span><h2>Đổi một lá.<br />Đảo cả thế cờ.</h2><p>Đấu trí với hàng xóm, hoặc chuyển máy cùng bạn bè. Không cần mạng, không phải chờ vào phòng.</p><div className="cards-progress-chips"><span>✦ {p!.wins} ván thắng</span><span>↷ Phiêu lưu {p!.adventureStage}/8</span><span>✧ {p!.dailyWins.length} ngày hoàn thành</span></div></div><div className="cards-hero-fan" aria-hidden="true">{(['red', 'blue', 'green'] as CardColor[]).map((color, i) => <CardFace key={color} card={{ id: i, color, face: String(7 + i) as PlayingCard['face'] }} />)}</div></div>
+      <div className="cards-mode-grid" role="group" aria-label="Chế độ chơi">{MODES.map(item => <button key={item.id} aria-pressed={mode === item.id} onClick={() => setMode(item.id)}><b>{item.mark}</b><strong>{item.name}</strong><small>{item.detail}</small></button>)}</div>
+      <section className="cards-setup"><h2>{MODES.find(item => item.id === mode)!.name}</h2><p>{mode === 'daily' ? `${today} · ${p!.dailyWins.includes(today) ? 'Đã chinh phục, vẫn có thể chơi lại' : 'Cùng ngày, cùng bộ bài và luật'}` : mode === 'adventure' ? `Đã vượt ${p!.adventureStage}/8 bàn · ${p!.adventureStage >= 8 ? 'Chơi lại bàn cuối' : `Tiếp theo: bàn ${p!.adventureStage + 1}`}` : 'Chọn chỗ ngồi, rồi chia bài.'}</p>
+        {mode !== 'adventure' && mode !== 'daily' && <div className="cards-variant-picks" role="group" aria-label="Bộ luật"><button aria-pressed={variant === 'basic'} onClick={() => { setVariant('basic'); setInitialCards(7); setTurnSeconds(0); setStack(false); }}>UNO cơ bản · 108 lá<small>7 lá/người · bắt lỗi UNO · tính điểm 500</small></button><button aria-pressed={variant === 'expanded'} onClick={() => { setVariant('expanded'); setOpponents(Math.min(3, opponents)); }}>Sắc màu mở rộng · 116 lá<small>Khiên, hoán đổi, luật tùy chỉnh</small></button></div>}
+        {mode === 'daily' && <p className="cards-daily-rule"><strong>{snapshot.daily.title}</strong> · {snapshot.daily.rules.initialCards} lá · {snapshot.daily.rules.stack ? 'Cộng dồn phạt' : 'Không cộng dồn'} · {snapshot.daily.rules.turnSeconds ? snapshot.daily.rules.turnSeconds + ' giây/lượt' : 'Không giới hạn lượt'}</p>}
+        {(mode === 'bots' || mode === 'friends') && <div className="cards-options"><label>{mode === 'friends' ? 'Số người chơi' : 'Số máy'}<select value={opponents} onChange={e => setOpponents(Number(e.target.value))}>{Array.from({ length: mode === 'friends' && basic ? 9 : 3 }, (_, i) => i + 1).map(n => <option key={n} value={n}>{mode === 'friends' ? n + 1 + ' người' : n + ' máy'}</option>)}</select></label>{mode === 'bots' && <label>Độ khó<select value={difficulty} onChange={e => setDifficulty(e.target.value as CardDifficulty)}><option value="easy">Dễ</option><option value="medium">Vừa</option><option value="hard">Khó</option></select></label>}<label>Bài ban đầu<select disabled={basic} value={initialCards} onChange={e => setInitialCards(Number(e.target.value))}>{[3, 5, 7, 9, 12].map(n => <option key={n} value={n}>{n} lá</option>)}</select></label><label>Giờ mỗi lượt<select disabled={basic} value={turnSeconds} onChange={e => setTurnSeconds(Number(e.target.value))}><option value={0}>Không giới hạn</option>{[15, 30, 60].map(n => <option key={n} value={n}>{n} giây</option>)}</select></label><label className="cards-checkbox"><input type="checkbox" disabled={basic} checked={!basic && stack} onChange={e => setStack(e.target.checked)} />Cộng dồn +2 / +4</label></div>}
+        {mode === 'friends' && <div className="cards-friend-names">{names.slice(0, opponents + 1).map((name, i) => <label key={i}>Người {i + 1}<input maxLength={24} value={name} placeholder={i === 0 ? character.displayName || 'Bạn' : `Bạn ${i + 1}`} onChange={e => setNames(old => old.map((v, n) => n === i ? e.target.value : v))} /></label>)}</div>}
+        {mode !== 'adventure' && mode !== 'daily' && <div className="cards-room-picks" role="group" aria-label="Phòng chơi">{CARD_ROOMS.map(item => <button key={item.id} disabled={!p!.unlockedRooms.includes(item.id)} aria-pressed={room === item.id} onClick={() => setRoom(item.id)}>{item.name}<small>{p!.unlockedRooms.includes(item.id) ? 'Đã mở' : `Thắng bàn ${item.unlock} phiêu lưu`}</small></button>)}</div>}
+        {(mode === 'bots' || mode === 'quick') && <label className="cards-cast-pick">Hàng xóm cùng bàn<select value={botCharacter} onChange={e => setBotCharacter(e.target.value)}>{CARD_CAST.map(c => <option key={c.id} value={c.id} disabled={!p!.unlockedCharacters.includes(c.id)}>{c.name}{!p!.unlockedCharacters.includes(c.id) ? ` · mở ở bàn ${c.unlock}` : ''}</option>)}</select></label>}
+        <button className="cards-primary" disabled={busy} onClick={() => void start()}>{busy ? 'Đang chia bài…' : 'Chia bài · vào phòng →'}</button><p className="cards-offline-note">Tự lưu trên thiết bị · Tiến độ đi cùng 5 ô sao lưu của game</p>
+      </section><section className="cards-cast-gallery" aria-label="Nhân vật">{CARD_CAST.map(c => <article key={c.id} className={!p!.unlockedCharacters.includes(c.id) ? 'is-locked' : ''}><NeighborSprite npcId={c.id} portrait emotion="happy" /><div><strong>{c.name}</strong><small>{p!.unlockedCharacters.includes(c.id) ? c.style : `Mở ở bàn ${c.unlock}`}</small></div></article>)}</section>
+    </> : m.status === 'finished' ? <section className="cards-finish"><span className="cards-finish-medal">{m.players[m.winner!].human ? '✦' : '♠'}</span><h2>{m.players[m.winner!].name} thắng rồi!</h2><p>{m.moves} lá đã đánh · {m.players[m.winner!].human ? 'Lá cuối đặt xuống, cả bàn bắt cười. Ván nữa chứ?' : 'Hàng xóm khéo quá. Lần sau canh màu lật kéo nhé!'}</p><div className="cards-final-scores">{m.players.map((person, i) => <div key={i}><strong>{i === m.winner ? '✦ ' : ''}{person.name}</strong><span>{person.hand.length} lá{basic ? ` · Tổng ${m.totals?.[i] ?? 0} điểm` : ''}</span></div>)}</div>{basic && m.champion == null && <button className="cards-primary" disabled={busy} onClick={() => void act('next-round')}>Chia ván tiếp · giữ điểm →</button>}<button className="cards-primary" disabled={busy} onClick={() => { setMode(m.mode); void act('quit'); }}>Chọn bàn tiếp theo →</button><Link to="/map">Về xóm, nghỉ một chút</Link></section> : <>
+      <div className="cards-match-bar"><span>{MODES.find(item => item.id === m.mode)?.name}{m.mode === 'adventure' ? ` · Bàn ${m.stage + 1}/8` : ''}</span><span>{basic ? `UNO · Ván ${m.round ?? 1} · 500 điểm` : m.rules.stack ? 'Cộng dồn' : 'Không cộng dồn'} · {m.rules.turnSeconds ? m.rules.turnSeconds + 's/lượt' : 'Thong thả'}</span><button onClick={() => setConfirmQuit(!confirmQuit)}>Rời bàn</button></div>
+      {confirmQuit && <div className="cards-quit-confirm"><span>Dừng ván? Tiến độ đã mở vẫn giữ.</span><button disabled={busy} onClick={() => { setConfirmQuit(false); void act('quit'); }}>Dừng ván</button><button onClick={() => setConfirmQuit(false)}>Chơi tiếp</button></div>}
+      <div className="cards-table-scene"><div className="cards-room-decor" aria-hidden="true"><i /><i /><i /></div><div className="cards-opponents">{m.players.map((other, i) => i === viewer ? null : <article key={i} className={`cards-opponent${m.turn === i ? ' is-turn' : ''}`}><NeighborSprite npcId={other.character === 'player' ? 'ti' : other.character} emotion={other.expression} pose={other.expression === 'happy' ? 'cheer' : 'order'} portrait /><div><strong>{other.name}{other.shield ? ' ♛' : ''}</strong><span>{other.hand.length === 1 ? 'CÒN 1!' : `${other.hand.length} lá`}</span><small>{m.turn === i ? '◉ Đang suy nghĩ' : other.line}</small></div><div className="cards-opponent-backs" aria-hidden="true">{Array.from({ length: Math.min(5, other.hand.length) }, (_, n) => <CardFace key={n} />)}</div></article>)}</div>
+        <div className="cards-center"><button className="cards-deck" disabled={busy || !myTurn || m.didDraw} onClick={() => void act('draw', { player: viewer })} aria-label={m.pending ? `Rút ${m.pending} lá phạt` : 'Rút bài từ chồng'}><CardFace /><small>{m.deck.length} lá</small></button><div className="cards-discard" aria-label={`Lá trên bàn: ${cardName(m.discard[m.discard.length - 1])}`}><CardFace card={m.discard[m.discard.length - 1]} /></div><div className="cards-table-info"><span className={`cards-active-color color-${m.color}`}>{COLOR_SHAPES[m.color]} {COLOR_NAMES[m.color]}</span><strong>{m.direction === 1 ? '↗' : '↘'}</strong>{m.pending > 0 && <b>+{m.pending} lá phạt!</b>}<small>{m.onePending ? 'Chờ hô Còn 1…' : `${m.players[m.turn].name} tới lượt`}</small>{m.deadline !== null && !hidden && <span className="cards-timer">{Math.max(0, Math.ceil((m.deadline - serverNow) / 1000))}s</span>}</div></div><p className="cards-live-log" role="status">{m.log[0]}</p>
+        {hidden && <div className="cards-handoff"><span>✦</span><h2>Chuyển máy cho {m.players[m.onePending?.player ?? m.turn].name}</h2><p>Tay bài đã che. Mỗi người nhìn sang chỗ khác một chút nhé.</p><button className="cards-primary" disabled={busy} onClick={() => { void act('ready').then(ok => { if (ok) setPrivateScreen(false); }); }}>Tôi là {m.players[m.onePending?.player ?? m.turn].name} · sẵn sàng</button></div>}
+      </div>
+      {basic && m.unoVulnerable !== undefined && <div className="cards-uno-alert" role="status"><span>{m.players[m.unoVulnerable].name} chưa hô UNO!</span>{m.players[m.unoVulnerable].human && <button disabled={busy} onClick={() => void act('one', { player: m.unoVulnerable })}>UNO! · {m.players[m.unoVulnerable].name}</button>}{myTurn && m.unoVulnerable !== viewer && <button disabled={busy} onClick={() => void act('catch', { player: viewer })}>Bắt lỗi UNO · phát 2 lá</button>}</div>}
+      <section className="cards-my-hand" aria-label="Tay bài của bạn"><div className="cards-hand-title"><div><strong>{hidden ? 'Bài đang được che' : `${person!.name} · ${hand.length} lá`}{person?.shield ? ' · ♛ Có khiên' : ''}</strong><small>{hidden ? 'Chỉ mở khi đúng người cầm máy' : m.onePending?.player === viewer ? 'Bấm Còn 1 trước khi hết giờ!' : myTurn ? m.pending ? 'Đợi bắn khiên, nối phạt hoặc rút bài' : m.didDraw ? 'Đánh lá vừa rút hoặc bỏ lượt' : 'Chạm lá sáng để đánh' : 'Đợi hàng xóm đánh nhé'}</small></div><button onClick={() => setShowLog(!showLog)} aria-expanded={showLog}>Nhật ký</button></div>
+        {!hidden && <div className="cards-hand-fan">{hand.map(card => <button key={card.id} className={`cards-hand-card${canPlayCard(m, viewer, card) ? ' is-playable' : ''}`} disabled={busy || !canPlayCard(m, viewer, card)} aria-label={`Đánh ${cardName(card)}`} onClick={() => void playCard(card)}><CardFace card={card} /></button>)}</div>}
+        <div className="cards-controls"><button disabled={busy || !myTurn || m.didDraw} onClick={() => void act('draw', { player: viewer })}>{m.pending ? `Rút ${m.pending} lá phạt` : '✦ Rút bài'}</button><button disabled={busy || !myTurn || !m.didDraw} onClick={() => void act('pass', { player: viewer })}>Bỏ lượt</button><button disabled={busy || !myTurn} onClick={() => void act('sort', { player: viewer })}>Sắp xếp bài</button><button className={`cards-call-one${m.onePending?.player === viewer ? ' is-urgent' : ''}`} disabled={busy || hidden || !person?.human || !((myTurn && hand.length <= 2) || m.onePending?.player === viewer)} onClick={() => void act('one', { player: viewer })}>{person?.declared ? '✔ Đã hô' : m.onePending?.player === viewer ? `Còn 1! · ${Math.max(0, (m.onePending.deadline - serverNow) / 1000).toFixed(1)}s` : basic ? 'UNO!' : 'Còn 1!'}</button></div>
+      </section>
+      {selected && !hidden && myTurn && <section className="cards-color-picker" aria-label="Chọn màu và đổi thứ"><div><strong>{FACE_NAMES[selected.face]}</strong><button onClick={() => setSelected(null)} aria-label="Hủy chọn bài">×</button></div><p>Chọn màu lượt tiếp theo</p><div className="cards-color-buttons">{CARD_COLORS.map(color => <button key={color} className={`color-${color}`} aria-pressed={chosenColor === color} onClick={() => setChosenColor(color)}>{COLOR_SHAPES[color]} {COLOR_NAMES[color]}</button>)}</div>{selected.face === 'swap' && <label>Đổi bài với<select value={target} onChange={e => setTarget(Number(e.target.value))}>{m.players.map((other, i) => i === viewer ? null : <option key={i} value={i}>{other.name} · {other.hand.length} lá</option>)}</select></label>}<button className="cards-primary" disabled={busy} onClick={() => { void act('play', { player: viewer, cardId: selected.id, color: chosenColor, target }).then(ok => { if (ok) setSelected(null); }); }}>Đánh lá này →</button></section>}
+      {showLog && <section className="cards-history"><h2>Chuyển trên bàn</h2><ol>{m.log.map((line, i) => <li key={i}>{line}</li>)}</ol></section>}
+    </>}
+  </section>;
+}

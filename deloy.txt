@@ -1,0 +1,4 @@
+cd D:\GamePho\client
+npm run build:online
+npm run test:online
+npx wrangler pages deploy dist-online --project-name phoxom

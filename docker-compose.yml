@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__GameDb: Data Source=/app/data/phoxom.db
+      Cors__AllowedOrigins__0: http://localhost:8081
+    ports:
+      - "8080:8080"
+    volumes:
+      - phoxom-data:/app/data
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8080/api
+    ports:
+      - "8081:80"
+    depends_on:
+      - server
+
+volumes:
+  phoxom-data:

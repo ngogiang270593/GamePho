@@ -1,0 +1,142 @@
+.character-wardrobe{display:flex;flex-direction:column;gap:12px;padding:17px;border:1px solid #d8dfce;border-radius:16px;background:#fbfcf5}
+.character-wardrobe>header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.character-wardrobe>header h3{margin:5px 0 0;color:#465b50;font:700 1.15rem Georgia,serif}
+.character-wardrobe .eyebrow{margin:0;color:#8a6b4d;font-size:.62rem;letter-spacing:.13em}
+.wardrobe-wallet{display:flex;gap:10px;padding:8px 10px;border:1px solid #e8ddb9;border-radius:10px;background:#fff8df;color:#735d2d;font-size:.74rem;font-weight:800;white-space:nowrap}
+.wardrobe-hint{margin:0;color:#697b70;font-size:.76rem;line-height:1.5}
+.wardrobe-categories{display:flex;gap:7px;overflow:auto;padding:2px 2px 7px;scrollbar-color:#b3c2a8 #edf1e8}
+.wardrobe-categories button{flex:none;padding:8px 11px;border:1px solid #d6ddce;border-radius:999px;background:#fff;color:#526455;font-size:.72rem;font-weight:750}
+.wardrobe-categories button[aria-selected=true]{border-color:#6e9172;background:#e6f0df;color:#365943;box-shadow:0 2px 0 #cddfc7}
+.wardrobe-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.wardrobe-item{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;padding:9px;border:1px solid #c9d4c2;border-left:4px solid #aeb9a3;border-radius:12px;background:#fff}
+.wardrobe-item.rarity-rare{border-left-color:#5188bc}
+.wardrobe-item.rarity-epic{border-left-color:#a273c4}
+.wardrobe-item.rarity-legendary{border-left-color:#d4a842;background:linear-gradient(135deg,#fffef7,#fff8e4)}
+.wardrobe-item.is-equipped{box-shadow:inset 0 0 0 1px #61936a}
+.wardrobe-item.is-locked{background:#f5f5f1}
+.wardrobe-item-art{position:relative;display:grid;place-items:center;align-self:start;min-height:48px;border-radius:10px;background:linear-gradient(145deg,#f3ead5,#e4eadc);font-size:25px}
+.wardrobe-item-art img{width:36px;height:36px;object-fit:contain}
+.wardrobe-item-art>b{position:absolute;right:1px;bottom:0;font-size:12px}
+.wardrobe-item-copy{display:flex;min-width:0;flex-direction:column;gap:3px}
+.wardrobe-item-copy>strong{color:#334c42;font-size:.78rem;line-height:1.25}
+.wardrobe-rarity{color:#65776b;font-size:.64rem;font-weight:800}
+.rarity-rare .wardrobe-rarity{color:#386c9a}
+.rarity-epic .wardrobe-rarity{color:#8053a0}
+.rarity-legendary .wardrobe-rarity{color:#94701f}
+.wardrobe-item-copy p{margin:0;color:#708076;font-size:.66rem;line-height:1.4}
+.wardrobe-item-copy small{color:#71816d;font-size:.63rem}
+.wardrobe-action{grid-column:1/-1;min-height:34px;padding:6px 9px;border:1px solid #d3ddce;border-radius:8px;background:#f8faf4;color:#405b47;font-size:.72rem;font-weight:800}
+.wardrobe-action:disabled{color:#7b7c73;background:#efefeb}
+.wardrobe-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.wardrobe-footer button{padding:8px 10px;border:1px solid #ddc5b7;border-radius:8px;background:#fff6f1;color:#925a47;font-size:.72rem;font-weight:800}
+.wardrobe-footer span{color:#718075;font-size:.68rem}
+.wardrobe-view-control{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#617365;font-size:.72rem}
+.wardrobe-view-control button{padding:8px 11px;border:1px solid #cad7c7;border-radius:9px;background:#eef5e9;color:#3e664a;font-size:.72rem;font-weight:800}
+.sv-answer-avatar{display:block;width:60px;height:76px;margin:6px auto}
+.sv-reward-avatar{display:block;width:86px;height:110px;margin:4px auto}
+.cards-player-avatar{display:inline-block;width:38px;height:48px;margin-right:8px;vertical-align:middle;border-radius:10px;background:#eef4e7}
+.character-layer{pointer-events:none}
+.studio-mount{position:absolute;z-index:0;left:50%;bottom:7%;width:58%;height:auto;transform:translateX(-50%)}
+.studio-model{z-index:1}
+.character-wings{transform-origin:80px 100px;animation:custom-wing-flap 1.2s ease-in-out infinite alternate}
+.character-back-accessory{transform-origin:120px 130px;animation:custom-sway 2.2s ease-in-out infinite}
+.character-hat{transform-origin:80px 50px}
+.view-three-quarter .sprite-head{transform:translateX(2px) scaleX(.97);transform-origin:80px 110px}
+.character-front-accessory{transform-origin:120px 140px;animation:custom-sway 2.5s ease-in-out infinite}
+.character-effect{animation:custom-glow 2s ease-in-out infinite alternate}
+.character-effect.effect-effect-fireflies,.character-effect.effect-effect-flowers,.character-effect.effect-effect-leaves{animation:custom-drift 2.8s ease-in-out infinite alternate}
+.character-effect.effect-effect-halo{animation:custom-pulse 1.8s ease-in-out infinite}
+.character-shoes{filter:drop-shadow(0 1px 2px #4e433d66)}
+.character-shoes.shoes-glow{filter:drop-shadow(0 0 5px #b4a1ef)}
+.player-sprite.is-riding .sprite-head{animation:custom-riding-bob .8s ease-in-out infinite}
+.world-mount{overflow:visible;filter:drop-shadow(0 2px 2px #4f463744)}
+.world-mount-mount-bamboo-cloud,.world-mount-mount-dragon,.world-mount-mount-phoenix,.world-mount-mount-koi,.world-mount-mount-spirit{animation:custom-mount-float 1.5s ease-in-out infinite alternate}
+.world-mount-mount-buffalo,.world-mount-mount-golden-buffalo{transform-origin:50% 70%;animation:custom-mount-step .8s ease-in-out infinite}
+@keyframes custom-wing-flap{from{transform:scaleX(.96)}to{transform:scaleX(1.04)}}
+@keyframes custom-sway{50%{transform:rotate(2deg)}}
+@keyframes custom-glow{from{filter:drop-shadow(0 0 1px #f4d57a)}to{filter:drop-shadow(0 0 7px #f4d57a)}}
+@keyframes custom-drift{to{transform:translateY(-3px) rotate(4deg)}}
+@keyframes custom-pulse{50%{opacity:.55;transform:scale(1.05)}}
+@keyframes custom-riding-bob{50%{transform:translateY(-2px)}}
+@keyframes custom-mount-float{to{transform:translateY(-3px)}}
+@keyframes custom-mount-step{50%{transform:translateY(-1px)}}
+@media(max-width:700px){
+  .character-wardrobe{padding:12px}
+  .wardrobe-grid{grid-template-columns:1fr}
+  .wardrobe-wallet{flex-direction:column;gap:2px;padding:6px 8px;font-size:.66rem}
+  .wardrobe-item{grid-template-columns:42px minmax(0,1fr)}
+  .wardrobe-item-art{min-height:42px}
+}
+@media(prefers-reduced-motion:reduce){
+  .character-wardrobe *, .player-sprite.is-riding *, .world-mount{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+:root[data-motion='reduced'] .character-wardrobe *,
+:root[data-motion='reduced'] .player-sprite.is-riding *,
+:root[data-motion='reduced'] .world-mount{animation:none!important;transition:none!important}
+
+.wardrobe-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wardrobe-slot{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr);align-content:center;align-items:center;gap:2px 7px;min-width:0;min-height:62px;padding:8px;border:1px solid #d5dccd;border-radius:12px;color:#526455;background:linear-gradient(145deg,#fff,#f4f6ed);text-align:left;transition:transform .15s,box-shadow .15s,border-color .15s}
+.wardrobe-slot:hover{transform:translateY(-2px);box-shadow:0 4px 12px #475c3c1a}
+.wardrobe-slot-icon{grid-row:span 3;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#e8eddf;font-size:17px}
+.wardrobe-slot small{overflow:hidden;color:#778174;font-size:.57rem;font-weight:800;text-overflow:ellipsis;white-space:nowrap}
+.wardrobe-slot strong{overflow:hidden;color:#425848;font-size:.65rem;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+.wardrobe-slot-rarity{color:#827247;font-size:.52rem;font-weight:850}
+.wardrobe-slot.rarity-rare{border-color:#85abd0;background:linear-gradient(145deg,#fff,#eef6ff)}
+.wardrobe-slot.rarity-epic{border-color:#b394ce;background:linear-gradient(145deg,#fff,#f6efff)}
+.wardrobe-slot.rarity-legendary{border-color:#d7b855;background:linear-gradient(145deg,#fffdf0,#ffefbb);box-shadow:inset 0 0 0 1px #e8cf7a,0 0 12px #eac85a30}
+.wardrobe-slot.rarity-rare .wardrobe-slot-icon{background:#dcecff}
+.wardrobe-slot.rarity-epic .wardrobe-slot-icon{background:#efe2ff}
+.wardrobe-slot.rarity-legendary .wardrobe-slot-icon{background:#f8e6a3}
+.wardrobe-slot.is-active{outline:2px solid #7c9a70;outline-offset:1px}
+.wardrobe-catalog{border:1px solid #d7ddcf;border-radius:12px;background:#f5f7ef}
+.wardrobe-catalog>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 13px;color:#465b4d;font-size:.77rem;font-weight:850;cursor:pointer;list-style:none}
+.wardrobe-catalog>summary::-webkit-details-marker{display:none}
+.wardrobe-catalog>summary::after{content:'＋';color:#7a8e71;font-size:1rem}
+.wardrobe-catalog[open]>summary::after{content:'−'}
+.wardrobe-catalog>summary span{margin-left:auto;color:#879080;font-size:.63rem;font-weight:600;text-align:right}
+.wardrobe-catalog[open]{padding-bottom:10px}
+.wardrobe-catalog[open]>summary{margin-bottom:5px;border-bottom:1px solid #e1e6d9}
+.wardrobe-catalog .wardrobe-categories{padding:7px 10px 9px}
+.wardrobe-catalog .wardrobe-grid{padding:0 10px}
+.wardrobe-item{position:relative;grid-template-columns:58px minmax(0,1fr);overflow:hidden;border:1px solid #d4dccf;box-shadow:0 2px 7px #44553b0b}
+.wardrobe-item::before{position:absolute;inset:0 auto 0 0;width:4px;background:#b8c2ae;content:''}
+.wardrobe-item.rarity-rare{border-color:#a9c5df;background:linear-gradient(135deg,#fff,#f2f8ff)}
+.wardrobe-item.rarity-rare::before{background:linear-gradient(#6ba3d2,#c3e6ff)}
+.wardrobe-item.rarity-epic{border-color:#c4a9dd;background:linear-gradient(135deg,#fff,#faf5ff)}
+.wardrobe-item.rarity-epic::before{background:linear-gradient(#a26dc7,#e5b5f4)}
+.wardrobe-item.rarity-legendary{border-color:#dfc363;background:linear-gradient(135deg,#fffef7,#fff5d5);box-shadow:inset 0 0 0 1px #efdb8e,0 3px 12px #d6aa4230}
+.wardrobe-item.rarity-legendary::before{width:5px;background:linear-gradient(#fff0a7,#d49d28,#fff0a7)}
+.wardrobe-item.is-equipped{box-shadow:inset 0 0 0 2px #73a16f,0 3px 10px #547e4c20}
+.wardrobe-item.rarity-legendary.is-equipped{box-shadow:inset 0 0 0 2px #c79c36,0 3px 14px #c99c3744}
+.wardrobe-item-art{min-height:70px;overflow:hidden;border:1px solid #e0e5d9;background:radial-gradient(ellipse at 50% 30%,#fffdf3,#e7eddf)}
+.wardrobe-item-artwork:not(.wardrobe-mount-preview){width:52px;height:70px;overflow:visible}
+.wardrobe-mount-preview{width:62px;height:47px;overflow:visible}
+.wardrobe-item-art>b{z-index:2;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#fffaf0;box-shadow:0 1px 5px #44392755;font-size:11px}
+.wardrobe-item.rarity-legendary .wardrobe-item-art{border-color:#ebd584;background:radial-gradient(ellipse at 50% 30%,#fff9de,#f4e3aa)}
+.wardrobe-item.rarity-epic .wardrobe-item-art{border-color:#d6c1e9;background:radial-gradient(ellipse at 50% 30%,#fff,#eee2f9)}
+.wardrobe-item.rarity-rare .wardrobe-item-art{border-color:#b9d1e5;background:radial-gradient(ellipse at 50% 30%,#fff,#e3f0fa)}
+.wardrobe-item-copy>strong{font-size:.76rem}
+.wardrobe-item-copy p{font-size:.64rem}
+.wardrobe-footer{padding-top:2px}
+
+.is-local-wardrobe .creator-shell{max-width:980px}
+.is-local-wardrobe .creator-workshop{grid-template-columns:minmax(190px,.68fr) minmax(360px,1.32fr);gap:0}
+.is-local-wardrobe .creator-preview-column{padding:12px}
+.is-local-wardrobe .creator-preview-sticky .creator-studio{max-width:200px;margin:4px auto}
+.is-local-wardrobe .creator-customization{gap:10px;padding:15px}
+.is-local-wardrobe .character-wardrobe{gap:9px;padding:13px}
+.is-local-wardrobe .wardrobe-hint{display:none}
+.is-local-wardrobe .wardrobe-view-control{padding-top:2px}
+@media(max-width:700px){
+  .wardrobe-slots{gap:6px}
+  .wardrobe-slot{grid-template-columns:24px minmax(0,1fr);min-height:57px;padding:6px}
+  .wardrobe-slot-icon{width:24px;height:24px;font-size:14px}
+  .wardrobe-slot small{font-size:.51rem}
+  .wardrobe-slot strong{font-size:.58rem}
+  .wardrobe-slot-rarity{font-size:.46rem}
+  .wardrobe-catalog>summary{align-items:flex-start;flex-direction:column;gap:3px}
+  .wardrobe-catalog>summary span{margin:0;text-align:left}
+  .wardrobe-item{grid-template-columns:48px minmax(0,1fr)}
+  .wardrobe-item-art{min-height:60px}
+  .wardrobe-item-artwork:not(.wardrobe-mount-preview){width:44px;height:60px}
+}

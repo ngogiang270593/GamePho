@@ -1,0 +1,30 @@
+# Dependencies and generated output
+**/node_modules/
+**/bin/
+**/obj/
+**/dist/
+**/dist-*/
+.build/
+.dotnet/
+.vite-debug/
+.wrangler/
+output/
+release/*
+!release/*.md
+**/*.tsbuildinfo
+**/*.crdownload
+
+# Local configuration and credentials
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+**/.dev.vars
+**/wrangler.toml
+**/service-account*.json
+**/firebase-adminsdk*.json
+
+# Local databases
+**/*.db
+**/*.db-shm
+**/*.db-wal
