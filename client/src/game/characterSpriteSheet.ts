@@ -111,7 +111,7 @@ export function spriteCell(sheet: CharacterSpriteSheet, index: number) {
 }
 
 type LegacySpriteSheet = Omit<CharacterSpriteSheet, 'clips'> & { clips: Partial<Record<SpriteAction, SpriteClip>> };
-const source: Record<string, CharacterSpriteSheet> = Object.fromEntries([...Object.entries(sourceSheets), ...Object.entries(OPENING_MAP_VILLAGER_SPRITE_SHEETS)].map(([target, raw]) => {
+const source: Record<string, CharacterSpriteSheet> = Object.fromEntries([...Object.entries(OPENING_MAP_VILLAGER_SPRITE_SHEETS), ...Object.entries(sourceSheets)].map(([target, raw]) => {
   const legacy = raw as LegacySpriteSheet;
   const clips = Object.fromEntries(SPRITE_ACTIONS.map(action => [action, legacy.clips[action] ?? {
     fps: 8,

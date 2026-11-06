@@ -3,9 +3,9 @@ import type { CharacterAppearance, Facing } from '../game/character';
 import type { MapOneNpcVisualDesign } from '../game/mapOneNpcDesign';
 import { OPENING_MAP_NPC_ARTWORKS, type OpeningMapNpcArtworkId } from '../game/openingMapNpcArtwork';
 import { openingMapNpcSpriteTarget } from '../game/openingMapNpcs';
-import { useAppliedSpriteSheet, type SpriteAction } from '../game/characterSpriteSheet';
+import { useAppliedSpriteSheet, type CharacterSpriteSheet, type SpriteAction } from '../game/characterSpriteSheet';
 
-export function OpeningMapNpcArtwork({ npcId, appearance, design, artwork, pose, facing, className, portrait = false, action = 'idle', frame, playing = true }: {
+export function OpeningMapNpcArtwork({ npcId, appearance, design, artwork, pose, facing, className, portrait = false, action = 'idle', frame, playing = true, spriteSheet }: {
   npcId?: string;
   appearance: CharacterAppearance;
   design: MapOneNpcVisualDesign;
@@ -17,8 +17,10 @@ export function OpeningMapNpcArtwork({ npcId, appearance, design, artwork, pose,
   action?: SpriteAction;
   frame?: number;
   playing?: boolean;
+  spriteSheet?: CharacterSpriteSheet | null;
 }) {
-  const sheet = useAppliedSpriteSheet(npcId ? openingMapNpcSpriteTarget(npcId) : null);
+  const appliedSheet = useAppliedSpriteSheet(npcId ? openingMapNpcSpriteTarget(npcId) : null);
+  const sheet = spriteSheet === undefined ? appliedSheet : spriteSheet;
   const image = artwork ? OPENING_MAP_NPC_ARTWORKS[artwork] : undefined;
   if (sheet) return <CharacterSprite
     className={className}

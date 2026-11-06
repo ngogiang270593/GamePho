@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ACTION_FRAME_COUNT, ACTION_POSES, actionFramePoses, compileActionFrames, makeActionSlots, npcScheduleAnimationPoses, readActionFrames, type FrameImage } from './characterActionFrames';
-import { makeSpriteSheet, NPC_SCHEDULE_SPRITE_ACTION, SPRITE_ACTIONS, SPRITE_DIRECTIONS, spriteSheetError, type CharacterSpriteSheet } from './characterSpriteSheet';
+import { appliedSpriteSheet, makeSpriteSheet, NPC_SCHEDULE_SPRITE_ACTION, SPRITE_ACTIONS, SPRITE_DIRECTIONS, spriteSheetError, type CharacterSpriteSheet } from './characterSpriteSheet';
 import { OPENING_MAP_VILLAGER_SPRITE_SHEETS } from './openingMapVillagerSpriteSheets';
+import sourceSheets from './characterSpriteSheets.json';
 
 function frames(count = 8, width = 256, height = 256): FrameImage[] {
   return Array.from({ length: count }, (_, index) => ({ src: `data:image/png;base64,${index}`, width, height, name: `frame-${index + 1}.png` }));
@@ -77,6 +78,21 @@ describe('eight real action frames', () => {
       const sheet = OPENING_MAP_VILLAGER_SPRITE_SHEETS[`opening-map-npc:${id}`];
       expect(sheet).toMatchObject({ columns: 4, rows: 1, clips: { 'npc-morning': { directions: { down: { start: 0, count: 4 } } } } });
       expect(spriteSheetError(sheet)).toBeNull();
+    }
+  });
+
+  it('uses saved action sheets instead of the built-in villager artwork after a source save', () => {
+    for (const id of ['NPC_DAN_NONG_01', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03']) {
+      const target = `opening-map-npc:${id}`;
+      const saved = sourceSheets[target as keyof typeof sourceSheets] as CharacterSpriteSheet | undefined;
+      if (!saved) continue;
+
+      expect(appliedSpriteSheet(target)).toMatchObject({
+        src: saved.src,
+        name: saved.name,
+        rows: saved.rows,
+        clips: { 'npc-morning': { directions: { down: saved.clips['npc-morning'].directions.down } } },
+      });
     }
   });
 

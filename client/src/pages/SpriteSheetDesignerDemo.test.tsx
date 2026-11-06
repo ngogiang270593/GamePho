@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { DesignerWorkspace } from '../game/characterDesignerDraft';
 import type { CharacterSpriteSheet } from '../game/characterSpriteSheet';
 import { makeSpriteSheet } from '../game/characterSpriteSheet';
+import { OPENING_MAP_VILLAGER_SPRITE_NPCS } from '../game/openingMapNpcs';
 import { SpriteSheetDesignerDemo } from './SpriteSheetDesignerDemo';
 
 const mocks = vi.hoisted(() => ({
@@ -15,6 +16,11 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../components/CharacterDesignerMap', () => ({ CharacterDesignerMap: () => <section role="region" aria-label="Bản đồ khởi đầu" /> }));
 vi.mock('../components/CharacterSprite', () => ({ CharacterSprite: () => null }));
 vi.mock('../components/SpriteSheetCharacter', () => ({ SpriteSheetCharacter: () => null }));
+vi.mock('../components/OpeningMapNpcArtwork', () => ({
+  OpeningMapNpcArtwork: ({ action, spriteSheet }: { action: string; spriteSheet?: { name: string } | null }) => (
+    <output data-testid="npc-creator-preview" data-action={action} data-sheet-name={spriteSheet?.name ?? ''} />
+  ),
+}));
 vi.mock('../game/characterSpriteSheet', async importOriginal => ({
   ...await importOriginal<typeof import('../game/characterSpriteSheet')>(),
   useAppliedSpriteSheet: () => mocks.appliedSheet,
@@ -205,10 +211,10 @@ describe('character designer saving', () => {
     expect(button('Lưu và áp dụng vào game').disabled).toBe(false);
   });
 
-  it('edits each new villager with exactly four frames rather than repeating them to eight', async () => {
+  it.each(OPENING_MAP_VILLAGER_SPRITE_NPCS)('edits $name with exactly four frames rather than repeating them to eight', async npc => {
     render(<SpriteSheetDesignerDemo />);
-    fireEvent.change(screen.getByLabelText('Nhân vật đang chỉnh chuyển động'), { target: { value: 'NPC_DAN_NONG_01' } });
-    await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith('opening-map-npc:NPC_DAN_NONG_01'));
+    fireEvent.change(screen.getByLabelText('Nhân vật đang chỉnh chuyển động'), { target: { value: npc.id } });
+    await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith(`opening-map-npc:${npc.id}`));
     expect(screen.getByTestId('npc-action-requirements').textContent).toContain('đúng 4 frame riêng');
     expect(screen.getByText('Chọn đúng 4 ảnh khác nhau theo thứ tự tên file')).toBeTruthy();
 
@@ -216,10 +222,12 @@ describe('character designer saving', () => {
     await waitFor(() => expect(screen.getByTestId('action-frame-count').textContent).toBe('4/4 frame'));
     expect(mocks.compile.mock.calls[0][1]).toHaveLength(4);
     expect(mocks.compile.mock.calls[0][5]).toBe(4);
+    expect(screen.getByTestId('npc-creator-preview').getAttribute('data-sheet-name')).toBe('Frames');
+    expect(screen.getByTestId('npc-creator-preview').getAttribute('data-action')).toBe('npc-morning');
     expect(button('Lưu và áp dụng vào game').disabled).toBe(false);
     fireEvent.click(button('Lưu và áp dụng vào game'));
     await waitFor(() => expect(mocks.apply).toHaveBeenCalledOnce());
-    expect(mocks.apply.mock.calls[0][0]).toBe('opening-map-npc:NPC_DAN_NONG_01');
+    expect(mocks.apply.mock.calls[0][0]).toBe(`opening-map-npc:${npc.id}`);
     expect(mocks.apply.mock.calls[0][1].clips['npc-morning'].directions.down.count).toBe(4);
   });
 

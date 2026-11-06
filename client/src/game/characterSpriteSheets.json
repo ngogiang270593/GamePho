@@ -1252,5 +1252,599 @@
         }
       }
     }
+  },
+  "opening-map-npc:NPC_DAN_NONG_03": {
+    "version": 1,
+    "name": "Bác Hòa · Nam",
+    "src": "/assets/character-designer/opening-map-npc-npc-dan-nong-03-f3dce8209fd88648.png",
+    "imageWidth": 1024,
+    "imageHeight": 512,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 4,
+    "rows": 2,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 5,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 4,
+            "count": 4
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:NPC_DAN_NONG_02": {
+    "version": 1,
+    "name": "Cậu Tùng · Nam",
+    "src": "/assets/character-designer/opening-map-npc-npc-dan-nong-02-49f418a4ad7c6356.png",
+    "imageWidth": 1024,
+    "imageHeight": 512,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 4,
+    "rows": 2,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 5,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 4,
+            "count": 4
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:NPC_DAN_NONG_01": {
+    "version": 1,
+    "name": "Bé Thảo · Nam",
+    "src": "/assets/character-designer/opening-map-npc-npc-dan-nong-01-42b7a1bc49bc6508.png",
+    "imageWidth": 1024,
+    "imageHeight": 512,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 4,
+    "rows": 2,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 5,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 4,
+            "count": 4
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
   }
 }

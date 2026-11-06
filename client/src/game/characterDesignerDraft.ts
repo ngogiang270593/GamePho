@@ -2,7 +2,7 @@ import type { Facing } from './character';
 import { ACTION_FRAME_COUNT, type FrameImage } from './characterActionFrames';
 import { SPRITE_ACTIONS, SPRITE_DIRECTIONS, spriteSheetError, type CharacterSpriteSheet, type SpriteAction } from './characterSpriteSheet';
 import { STARTING_CHARACTERS } from './startingCharacters';
-import { OPENING_MAP_NPC_IDS, openingMapNpcSpriteTarget } from './openingMapNpcs';
+import { OPENING_MAP_NPC_IDS, OPENING_MAP_VILLAGER_SPRITE_NPCS, openingMapNpcSpriteTarget } from './openingMapNpcs';
 
 export type DesignerSlots = (FrameImage | null)[];
 export interface DesignerDraft {
@@ -32,7 +32,14 @@ function validTarget(target: unknown): target is string {
   const [id, gender, extra] = target.split(':');
   if (extra !== undefined) return false;
   if ((gender === 'male' || gender === 'female') && STARTING_CHARACTERS.some(character => character.id === id)) return true;
-  return OPENING_MAP_NPC_IDS.some(npcId => target === openingMapNpcSpriteTarget(npcId));
+  return [...OPENING_MAP_NPC_IDS, ...OPENING_MAP_VILLAGER_SPRITE_NPCS.map(npc => npc.id)]
+    .some(npcId => target === openingMapNpcSpriteTarget(npcId));
+}
+
+function frameCountForTarget(target: string): number {
+  return OPENING_MAP_VILLAGER_SPRITE_NPCS.some(npc => target === openingMapNpcSpriteTarget(npc.id))
+    ? 4
+    : ACTION_FRAME_COUNT;
 }
 
 function validFrame(frame: unknown): frame is FrameImage {
@@ -47,9 +54,10 @@ export function designerWorkspaceError(value: unknown): string | null {
     || !SPRITE_ACTIONS.includes(value.action as SpriteAction) || !SPRITE_DIRECTIONS.includes(value.facing as Facing)
     || !Number.isInteger(value.atlasStart) || (value.atlasStart as number) < 0) return 'Bản nháp nhân vật không đúng phiên bản, nhân vật, hành động hoặc hướng.';
   if (!object(value.draft) || !object(value.draft.pending)) return 'Bản nháp thiếu danh sách frame.';
+  const frameCount = frameCountForTarget(value.target);
   for (const [key, slots] of Object.entries(value.draft.pending)) {
-    if (!clipKeys.has(key) || !Array.isArray(slots) || slots.length !== ACTION_FRAME_COUNT
-      || !slots.every(frame => frame === null || validFrame(frame))) return 'Frame trong bản nháp không hợp lệ. Mỗi hành động và hướng có 8 ô, ô chưa nhập được để trống.';
+    if (!clipKeys.has(key) || !Array.isArray(slots) || slots.length !== frameCount
+      || !slots.every(frame => frame === null || validFrame(frame))) return `Frame trong bản nháp không hợp lệ. Mỗi hành động và hướng có ${frameCount} ô, ô chưa nhập được để trống.`;
   }
   if (value.draft.uncompiled !== undefined && (!object(value.draft.uncompiled)
     || Object.entries(value.draft.uncompiled).some(([key, flag]) => !clipKeys.has(key) || typeof flag !== 'boolean'))) return 'Trạng thái ghép frame trong bản nháp không hợp lệ.';

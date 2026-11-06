@@ -78,6 +78,21 @@ describe('applied character sprite', () => {
     expect(custom[1].getAttribute('data-facing')).toBe('right');
   });
 
+  it('renders a four-frame NPC action from a sheet that also requires eight-frame movement', () => {
+    const sheet = makeSpriteSheet(image, 1024, 512, 'Villager action', 4, 2);
+    sheet.movementFrameCount = 8;
+    sheet.clips['npc-morning'].directions.down = { start: 4, count: 4 };
+
+    const { container } = render(<svg>
+      <CharacterSprite spriteSheet={sheet} spriteAction="npc-morning" facing="down" />
+    </svg>);
+    const sprite = container.querySelector('[data-character-artwork="custom-sprite-sheet"]');
+
+    expect(sprite).toBeTruthy();
+    expect(sprite?.getAttribute('data-preview-action')).toBe('npc-morning');
+    expect(sprite?.getAttribute('data-frame')).toBe('4');
+  });
+
   it.each([
     ['field-worker', 'male'], ['field-worker', 'female'],
     ['village-apprentice', 'male'], ['village-apprentice', 'female'],

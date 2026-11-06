@@ -242,7 +242,7 @@ export function SpriteSheetDesignerDemo() {
       }
       const repeat = actionFrameCount === ACTION_FRAME_COUNT && files.length === 4 && (repeatFour || !!editingNpc);
       if (files.length !== actionFrameCount && !repeat) throw new Error(`Chọn đúng ${actionFrameCount} ảnh${actionFrameCount === ACTION_FRAME_COUNT ? '; hoặc chọn 4 ảnh để lặp thành 8 frame' : ''}.`);
-      await installFrames(makeActionSlots((await Promise.all(files.map(readImage))).map(validateTaoFrame), repeat));
+      await installFrames(makeActionSlots((await Promise.all(files.map(readImage))).map(validateTaoFrame), repeat, actionFrameCount));
     });
   }
 
@@ -444,7 +444,7 @@ export function SpriteSheetDesignerDemo() {
         </section>
         <section className="sprite-editor__previews sprite-editor__previews--creator">
           <article className="sprite-editor__card"><header><div><span className="sprite-editor__eyebrow">CREATOR PREVIEW</span><h2>{subjectName} · {subjectGender === 'male' ? 'Nam' : 'Nữ'}</h2></div><code>{ready ? `${actionFrameCount} frame` : `chưa đủ ${actionFrameCount} frame`}</code></header><div className="sprite-editor__stage">{editingNpc
-            ? <OpeningMapNpcArtwork npcId={editingNpc.id} appearance={appearance} design={editingNpc.design} artwork={editingNpc.artwork} pose={editingNpc.pose} facing={facing} action={action} frame={previewFrame} playing={previewPlaying} className="sprite-editor__character" />
+            ? <OpeningMapNpcArtwork npcId={editingNpc.id} appearance={appearance} design={editingNpc.design} artwork={editingNpc.artwork} pose={editingNpc.pose} facing={facing} action={action} frame={previewFrame} playing={previewPlaying} spriteSheet={previewSheet} className="sprite-editor__character" />
             : <CharacterSprite appearance={appearance} startingCharacter={template.id} spriteSheet={previewSheet} spriteAction={action} spriteFrame={previewFrame} spritePlaying={previewPlaying} facing={facing} className="sprite-editor__character" />}</div></article>
         </section>
         <details className="sprite-editor__card" open={!!atlas}><summary>Ảnh sprite sheet và lưới</summary>{atlasView ? <div className="sprite-editor__atlas" style={{ width: Math.min(720, atlasView.imageWidth), aspectRatio: `${atlasView.imageWidth} / ${atlasView.imageHeight}` }}><img src={atlasView.src} alt="Sprite sheet đang chỉnh" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /><div className="sprite-editor__grid">{Array.from({ length: Math.min(atlasTotal, 2048) }, (_, index) => { const cell = spriteCell(atlasView, index); const selected = atlas ? index >= atlasStart && index < atlasStart + actionFrameCount : !!range && index >= range.start && index < range.start + range.count; return <button key={index} type="button" disabled={!atlas} aria-label={`Ô sprite ${index + 1}`} className={selected ? 'is-selected' : ''} style={{ left: `${cell.x / atlasView.imageWidth * 100}%`, top: `${cell.y / atlasView.imageHeight * 100}%`, width: `${atlasView.cellWidth / atlasView.imageWidth * 100}%`, height: `${atlasView.cellHeight / atlasView.imageHeight * 100}%` }} onClick={() => setAtlasStart(index)}>{index + 1}</button>; })}</div></div> : <p>Chưa nhập ảnh.</p>}</details>

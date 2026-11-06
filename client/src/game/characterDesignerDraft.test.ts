@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { appliedSpriteSheet, makeSpriteSheet } from './characterSpriteSheet';
 import { designerWorkspaceError, loadDesignerWorkspace, saveDesignerWorkspace, type DesignerWorkspace } from './characterDesignerDraft';
+import { OPENING_MAP_VILLAGER_SPRITE_NPCS, openingMapNpcSpriteTarget } from './openingMapNpcs';
 
 const image = 'data:image/png;base64,Y2hhcmFjdGVy';
 const prefix = 'xnl-character-sprites-v1:draft:';
@@ -89,6 +90,22 @@ describe('character designer workspaces', () => {
     await saveDesignerWorkspace(npc);
     expect(db.records.get('draft:opening-map-npc:herbalist-lang')).toEqual(npc);
     expect(designerWorkspaceError({ ...npc, target: 'opening-map-npc:market-vendor' })).toContain('không đúng');
+  });
+
+  it('saves and restores four-frame drafts for all three opening-map villagers', async () => {
+    const db = indexedStorage();
+    for (const npc of OPENING_MAP_VILLAGER_SPRITE_NPCS) {
+      const target = openingMapNpcSpriteTarget(npc.id);
+      const draft = workspace(target);
+      draft.draft.pending['npc-morning:down'] = draft.draft.pending['walk:right'].slice(0, 4);
+      delete draft.draft.pending['walk:right'];
+      await saveDesignerWorkspace(draft);
+      expect(db.records.get(`draft:${target}`)).toEqual(draft);
+      expect(await loadDesignerWorkspace(target)).toEqual(draft);
+    }
+
+    const invalid = workspace(openingMapNpcSpriteTarget(OPENING_MAP_VILLAGER_SPRITE_NPCS[0].id));
+    expect(designerWorkspaceError(invalid)).toContain('4 ô');
   });
 
   it('captures a snapshot and queues a newer explicit save behind the earlier autosave', async () => {

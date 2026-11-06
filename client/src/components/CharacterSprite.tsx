@@ -50,7 +50,8 @@ export const CharacterSprite = memo(function CharacterSprite({
   const sheet = spriteSheet === undefined ? appliedSheet : spriteSheet;
   const action = spriteAction ?? (walking ? running ? 'run' : 'walk' : 'idle');
   const usesEightFrames = sheet?.movementFrameCount === 8 || Object.values(sheet?.clips.walk.directions ?? {}).some(range => range.count === 8);
-  const directionReady = !usesEightFrames
+  const isMovementAction = action === 'idle' || action === 'walk' || action === 'run';
+  const directionReady = !isMovementAction || !usesEightFrames
     || sheet?.clips[action]?.directions[facing].count === 8
     || (action === 'idle' && sheet?.clips.walk.directions[facing].count === 8);
   if (sheet && (!npcDesign || spriteSheet !== undefined) && directionReady) return <SpriteSheetCharacter
