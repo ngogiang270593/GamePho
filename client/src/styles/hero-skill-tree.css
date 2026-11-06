@@ -1,0 +1,243 @@
+.hero-skill-tree {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(14px, 3vw, 30px);
+  color: #344a39;
+  font-family: 'Times New Roman', serif;
+}
+
+.hero-skill-tree__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.hero-skill-tree__heading h1 {
+  margin: 6px 0;
+  color: #31543d;
+  font-size: clamp(26px, 4vw, 38px);
+}
+
+.hero-skill-tree__heading p {
+  max-width: 650px;
+  margin: 0;
+  color: #687365;
+  line-height: 1.5;
+}
+
+.hero-skill-tree__notice {
+  display: grid;
+  flex: 0 0 min(270px, 32%);
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1px solid #dec995;
+  border-radius: 12px;
+  background: #fff7df;
+  color: #725a2d;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.hero-skill-tree__notice strong {
+  font-size: 15px;
+}
+
+.hero-skill-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+  padding: 17px;
+  border: 1px solid #d5dfd0;
+  border-radius: 16px;
+  background: linear-gradient(140deg, #fffdf6, #f1f5e9);
+  box-shadow: 0 6px 18px #3a523b0d;
+}
+
+.hero-skill-node--manual {
+  border-color: #b8ceb6;
+  background: linear-gradient(130deg, #edf6e9, #fffdf5);
+}
+
+.hero-skill-node--ultimate {
+  border-color: #d7bd81;
+  background: linear-gradient(130deg, #fff7e2, #f2f4e8);
+}
+
+.hero-skill-node__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid #d8d5bf;
+  border-radius: 14px;
+  background: #fffdf4;
+  font-size: 25px;
+}
+
+.hero-skill-node__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: #8a7140;
+  font: 800 11px/1.3 Arial, sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.hero-skill-node__meta span + span::before {
+  margin-right: 7px;
+  color: #b7ad91;
+  content: '·';
+}
+
+.hero-skill-node h2 {
+  margin: 5px 0;
+  color: #385b40;
+  font-size: 23px;
+}
+
+.hero-skill-node p {
+  margin: 0;
+  color: #5e695b;
+  line-height: 1.5;
+}
+
+.hero-skill-node__effect {
+  display: grid;
+  gap: 3px;
+  margin-top: 10px;
+  padding: 9px 11px;
+  border-left: 3px solid #a6bd92;
+  border-radius: 0 9px 9px 0;
+  background: #eaf0e4;
+  color: #4a5b46;
+  line-height: 1.45;
+}
+
+.hero-skill-node__effect strong {
+  color: #3e603f;
+  font: 800 11px Arial, sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.hero-skill-node__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.hero-skill-node__stats span,
+.hero-skill-node__unlock {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #e4dcc3;
+  border-radius: 999px;
+  background: #fff9e9;
+  color: #705f3d;
+  font: 700 12px Arial, sans-serif;
+}
+
+.hero-skill-node__unlock {
+  justify-self: end;
+  max-width: 195px;
+  height: fit-content;
+  border-color: #d6dfd1;
+  background: #f7f8ef;
+  color: #63705c;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.hero-skill-tree__trunk {
+  display: flex;
+  justify-content: center;
+  height: 37px;
+}
+
+.hero-skill-tree__trunk span {
+  width: 2px;
+  background: linear-gradient(#99b18d, #c8d3ad);
+}
+
+.hero-skill-tree__branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.hero-skill-tree__branches .hero-skill-node {
+  grid-template-columns: 44px minmax(0, 1fr);
+  padding: 14px;
+}
+
+.hero-skill-tree__branches .hero-skill-node__icon {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.hero-skill-tree__branches .hero-skill-node__body {
+  grid-column: 2;
+}
+
+.hero-skill-tree__branches .hero-skill-node__unlock {
+  grid-column: 2;
+  justify-self: start;
+  max-width: 100%;
+}
+
+.hero-skill-tree__footer {
+  display: grid;
+  gap: 3px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px dashed #c9c4a9;
+  border-radius: 12px;
+  color: #69705e;
+  line-height: 1.45;
+}
+
+.hero-skill-tree__footer strong {
+  color: #4d6147;
+}
+
+@media (max-width: 700px) {
+  .hero-skill-tree__heading {
+    flex-direction: column;
+  }
+
+  .hero-skill-tree__notice {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .hero-skill-tree__branches {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-skill-node {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .hero-skill-node__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+  }
+
+  .hero-skill-node__unlock {
+    grid-column: 2;
+    justify-self: start;
+    max-width: 100%;
+  }
+}

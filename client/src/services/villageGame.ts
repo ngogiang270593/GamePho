@@ -1,9 +1,8 @@
 import { SHOP_PRODUCTS } from '../game/villageShop';
 import { TREASURE_COOLDOWN, VILLAGE_QUESTS, VILLAGE_TREASURES, type VillageState } from '../game/villageQuests';
 import { HISTORY_PROGRESS_KEY, saveHistoryProgress, type HistoryProgress } from './historyProgress';
-import { HISTORY_PROFILE_KEY, saveHistoryProfile, trainHistorySkill, type HistoryProfile } from './historyProfile';
-import { normalizeCharacterCustomization } from '../game/characterCustomization';
-import {migrateInventory,receiveInventoryItem,changeEquipment} from '../game/characterInventory';
+import { HISTORY_PROFILE_KEY, normalizeHistoryProfile, saveHistoryProfile, type HistoryProfile } from './historyProfile';
+import { receiveInventoryItem, changeEquipment } from '../game/characterInventory';
 
 export type VillageCommand =
   | {type:'buy'|'equip'|'unequip';id:string}
@@ -28,8 +27,8 @@ export function villageState(progress:HistoryProgress):VillageState {
 export function applyVillageCommand(progress:HistoryProgress,profile:HistoryProfile,command:VillageCommand,now=Date.now()):VillageResult {
   const state=villageState(progress);
   const nextProgress={...progress,village:state};
-  let customization=migrateInventory(profile.customization,profile.appearance);
-  let nextProfile={...profile,appearance:{...profile.appearance},customization};
+  let nextProfile=normalizeHistoryProfile(profile);
+  let customization=nextProfile.customization;
   let message='';
   if (command.type==='buy' || command.type==='equip' || command.type==='unequip') {
     const product=SHOP_PRODUCTS.find(item=>item.id===command.id);
@@ -62,11 +61,8 @@ export function applyVillageCommand(progress:HistoryProgress,profile:HistoryProf
     if (!gift) throw Error('Không tìm thấy phần quà này.');
     const collectedAt=state.gathered[gift.id];
     if (collectedAt!==undefined && now-collectedAt<TREASURE_COOLDOWN) throw Error('Quà đã được nhặt. Hãy quay lại sau vài phút.');
-    const gatheringBonus=profile.startingCharacterId==='forest-keeper'
-      ? Math.ceil(gift.gold*(profile.startingSkills?.herbalism ?? 95)/500) : 0;
-    state.gathered[gift.id]=now; nextProgress.gold+=gift.gold+gatheringBonus;nextProgress.fame+=gift.fame;
-    nextProfile=trainHistorySkill(nextProfile,'herbalism');
-    message=`Nhận ${gift.gold+gatheringBonus} xu và ${gift.fame} danh vọng!`;
+    state.gathered[gift.id]=now; nextProgress.gold+=gift.gold;nextProgress.fame+=gift.fame;
+    message=`Nhận ${gift.gold} xu và ${gift.fame} danh vọng!`;
   } else {
     const quest=VILLAGE_QUESTS.find(item=>item.id===command.id);
     if (!quest) throw Error('Không tìm thấy nhiệm vụ.');
@@ -88,13 +84,10 @@ export function applyVillageCommand(progress:HistoryProgress,profile:HistoryProf
       } else {
         if (run.step!==quest.steps.length) throw Error('Bạn chưa hoàn thành các bước của nhiệm vụ.');
         state.quests[quest.id]={...run,claimedAt:now};
-        const laborBonus=profile.startingCharacterId==='field-worker'
-          ? Math.ceil(quest.reward.gold*(profile.startingSkills?.stamina ?? 98)/500) : 0;
-        nextProgress.gold+=quest.reward.gold+laborBonus;nextProgress.fame+=quest.reward.fame;
-        nextProfile=trainHistorySkill(nextProfile,'stamina');
+        nextProgress.gold+=quest.reward.gold;nextProgress.fame+=quest.reward.fame;
         nextProgress.freeUnoTickets+=quest.reward.tickets ?? 0;
         if (quest.reward.item) {state.inventory[quest.reward.item]=(state.inventory[quest.reward.item] ?? 0)+1;customization=receiveInventoryItem(customization,quest.reward.item,now);}
-        message=`Nhận ${quest.reward.gold+laborBonus} xu, ${quest.reward.fame} danh vọng${quest.reward.tickets ? ` và ${quest.reward.tickets} vé UNO` : ''}${quest.reward.item ? ', cùng vật phẩm trong kho' : ''}!`;
+        message=`Nhận ${quest.reward.gold} xu, ${quest.reward.fame} danh vọng${quest.reward.tickets ? ` và ${quest.reward.tickets} vé UNO` : ''}${quest.reward.item ? ', cùng vật phẩm trong kho' : ''}!`;
       }
     }
   }

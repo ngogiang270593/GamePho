@@ -24,8 +24,13 @@ describe('Sử Việt local progress', () => {
     const legacy = { ...freshHistoryProgress(), gold: 80, fame: 100, correctQuestions: ['hbt-1'] };
     delete (legacy as Partial<typeof legacy>).activeUnoMatch;
     delete (legacy as Partial<typeof legacy>).currentMapId;
+    delete (legacy as Partial<typeof legacy>).riverCampaign;
     localStorage.setItem(HISTORY_PROGRESS_KEY, JSON.stringify(legacy));
-    expect(readHistoryProgress()).toMatchObject({ gold: 80, fame: 100, correctQuestions: ['hbt-1'], activeUnoMatch: null, currentMapId: HISTORY_HEROES[0].id });
+    expect(readHistoryProgress()).toMatchObject({
+      gold: 80, fame: 100, correctQuestions: ['hbt-1'],
+      activeUnoMatch: null, currentMapId: HISTORY_HEROES[0].id,
+      riverCampaign: { actionPoints: 3, vanTien: 50, hp: 600, maxHp: 600 },
+    });
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).currentMapId).toBe(HISTORY_HEROES[0].id);
   });
 

@@ -6,6 +6,7 @@ import { MapOneNpcOutfit } from './MapOneNpcOutfit';
 import { itemById, type CharacterCustomization } from '../game/characterCustomization';
 import type { MapOneNpcVisualDesign } from '../game/mapOneNpcDesign';
 import type { StartingCharacterId } from '../game/startingCharacters';
+import { startingCharacterArtwork } from '../game/startingCharacterArtwork';
 import { ForestKeeperOutfit } from './ForestKeeperOutfit';
 import { SpriteSheetCharacter } from './SpriteSheetCharacter';
 import { spriteSheetTarget, useAppliedSpriteSheet, type CharacterSpriteSheet, type SpriteAction } from '../game/characterSpriteSheet';
@@ -28,21 +29,36 @@ interface CharacterSpriteProps extends SVGProps<SVGSVGElement> {
   spriteAction?: SpriteAction;
   spriteFrame?: number;
   spritePlaying?: boolean;
+  spritePlaybackIntervalMultiplier?: number;
 }
 
-// Every view uses the same layered drawing: the creator, walking player and NPCs.
 export const CharacterSprite = memo(function CharacterSprite({
   appearance = DEFAULT_APPEARANCE, facing = 'down', walking = false,
-  running = false,   portrait = false, emotion = 'neutral', pose = 'idle', customization, npcDesign, startingCharacter, debugOutfitAlignment = false, spriteSheet, spriteAction, spriteFrame, spritePlaying, className = '', ...props
+  running = false,   portrait = false, emotion = 'neutral', pose = 'idle', customization, npcDesign, startingCharacter, debugOutfitAlignment = false, spriteSheet, spriteAction, spriteFrame, spritePlaying, spritePlaybackIntervalMultiplier, className = '', ...props
 }: CharacterSpriteProps) {
   const id = useId().replace(/:/g, '');
-  const appliedSheet = useAppliedSpriteSheet(!npcDesign && startingCharacter ? spriteSheetTarget(startingCharacter, appearance.gender) : null);
+  const spriteTemplate = startingCharacter ?? (appearance.outfit === 'forest' || customization?.equipped.clothes === 'clothes-forest-keeper' ? 'forest-keeper' : undefined);
+  const appliedSheet = useAppliedSpriteSheet(!npcDesign && spriteTemplate === 'forest-keeper' ? spriteSheetTarget(spriteTemplate, appearance.gender) : null);
+  if (!spriteSheet && !npcDesign && (startingCharacter === 'field-worker' || startingCharacter === 'village-apprentice')) {
+    return <svg xmlns="http://www.w3.org/2000/svg" viewBox={portrait ? '9 5 142 128' : '0 0 160 224'}
+      className={`player-sprite character-${appearance.gender} character-reference ${className}`}
+      data-starting-character={startingCharacter} data-character-artwork="reference-image"
+      aria-hidden="true" focusable="false" {...props}>
+      <image href={startingCharacterArtwork(startingCharacter, appearance.gender)} width="160" height="224" preserveAspectRatio="xMidYMid meet" />
+    </svg>;
+  }
   const sheet = spriteSheet === undefined ? appliedSheet : spriteSheet;
-  if (sheet && !npcDesign) return <SpriteSheetCharacter
+  const action = spriteAction ?? (walking ? running ? 'run' : 'walk' : 'idle');
+  const usesEightFrames = sheet?.movementFrameCount === 8 || Object.values(sheet?.clips.walk.directions ?? {}).some(range => range.count === 8);
+  const directionReady = !usesEightFrames
+    || sheet?.clips[action]?.directions[facing].count === 8
+    || (action === 'idle' && sheet?.clips.walk.directions[facing].count === 8);
+  if (sheet && (!npcDesign || spriteSheet !== undefined) && directionReady) return <SpriteSheetCharacter
     {...props} sheet={sheet} facing={facing} portrait={portrait}
-    action={spriteAction ?? (walking ? running ? 'run' : 'walk' : 'idle')}
+    action={action}
     frame={spriteFrame} playing={spritePlaying}
-    data-starting-character={startingCharacter}
+    playbackIntervalMultiplier={spritePlaybackIntervalMultiplier}
+    data-starting-character={spriteTemplate}
     className={`character-${appearance.gender}${walking ? ' is-walking' : ''}${running ? ' is-running' : ''} ${className}`}
   />;
   const baseAppearance = appearance;
@@ -106,11 +122,7 @@ export const CharacterSprite = memo(function CharacterSprite({
   }
   const bodyTransform = npcDesign
     ? `translate(80 212) scale(1 ${npcDesign.height}) ${npcDesign.posture === 'stooped' ? 'skewX(4)' : npcDesign.posture === 'leaning' ? 'rotate(-3 80 165)' : npcDesign.posture === 'ready' ? 'skewX(-2)' : ''} translate(-80 -212)`
-    : startingCharacter === 'field-worker'
-      ? 'translate(80 212) scale(1.08 1.05) translate(-80 -212)'
-      : startingCharacter === 'village-apprentice'
-        ? 'translate(80 212) scale(.92 1.03) translate(-80 -212)'
-        : undefined;
+    : undefined;
   const spriteClassName = `player-sprite character-${male ? 'male' : 'female'}${walking ? ' is-walking' : ''}${running ? ' is-running' : ''}${mountedItem ? ' is-riding' : ''}${customization?.facing === 'three-quarter' ? ' view-three-quarter' : ''}${npcDesign ? ` map-one-npc-sprite npc-animation-${npcDesign.animationSet} npc-posture-${npcDesign.posture} npc-body-${npcDesign.bodyType}` : ''} facing-${facing} emotion-${emotion} pose-${pose} ${className}`;
 
   function Lotus({ x, y, scale = 1, color = palette.trim }: { x: number; y: number; scale?: number; color?: string }) {

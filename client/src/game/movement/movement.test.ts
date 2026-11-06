@@ -34,10 +34,10 @@ describe('movement input and navigation',()=>{
   it('uses frame time, analog strength and sprint without diagonal acceleration',()=>{
     const allowed=()=>true;
     const travel=(fps:number,input={x:1,y:0},run=false)=>{let p={x:0,y:0};for(let n=0;n<fps;n++)p=moveControlled(p,input,1/fps,run,allowed);return Math.hypot(p.x,p.y);};
-    for(const fps of [30,60,120])expect(travel(fps)).toBeCloseTo(160);
-    expect(travel(60,{x:.5,y:0})).toBeCloseTo(80);
-    expect(travel(60,{x:1,y:1})).toBeCloseTo(160);
-    expect(travel(60,{x:1,y:0},true)).toBeCloseTo(250);
+    for(const fps of [30,60,120])expect(travel(fps)).toBeCloseTo(120);
+    expect(travel(60,{x:.5,y:0})).toBeCloseTo(60);
+    expect(travel(60,{x:1,y:1})).toBeCloseTo(120);
+    expect(travel(60,{x:1,y:0},true)).toBeCloseTo(190);
     expect(moveControlled(SPAWN,{x:0,y:0},.1,false,allowed)).toEqual(SPAWN);
   });
   it('routes around a house and checks every segment instead of cutting corners',()=>{

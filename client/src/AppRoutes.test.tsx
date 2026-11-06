@@ -9,6 +9,20 @@ import { freshHistoryProgress, HISTORY_PROGRESS_KEY } from './services/historyPr
 import { freshHistoryProfile, HISTORY_PROFILE_KEY } from './services/historyProfile';
 import { HISTORY_SAVES_KEY } from './services/historySaves';
 import { historyMapPositionKey } from './game/suVietMap';
+import { OPENING_MAP_REST_POINT } from './game/openingMap';
+
+// Route assertions use the built-in character catalog, independent of imports.
+vi.mock('./game/characterSpriteSheets.json', () => ({ default: {} }));
+
+// Keep this legacy gameplay suite focused on HistoryGamePage. The opening-map
+// route is exercised against the real map in AppRoutes.opening-map.test.tsx.
+vi.mock('./pages/OpeningMapPage', async () => {
+  const { HistoryGamePage } = await import('./pages/HistoryGamePage');
+  function OpeningMapRouteMock() {
+    return <HistoryGamePage />;
+  }
+  return { OpeningMapPage: OpeningMapRouteMock };
+});
 
 vi.mock('./pages/CardRoomPage', () => ({
   CardRoomPage: ({ campaignMode, returnPath, onMatchStarted, onMatchFinished, onReserveBet }: { campaignMode: boolean; returnPath: string; onMatchStarted: (matchId: number) => void; onMatchFinished: (result: { matchId: number; round: number; outcome: 'win' | 'loss' | 'draw' }) => void; onReserveBet?: (bet: number, useTicket: boolean, previousMatchId: number | null) => boolean }) => (
@@ -32,15 +46,14 @@ function startGame(promoCode?: string) {
     vi.spyOn(window, 'confirm').mockReturnValue(true);
   }
   fireEvent.click(screen.getByRole('button', { name: 'Chơi mới' }));
-  chooseStartingTemplate('Người học việc của làng');
+  chooseStartingCharacter();
   fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: 'Út Mận' } });
   if (promoCode) fireEvent.change(screen.getByLabelText(/Nhập mã \(không bắt buộc\)/), { target: { value: promoCode } });
-  fireEvent.click(screen.getByRole('button', { name: /Xác nhận và vào làng/i }));
+  fireEvent.click(screen.getByRole('button', { name: 'Vào game' }));
 }
 
-function chooseStartingTemplate(name: string, gender: 'Nam' | 'Nữ' = 'Nữ') {
-  fireEvent.click(screen.getByRole('button', { name: gender }));
-  fireEvent.click(screen.getByRole('button', { name: new RegExp(name) }));
+function chooseStartingCharacter() {
+  fireEvent.click(screen.getByRole('button', { name: /Cơ Biến Vô Song/ }));
 }
 
 function chooseMapPlace(name: RegExp) {
@@ -49,6 +62,30 @@ function chooseMapPlace(name: RegExp) {
 }
 
 describe('Sử Việt routes', () => {
+  it('starts the river campaign with Tiểu Mông awake at the dock', () => {
+    mount();
+    startGame();
+    fireEvent.click(within(screen.getByRole('navigation', { name: 'Tiện ích làng quê' })).getByRole('button', { name: /Bến nước/ }));
+    expect(screen.getByRole('heading', { name: 'Bến nước · việc làng mỗi ngày' })).toBeTruthy();
+    const mother = screen.getByRole('heading', { name: /Bà Mẹ Quê/ }).closest('article')!;
+    expect(within(mother).getByRole('button', { name: /Thề bảo vệ xóm làng/ })).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).riverCampaign)
+      .toMatchObject({ mainQuestActivated: true, motherChoice: null, actionPoints: 3 });
+  });
+
+  it('opens the river-and-spirit skill tree from the map utilities', () => {
+    mount();
+    startGame();
+    fireEvent.click(within(screen.getByRole('navigation', { name: 'Tiện ích làng quê' })).getByRole('button', { name: /Võ công/ }));
+    expect(screen.getByRole('heading', { name: 'Cây kỹ năng & bộ chiêu thức' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Hà Bá Tức Công' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Cá Cóc Phún Thủy' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Hà Bá Cuốn Lưu' })).toBeTruthy();
+    expect(screen.getByRole('note').textContent).toContain('chưa được áp dụng vào giao chiến');
+    fireEvent.click(screen.getByRole('button', { name: '← Về bản đồ' }));
+    expect(screen.getByRole('region', { name: /Bản đồ Mê Linh/ })).toBeTruthy();
+  });
+
   it('persists the tap-to-move setting from the map settings screen',()=>{
     mount();startGame();
     chooseMapPlace(/Cài đặt.*Góc nghỉ chân/);
@@ -120,7 +157,7 @@ describe('Sử Việt routes', () => {
   it('opens the new title screen, creates a 2D character and enters the village map', () => {
     mount();
     expect(screen.getByRole('heading', { name: /Xóm Nhà Lá/ })).toBeTruthy();
-    expect(screen.getByRole('navigation', { name: 'Menu chính' }).querySelectorAll('button')).toHaveLength(4);
+    expect(screen.getByRole('navigation', { name: 'Menu chính' }).querySelectorAll('button')).toHaveLength(5);
     expect(screen.getByRole('button', { name: 'Chơi mới' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Quê nhà' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Thế giới' })).toBeTruthy();
@@ -149,15 +186,53 @@ describe('Sử Việt routes', () => {
   it('redeems CODEX500 for a new character and saves 10,000 coins and fame', () => {
     mount();
     fireEvent.click(screen.getByRole('button', { name: 'Chơi mới' }));
-    chooseStartingTemplate('Người học việc của làng');
+    chooseStartingCharacter();
     fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: 'Út Mận' } });
     fireEvent.change(screen.getByLabelText(/Nhập mã \(không bắt buộc\)/), { target: { value: 'CODEX500' } });
-    fireEvent.click(screen.getByRole('button', { name: /Xác nhận và vào làng/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Vào game' }));
 
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!)).toMatchObject({
       gold: 10000,
       fame: 10000,
       completedHistoryMissions: ['promo-codex500'],
+    });
+  });
+
+  it('applies the development-only test code for a quick game start', () => {
+    mount();
+    fireEvent.click(screen.getByRole('button', { name: 'Chơi mới' }));
+    chooseStartingCharacter();
+    fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: 'Út Mận' } });
+    fireEvent.change(screen.getByRole('textbox', { name: 'Nhập mã thử game' }), { target: { value: 'TEST-MELINH' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
+    expect(screen.getByRole('region', { name: 'Mã thử game' }).querySelector('[role="status"]')?.textContent)
+      .toContain('10.000 xu và 10.000 danh vọng');
+    fireEvent.click(screen.getByRole('button', { name: 'Vào game' }));
+
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!)).toMatchObject({
+      gold: 10000,
+      fame: 10000,
+      completedHistoryMissions: [],
+    });
+    expect(screen.getByTestId('path').textContent).toBe('/map');
+  });
+
+  it('opens the latest Mê Linh map from the title-screen test shortcut', () => {
+    localStorage.setItem('opening-map-player-position-landscape-v2', JSON.stringify({ x: 500, y: 500 }));
+    localStorage.setItem('opening-map-delivery-quest-v1', JSON.stringify({ stage: 'clue-revealed' }));
+    mount();
+    fireEvent.click(screen.getByRole('button', { name: /TEST-MELINH · Vào map test/ }));
+
+    expect(screen.getByTestId('path').textContent).toBe('/map');
+    expect(JSON.parse(localStorage.getItem('opening-map-player-position-landscape-v2')!)).toEqual(OPENING_MAP_REST_POINT);
+    expect(localStorage.getItem('opening-map-delivery-quest-v1')).toBeNull();
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!)).toMatchObject({
+      gold: 10000,
+      fame: 10000,
+    });
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!)).toMatchObject({
+      displayName: 'Tiểu Mông',
+      startingCharacterId: 'forest-keeper',
     });
   });
 
@@ -180,9 +255,9 @@ describe('Sử Việt routes', () => {
     expect(localStorage.getItem(historyMapPositionKey('hai-ba-trung'))).toBe('{"x":600,"y":500}');
 
     fireEvent.click(screen.getByRole('button', { name: 'Chơi mới' }));
-    chooseStartingTemplate('Người học việc của làng');
+    chooseStartingCharacter();
     fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: 'Người mới' } });
-    fireEvent.click(screen.getByRole('button', { name: /Xác nhận và vào làng/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Vào game' }));
 
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!)).toMatchObject({
       gold: 0,
@@ -191,6 +266,8 @@ describe('Sử Việt routes', () => {
     });
     expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!).displayName).toBe('Người mới');
     expect(localStorage.getItem(historyMapPositionKey('hai-ba-trung'))).toBeNull();
+    expect(JSON.parse(localStorage.getItem('opening-map-player-position-landscape-v2')!)).toEqual(OPENING_MAP_REST_POINT);
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).riverCampaign.mainQuestActivated).toBe(true);
   });
 
   it('does not replace offline data when the player declines new journey confirmation', () => {
@@ -257,68 +334,38 @@ describe('Sử Việt routes', () => {
     expect(screen.getByRole('region', { name: /Bản đồ Mê Linh/ })).toBeTruthy();
   });
 
-  it('creates gender-specific starting templates and saves only the chosen template gear and skills', () => {
+  it('uses the forest keeper as the only playable starting character', () => {
     mount();
     fireEvent.click(screen.getByRole('button', { name: 'Chơi mới' }));
-    expect(screen.getByRole('heading', { name: 'Tạo nhân vật' })).toBeTruthy();
-    expect(screen.queryByRole('heading', { name: 'Chọn mẫu nhân vật' })).toBeNull();
-    expect(screen.queryByRole('img', { name: /Người giữ rừng/ })).toBeNull();
-    expect(screen.queryByRole('button', { name: /Người giữ rừng/ })).toBeNull();
-    expect(screen.getByText('Chọn giới tính trước để xem ba mẫu phù hợp.')).toBeTruthy();
-    fireEvent.click(screen.getByRole('button', { name: 'Nam' }));
-    expect(screen.getByRole('button', { name: 'Nam' }).getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByRole('img', { name: 'Người giữ rừng nam đứng chờ' })).toBeTruthy();
-    const templates = [
-      ['forest-keeper', 'Người giữ rừng'],
-      ['field-worker', 'Người con của đồng ruộng'],
-      ['village-apprentice', 'Người học việc của làng'],
-    ] as const;
-    for (const [id, templateName] of templates) {
-      const card = screen.getByRole('button', { name: new RegExp(templateName) });
-      expect(card.querySelector('.player-sprite')?.getAttribute('data-starting-character')).toBe(id);
-      if (id === 'forest-keeper') {
-        expect(card.querySelector('.player-sprite')?.getAttribute('data-character-artwork')).toBe('forest-keeper-v2');
-        expect(card.querySelector('.forest-turnaround-artwork')).toBeTruthy();
-      }
-    }
-    fireEvent.click(screen.getByRole('button', { name: 'Nữ' }));
-    expect(screen.getByRole('img', { name: 'Người giữ rừng nữ đứng chờ' })).toBeTruthy();
-    for (const [id, templateName] of templates) {
-      const card = screen.getByRole('button', { name: new RegExp(templateName) });
-      expect(card.querySelector('.player-sprite')?.getAttribute('data-starting-character')).toBe(id);
-      if (id === 'forest-keeper') {
-        expect(card.querySelector('.player-sprite')?.getAttribute('data-gender')).toBe('female');
-      }
-    }
-    fireEvent.click(screen.getByRole('button', { name: 'Nam' }));
-    expect(screen.queryByRole('button', { name: /Xem hành động|Dừng hành động/ })).toBeNull();
-    const apprenticeButton = screen.getByRole('button', { name: /Người học việc của làng/ });
-    expect(apprenticeButton.querySelector('.player-sprite')?.getAttribute('data-starting-character')).toBe('village-apprentice');
-    fireEvent.click(apprenticeButton);
-    expect(screen.getByRole('img', { name: 'Người học việc của làng nam đứng chờ' })).toBeTruthy();
-    expect(screen.getByRole('heading', { name: 'Kỹ năng · Người học việc của làng' })).toBeTruthy();
-    expect(screen.queryByRole('button', { name: /Xem hành động|Dừng hành động/ })).toBeNull();
+    expect(screen.getByRole('heading', { name: /Tiểu Mông · Thiếu niên Lạc tướng/ })).toBeTruthy();
+    expect(screen.getByText(/Quen sông nước, cậu dùng dao găm/)).toBeTruthy();
+    expect(screen.queryByText(/Người con của đồng ruộng|Người học việc của làng/)).toBeNull();
+    expect(screen.getByRole('img', { name: /Nhân vật nam đang đi bộ/ })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Nam' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Nữ' })).toBeNull();
+    expect(screen.getByText('Tiểu sử')).toBeTruthy();
+    expect(screen.queryByText(/Người đi rừng/)).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Cơ Biến Vô Song/ }));
     expect(screen.queryByText(/IMAGE TO VIDEO|Tạo animation từ ảnh/)).toBeNull();
     fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: 'Tư An' } });
-    fireEvent.click(screen.getByRole('button', { name: /Xác nhận và vào làng/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Vào game' }));
 
     const profile = JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!);
     expect(profile).toMatchObject({
       displayName: 'Tư An',
-      appearance: { gender: 'male', hair: 'sidepart' },
-      startingCharacterId: 'village-apprentice',
-      startingCharacterImage: startingCharacterImageAsset('village-apprentice', 'male'),
-      developmentPath: 'Người kể chuyện · sử liệu · giải đố',
+      appearance: { gender: 'male', outfit: 'forest' },
+      startingCharacterId: 'forest-keeper',
+      startingCharacterImage: startingCharacterImageAsset('forest-keeper', 'male'),
     });
-    expect(profile.startingSkills.intellect).toBeGreaterThanOrEqual(97);
-    expect(profile.startingSkills.intellect).toBeLessThanOrEqual(100);
-    expect(profile.customization.inventory.defaultItems).toContain('back-fabric');
-    expect(profile.customization.inventory.ownedItems).toContain('back-fabric');
-    expect(profile.customization.inventory.ownedItems).not.toContain('back-basket');
+    expect(profile).not.toHaveProperty('startingSkills');
+    expect(profile).not.toHaveProperty('developmentPath');
+    expect(profile.customization.inventory.defaultItems).toContain('back-basket');
+    expect(profile.customization.inventory.ownedItems).toContain('back-basket');
+    expect(profile.customization.inventory.ownedItems).not.toContain('back-fabric');
     expect(profile.customization.inventory.purchasedItems).toEqual([]);
     expect(screen.getByRole('region', { name: /Bản đồ Mê Linh/ })).toBeTruthy();
     expect(screen.getByTestId('world-player').querySelector('.player-sprite')?.getAttribute('data-starting-character'))
-      .toBe('village-apprentice');
+      .toBe('forest-keeper');
     expect(screen.getByTestId('world-player').querySelector('.player-sprite')?.classList.contains('character-male'))
       .toBe(true);
 
@@ -326,7 +373,7 @@ describe('Sử Việt routes', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Quê nhà' }));
     fireEvent.click(screen.getByRole('button', { name: /Tiếp tục hành trình/ }));
     const restoredSprite = screen.getByTestId('world-player').querySelector('.player-sprite');
-    expect(restoredSprite?.getAttribute('data-starting-character')).toBe('village-apprentice');
+    expect(restoredSprite?.getAttribute('data-starting-character')).toBe('forest-keeper');
     expect(restoredSprite?.classList.contains('character-male')).toBe(true);
   });
 
@@ -364,7 +411,7 @@ describe('Sử Việt routes', () => {
     });
   });
 
-  it('opens the character room directly from the map and restores saved equipment', () => {
+  it('opens the character room and restores the forest keeper equipment', () => {
     mount();
     startGame();
     fireEvent.click(screen.getByRole('button', { name: 'Mở Nhân vật' }));
@@ -373,21 +420,14 @@ describe('Sử Việt routes', () => {
     expect(screen.getByRole('region', { name: 'Ô trang bị' })).toBeTruthy();
     fireEvent.click(screen.getByRole('tab', { name: /Túi đồ/ }));
     fireEvent.click(screen.getByRole('tab', { name: /Tóc/ }));
-    fireEvent.click(within(screen.getByRole('tabpanel')).getByRole('button', { name: /Tóc tết hai bên/ }));
-    fireEvent.click(document.querySelector('.character-item-detail .character-equip-button')!);
-    expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!).customization).toMatchObject({
-      inventory: {
-        ownedItems: expect.arrayContaining(['hair-braid']),
-        equippedItems: expect.not.objectContaining({ hair: 'hair-braid' }),
-      },
-    });
+    expect(within(screen.getByRole('tabpanel')).getByRole('button', { name: /Tóc húi gọn/ })).toBeTruthy();
 
     fireEvent.click(screen.getByRole('button', { name: /Lưu nhân vật/ }));
     expect(screen.getByRole('region', { name: /Bản đồ Mê Linh/ })).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Mở Nhân vật' }));
     expect(screen.getByRole('tab', { name: /Túi đồ/ })).toBeTruthy();
     fireEvent.click(screen.getByRole('tab', { name: /Tóc/ }));
-    expect(screen.getByRole('button', { name: /Tóc tết hai bên/ })).toBeTruthy();
+    expect(within(screen.getByRole('tabpanel')).getByRole('button', { name: /Tóc húi gọn/ })).toBeTruthy();
   });
 
   it('opens the history journal from the map and explains progress and sources', () => {
@@ -435,9 +475,9 @@ describe('Sử Việt routes', () => {
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).fame).toBe(10);
   });
 
-  it('routes old game links to the new game and keeps UNO offline-only', () => {
+  it('keeps opening-map links available and routes UNO through the history game', () => {
     mount('/map/shop');
-    expect(screen.getByTestId('path').textContent).toBe('/');
+    expect(screen.getByTestId('path').textContent).toBe('/map/shop');
     cleanup();
     mount('/uno');
     expect(screen.getByRole('region', { name: 'UNO' })).toBeTruthy();
@@ -513,7 +553,7 @@ describe('Sử Việt routes', () => {
     fireEvent.click(screen.getByText(question.answers[question.correct]).closest('button')!);
     expect(screen.getByText('Chính xác! Giỏi quá!')).toBeTruthy();
     expect(screen.queryByRole('region', { name: 'UNO' })).toBeNull();
-    expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!).startingSkills.intellect).toBeGreaterThanOrEqual(98);
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!)).not.toHaveProperty('startingSkills');
     fireEvent.click(screen.getByRole('button', { name: /Tiếp tục khám phá/ }));
     expect(screen.getByRole('region', { name: /Bản đồ Mê Linh/ })).toBeTruthy();
     const saved = JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!);
@@ -581,6 +621,6 @@ describe('Sử Việt routes', () => {
     expect(screen.getByRole('heading', { name: /Tìm trận/ })).toBeTruthy();
     expect(screen.getByText('Tính năng đấu cùng người chơi khác đang được phát triển.')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Sẵn sàng' }).hasAttribute('disabled')).toBe(true);
-    expect(screen.getByTestId('path').textContent).toBe('/');
+    expect(screen.getByTestId('path').textContent).toBe('/map');
   });
 });

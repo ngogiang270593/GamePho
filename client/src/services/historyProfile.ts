@@ -1,7 +1,8 @@
 import { DEFAULT_APPEARANCE, normalizeAppearance, type CharacterAppearance } from '../game/character';
-import { CHARACTER_ITEMS, defaultCharacterCustomization, normalizeCharacterCustomization, type CharacterCustomization } from '../game/characterCustomization';
-import {initialInventory,migrateInventory} from '../game/characterInventory';
-import { STARTING_CHARACTERS, startingCharacterImageAsset, type StartingCharacterId, type StartingSkillId, type StartingSkills } from '../game/startingCharacters';
+import { normalizeCharacterCustomization, type CharacterCustomization } from '../game/characterCustomization';
+import { migrateInventory, startingCharacterInventory } from '../game/characterInventory';
+import { STARTING_CHARACTERS, startingCharacterAppearance, startingCharacterImageAsset, type PlayableCharacterId } from '../game/startingCharacters';
+import { normalizeHeroDevelopment, type HeroDevelopment } from '../game/heroDevelopment';
 
 export const HISTORY_PROFILE_KEY = 'su-viet-hanh-trinh-character-v1';
 
@@ -9,14 +10,21 @@ export interface HistoryProfile {
   displayName: string;
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   startingCharacterImage?: string;
-  startingSkills?: StartingSkills;
-  developmentPath?: string;
+  heroDevelopment: HeroDevelopment;
 }
 
 export function freshHistoryProfile(): HistoryProfile {
-  return { displayName: '', appearance: { ...DEFAULT_APPEARANCE }, customization: initialInventory() };
+  const appearance = startingCharacterAppearance('forest-keeper', DEFAULT_APPEARANCE.gender);
+  return {
+    displayName: '',
+    appearance,
+    customization: startingCharacterInventory(appearance, STARTING_CHARACTERS[0], 0),
+    startingCharacterId: 'forest-keeper',
+    startingCharacterImage: startingCharacterImageAsset('forest-keeper', appearance.gender),
+    heroDevelopment: { talent: null, alignmentGoal: null },
+  };
 }
 
 export function readHistoryProfile(): HistoryProfile {
@@ -30,71 +38,44 @@ export function readHistoryProfile(): HistoryProfile {
   }
   const profile = value as Record<string, unknown>;
   if (typeof profile.displayName !== 'string') throw new Error('Hồ sơ nhân vật Sử Việt không hợp lệ.');
-  return normalizeHistoryProfile(profile);
+  const normalized = normalizeHistoryProfile(profile);
+  const normalizedRaw = JSON.stringify(normalized);
+  if (normalizedRaw !== raw) localStorage.setItem(HISTORY_PROFILE_KEY, normalizedRaw);
+  return normalized;
 }
 
 export function normalizeHistoryProfile(profile:Partial<HistoryProfile>):HistoryProfile {
-  let appearance=normalizeAppearance(profile.appearance);
-  let startingCharacterId = profile.startingCharacterId === 'forest-keeper'
-    || profile.startingCharacterId === 'field-worker'
-    || profile.startingCharacterId === 'village-apprentice'
-    ? profile.startingCharacterId : undefined;
-  let customization=migrateInventory(profile.customization,appearance);
-  // Older saves stored only the appearance. Recover the forest-keeper identity
-  // from its distinctive starter outfit so the map can select the matching
-  // directional action atlas without requiring the player to recreate a save.
-  if (!startingCharacterId && appearance.outfit === 'forest') startingCharacterId = 'forest-keeper';
-  if(startingCharacterId==='forest-keeper'&&customization.inventory){
-    const template=STARTING_CHARACTERS.find(item=>item.id===startingCharacterId)!;
-    const upgradeLegacyLook=!customization.inventory.defaultItems.includes('bottoms-ranger');
-    const equipment={...customization.equipped};
-    const inventory={...customization.inventory,ownedItems:[...customization.inventory.ownedItems],defaultItems:[...customization.inventory.defaultItems],receivedAt:{...customization.inventory.receivedAt}};
-    for(const id of template.gear){
-      if(!inventory.ownedItems.includes(id))inventory.ownedItems.push(id);
-      if(!inventory.defaultItems.includes(id))inventory.defaultItems.push(id);
-      inventory.receivedAt[id]??=0;
-    }
-    if(upgradeLegacyLook){
-      if(appearance.outfit==='baba'&&equipment.clothes==='clothes-baba'){
-        appearance={...appearance,outfit:'forest'};
-        equipment.clothes='clothes-forest-keeper';
-      }
-      if(equipment.bottoms==='bottoms-cotton')equipment.bottoms='bottoms-ranger';
-      if(equipment.shoes==='shoes-sandals')equipment.shoes='shoes-ranger-boots';
-      const wornHat=CHARACTER_ITEMS.find(item=>item.id===equipment.hat);
-      if(!equipment.hat||wornHat?.appearanceValue==='khandong'){
-        equipment.hat='hat-forest-bandana';
-        appearance={...appearance,accessory:'none'};
-      }
-    }
-    inventory.equippedItems={...equipment};
-    customization=normalizeCharacterCustomization({...customization,equipped:equipment,inventory});
-  }
-  const skills = profile.startingSkills;
+  const previousAppearance = normalizeAppearance(profile.appearance);
+  const appearance = startingCharacterAppearance('forest-keeper', previousAppearance.gender);
+  const starter = startingCharacterInventory(appearance, STARTING_CHARACTERS[0], 0);
+  const previous = migrateInventory(profile.customization, previousAppearance);
+  const inventory = previous.inventory!;
+  const replaceLegacyLook = profile.startingCharacterId !== 'forest-keeper'
+    || previousAppearance.outfit !== 'forest'
+    || !inventory.defaultItems.includes('bottoms-ranger');
+  const equippedItems = replaceLegacyLook
+    ? { ...previous.equipped, ...starter.equipped }
+    : { ...previous.equipped };
+  const ownedItems = [...new Set([...inventory.ownedItems, ...starter.inventory!.ownedItems])];
+  const receivedAt = { ...inventory.receivedAt };
+  for (const id of ownedItems) receivedAt[id] ??= 0;
+  const customization = normalizeCharacterCustomization({
+    facing: previous.facing,
+    inventory: {
+      ...inventory,
+      ownedItems,
+      defaultItems: [...new Set([...inventory.defaultItems, ...starter.inventory!.defaultItems])],
+      equippedItems,
+      receivedAt,
+    },
+  });
   return {
     displayName: typeof profile.displayName==='string'?profile.displayName.trim().slice(0,24):'',
     appearance,
     customization,
-    ...(startingCharacterId ? { startingCharacterId } : {}),
-    ...(startingCharacterId
-      ? { startingCharacterImage: startingCharacterImageAsset(startingCharacterId, appearance.gender) } : {}),
-    ...(startingCharacterId && skills
-      && Number.isInteger(skills.herbalism) && skills.herbalism >= 50 && skills.herbalism <= 100
-      && Number.isInteger(skills.hunting) && skills.hunting >= 50 && skills.hunting <= 100
-      && Number.isInteger(skills.stamina) && skills.stamina >= 50 && skills.stamina <= 100
-      && Number.isInteger(skills.intellect) && skills.intellect >= 50 && skills.intellect <= 100
-      ? { startingSkills: { ...skills } } : {}),
-    ...(startingCharacterId && typeof profile.developmentPath === 'string'
-      ? { developmentPath: profile.developmentPath.slice(0, 100) } : {}),
-  };
-}
-
-export function trainHistorySkill(profile: HistoryProfile, skill: StartingSkillId): HistoryProfile {
-  const skills = profile.startingSkills;
-  if (!profile.startingCharacterId || !skills || skills[skill] >= 100) return profile;
-  return {
-    ...profile,
-    startingSkills: { ...skills, [skill]: skills[skill] + 1 },
+    startingCharacterId: 'forest-keeper',
+    startingCharacterImage: startingCharacterImageAsset('forest-keeper', appearance.gender),
+    heroDevelopment: normalizeHeroDevelopment(profile.heroDevelopment),
   };
 }
 

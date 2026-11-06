@@ -39,7 +39,7 @@ export function ForestKeeperOutfitPreview() {
   return <main className="forest-keeper-preview">
     <header>
       <p className="forest-keeper-eyebrow">BỘ TRANG PHỤC KHỞI ĐẦU</p>
-      <h1>Người giữ rừng</h1>
+      <h1>Người đi rừng</h1>
       <p>Trang phục dã ngoại gọn nhẹ, giữ nguyên gương mặt và vóc dáng của từng nhân vật.</p>
       <a className="forest-keeper-demo-link" href="/debug/character-designer">Mở tool thiết kế nhân vật ↗</a>
     </header>
@@ -61,7 +61,7 @@ export function ForestKeeperOutfitPreview() {
           />
         </div>
         <div className="forest-keeper-card-copy">
-          <h2>{gender === 'male' ? 'Người giữ rừng · Nam' : 'Người giữ rừng · Nữ'}</h2>
+          <h2>{gender === 'male' ? 'Người đi rừng · Nam' : 'Người đi rừng · Nữ'}</h2>
           <p>Áo kiểm lâm · Quần túi hộp · Ủng đi rừng</p>
           <p>Băng đô lá · Giỏ thuốc · Dao hái thuốc</p>
         </div>

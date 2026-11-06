@@ -6,9 +6,11 @@ import sharp from 'sharp';
 export const CHARACTER_DESIGNER_ENDPOINT = '/__character-designer/save';
 const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
 const MAX_BODY_BYTES = 29 * 1024 * 1024;
-const TARGETS = new Set(['forest-keeper', 'field-worker', 'village-apprentice']
-  .flatMap(template => ['male', 'female'].map(gender => `${template}:${gender}`)));
-const ACTIONS = ['idle', 'walk', 'run', 'turn', 'jump'];
+const TARGETS = new Set([
+  ...['male', 'female'].map(gender => `forest-keeper:${gender}`),
+  ...['memory-keeper', 'fisherman-tao', 'woman-general', 'messenger', 'gate-guard', 'NPC_DAN_NONG_01', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03'].map(id => `opening-map-npc:${id}`),
+]);
+const ACTIONS = ['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'];
 const DIRECTIONS = ['down', 'right', 'up', 'left'];
 const ASSET_URL = /^\/assets\/character-designer\/[a-z0-9-]+\.(png|jpg|webp)$/;
 
@@ -39,6 +41,14 @@ export function validateCharacterSpriteSheet(input) {
   for (const key of ['offsetX', 'offsetY', 'gapX', 'gapY']) result[key] = number(sheet[key], 0, 16384, key);
   result.scale = number(sheet.scale, .1, 4, 'scale', false);
   for (const key of ['anchorX', 'anchorY']) result[key] = number(sheet[key], 0, 1, key, false);
+  if (sheet.singleFrameWalk !== undefined) {
+    if (typeof sheet.singleFrameWalk !== 'boolean') invalid('singleFrameWalk phải là boolean.');
+    result.singleFrameWalk = sheet.singleFrameWalk;
+  }
+  if (sheet.movementFrameCount !== undefined) {
+    if (sheet.movementFrameCount !== 8) invalid('Mỗi hướng di chuyển cần 8 frame.');
+    result.movementFrameCount = 8;
+  }
   const width = result.offsetX + result.columns * result.cellWidth + (result.columns - 1) * result.gapX;
   const height = result.offsetY + result.rows * result.cellHeight + (result.rows - 1) * result.gapY;
   if (width > result.imageWidth || height > result.imageHeight) invalid('Lưới khung hình vượt ra ngoài ảnh sprite.');
@@ -62,15 +72,16 @@ export function validateCharacterSpriteSheet(input) {
   }
   // The runtime manifest uses a complete action map. Optional actions inherit a
   // stable base clip so a designer can begin with only idle + walk ranges.
-  for (const action of ['run', 'turn', 'jump']) {
+  for (const action of ['run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening']) {
     if (result.clips[action]) continue;
-    const fallback = action === 'jump' ? result.clips.idle : result.clips.walk;
+    const fallback = action === 'jump' || action.startsWith('npc-') ? result.clips.idle : result.clips.walk;
     result.clips[action] = {
       fps: fallback.fps,
       loop: action === 'jump' ? false : fallback.loop,
       directions: Object.fromEntries(DIRECTIONS.map(direction => [direction, { ...fallback.directions[direction] }])),
     };
   }
+  result.clips = Object.fromEntries(ACTIONS.map(action => [action, result.clips[action]]));
   return result;
 }
 
@@ -116,7 +127,7 @@ export async function saveCharacterDesignerSource(root, payload) {
   object(manifest, 'Danh sách sprite trong source');
   const hash = createHash('sha256').update(bytes).digest('hex').slice(0, 16);
   const extension = metadata.format === 'jpeg' ? 'jpg' : metadata.format;
-  const filename = `${payload.target.replace(':', '-')}-${hash}.${extension}`;
+  const filename = `${payload.target.toLowerCase().replace(/[^a-z0-9-]+/g, '-')}-${hash}.${extension}`;
   const assetsPath = resolve(root, 'public/assets/character-designer');
   await mkdir(assetsPath, { recursive: true });
   await writeFile(resolve(assetsPath, filename), bytes);
@@ -193,10 +204,13 @@ export function characterDesignerSource() {
           return respond(response, 413, { error: 'Yêu cầu vượt quá giới hạn 29 MB.' });
         }
         void readBody(request).then(payload => {
-          const save = pendingSave.then(() => saveCharacterDesignerSource(server.config.root, payload));
+          const save = pendingSave.then(async () => ({
+            target: payload.target,
+            sheet: await saveCharacterDesignerSource(server.config.root, payload),
+          }));
           pendingSave = save.catch(() => {});
           return save;
-        }).then(sheet => respond(response, 200, { sheet }), error => respond(response, error.status ?? 500, {
+        }).then(result => respond(response, 200, result), error => respond(response, error.status ?? 500, {
           error: error instanceof SourceSaveError ? error.message : `Không ghi được source: ${error.message}`,
         }));
       });

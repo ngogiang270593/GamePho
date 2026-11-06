@@ -37,6 +37,13 @@
 .sv-title-menu button:nth-child(4) { top: var(--fourth); }
 .sv-title-menu button:hover { background: #fff2; }
 .sv-title-menu button:focus-visible { outline: 3px solid #fff4bb; outline-offset: 2px; background: #fff3; }
+.sv-title-menu .sv-dev-test-launch {
+  top: 2%; right: 2%; bottom: auto; left: auto; width: auto; height: auto;
+  padding: 9px 13px; border: 1px solid #f4d493; border-radius: 999px;
+  background: #315b3bea; color: #fff8df; box-shadow: 0 2px 8px #24170b66;
+  font: 800 clamp(10px, 1vw, 14px)/1.2 system-ui, sans-serif;
+}
+.sv-title-menu .sv-dev-test-launch:hover { background: #426d47; }
 .sv-title-install {
   position: absolute; z-index: 1; left: var(--install-left); bottom: var(--install-bottom);
   width: var(--install-width); height: 7%; min-height: 32px; padding: 0; border: 0;

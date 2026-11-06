@@ -64,7 +64,7 @@ describe('AccountGate', () => {
     fireEvent.change(screen.getByLabelText('Nhập lại mật khẩu'), { target: { value: 'matkhau12345' } });
     fireEvent.click(screen.getByRole('button', { name: /Tạo tài khoản · Vào xóm/ }));
 
-    expect(await screen.findByRole('heading', { name: 'TẠO NHÂN VẬT' })).toBeTruthy();
+    expect(await screen.findByRole('heading', { name: /Tiểu Mông · Thiếu niên Lạc tướng/ })).toBeTruthy();
     expect(localStorage.getItem('xnl-game-mode')).toBe('online');
     expect(localStorage.getItem('xnl-world-login-pending')).toBeNull();
   });

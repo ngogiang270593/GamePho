@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render as renderBase, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render as renderBase, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { CharacterPage } from './CharacterPage';
@@ -56,6 +56,18 @@ describe('CharacterPage', () => {
     fireEvent.change(screen.getByLabelText(/Tên người chơi/), { target: { value: '  Mận  ' } });
     fireEvent.click(screen.getByRole('button', { name: 'XÁC NHẬN' }));
     expect(onStart).toHaveBeenCalledWith(expect.objectContaining({ displayName: 'Mận', appearance: expect.objectContaining({ face: 'oval', skin: 'tan' }) }));
+  });
+
+  it('previews the designer front-facing walk cycle while creating a character', () => {
+    const appearance = { ...DEFAULT_APPEARANCE, gender: 'male' as const, outfit: 'forest' as const };
+    const { container } = render(<MemoryRouter><CharacterPage initialSetup localOnly initialAppearance={appearance} startingCharacterId="forest-keeper" /></MemoryRouter>);
+    const sprite = container.querySelector('.creation-model');
+    expect(sprite?.getAttribute('data-preview-action')).toBe('walk');
+    expect(sprite?.getAttribute('data-character-artwork')).toBe('custom-sprite-sheet');
+    expect(sprite?.getAttribute('data-facing')).toBe('down');
+    expect(sprite?.getAttribute('data-locomotion')).toBe('walk');
+    expect(sprite?.getAttribute('data-frame')).toBe('8');
+    expect(sprite?.getAttribute('data-playing')).toBe('true');
   });
 
   it('returns from creation without saving and rejects invalid names', () => {

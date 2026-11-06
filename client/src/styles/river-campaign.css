@@ -1,0 +1,578 @@
+.river-campaign {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(12px, 2.4vw, 26px);
+  color: #394a3b;
+  font-family: 'Times New Roman', serif;
+}
+
+.river-campaign__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.river-campaign__header h1,
+.river-battle__header h1 {
+  margin: 5px 0;
+  color: #315640;
+  font-size: clamp(26px, 4vw, 36px);
+}
+
+.river-campaign__header p,
+.river-battle__header p {
+  max-width: 720px;
+  margin: 0;
+  color: #667263;
+  line-height: 1.5;
+}
+
+.river-campaign__ap {
+  display: grid;
+  flex: 0 0 235px;
+  gap: 7px;
+  padding: 12px 14px;
+  border: 1px solid #d5c28e;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #fff8df, #f8edcc);
+  box-shadow: 0 5px 18px #67563213;
+}
+
+.river-campaign__ap > span {
+  color: #867243;
+  font: 800 10px Arial, sans-serif;
+  letter-spacing: .08em;
+}
+
+.river-campaign__ap strong {
+  color: #536a45;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.river-campaign__ap strong small {
+  font: 700 13px Arial, sans-serif;
+}
+
+.river-campaign__ap > div {
+  display: flex;
+  gap: 5px;
+}
+
+.river-campaign__ap i {
+  width: 100%;
+  height: 6px;
+  border-radius: 99px;
+  background: #d7d2c2;
+}
+
+.river-campaign__ap i.is-ready {
+  background: linear-gradient(90deg, #71995e, #a2b878);
+}
+
+.river-campaign__status {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid #dfe3d3;
+  border-radius: 14px;
+  background: #f5f6ec;
+}
+
+.river-campaign__status > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: #fffdf6;
+}
+
+.river-campaign__status small {
+  color: #7a806e;
+  font: 700 10px Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.river-campaign__status strong {
+  overflow: hidden;
+  color: #405b3e;
+  font: 800 14px Arial, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.river-campaign__notice,
+.river-campaign__warning {
+  display: block;
+  margin: 0 0 12px;
+  padding: 9px 12px;
+  border: 1px solid #e4ce93;
+  border-radius: 10px;
+  background: #fff8e4;
+  color: #735c2e;
+}
+
+.river-campaign__quest-list {
+  display: grid;
+  gap: 10px;
+}
+
+.river-campaign__npc {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #dce1d2;
+  border-radius: 15px;
+  background: linear-gradient(125deg, #fffef9, #f6f7ed);
+  box-shadow: 0 5px 16px #32412d0c;
+}
+
+.river-campaign__npc-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #e4ddc6;
+  border-radius: 13px;
+  background: #fbf3dc;
+  font-size: 23px;
+}
+
+.river-campaign__npc-content {
+  min-width: 0;
+}
+
+.river-campaign__npc-content > small:first-child {
+  color: #90784b;
+  font: 800 10px Arial, sans-serif;
+  letter-spacing: .08em;
+}
+
+.river-campaign__npc h2 {
+  margin: 3px 0;
+  color: #3c5a40;
+  font-size: 21px;
+}
+
+.river-campaign__npc p {
+  margin: 4px 0 8px;
+  color: #65705e;
+  line-height: 1.45;
+}
+
+.river-campaign__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.river-campaign button {
+  min-height: 38px;
+  padding: 7px 11px;
+  border: 1px solid #bac9ad;
+  border-radius: 10px;
+  background: #edf4e7;
+  color: #3c5a3d;
+  font: 700 13px Arial, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.river-campaign button:hover:not(:disabled) {
+  background: #e2edda;
+}
+
+.river-campaign button:disabled {
+  opacity: .53;
+  cursor: not-allowed;
+}
+
+.river-campaign .is-shadow {
+  border-color: #d0bfa5;
+  background: #f3eadc;
+  color: #70543b;
+}
+
+.river-campaign .is-shadow:hover:not(:disabled) {
+  background: #eddfcb;
+}
+
+.river-campaign__complete {
+  color: #436a41 !important;
+  font-weight: 700;
+}
+
+.river-campaign__fishing-game {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #d1c49f;
+  border-radius: 12px;
+  background: #f5ecd6;
+}
+
+.river-campaign__fishing-meter {
+  position: relative;
+  width: 300px;
+  max-width: 100%;
+  height: 18px;
+  border: 1px solid #746848;
+  border-radius: 12px;
+  background: #d3c7a6;
+}
+
+.river-campaign__fishing-meter i {
+  position: absolute;
+  left: 43.333%;
+  width: 13.333%;
+  height: 100%;
+  border-radius: 10px;
+  background: #85a76a;
+}
+
+.river-campaign__fishing-meter b {
+  position: absolute;
+  top: -4px;
+  width: 5px;
+  height: 24px;
+  border: 1px solid #443a2a;
+  border-radius: 4px;
+  background: #d65638;
+  transform: translateX(-50%);
+}
+
+.river-campaign__side-quest {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 5px 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed #d0c9a9;
+  border-radius: 10px;
+  background: #fff9e9;
+}
+
+.river-campaign__side-quest strong {
+  color: #6a5a36;
+}
+
+.river-campaign__side-quest span {
+  color: #68705d;
+  font-size: 14px;
+}
+
+.river-campaign__side-quest button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.river-campaign__shop {
+  grid-template-columns: 1fr;
+}
+
+.river-campaign__shop button {
+  grid-column: 1;
+  grid-row: auto;
+}
+
+.river-campaign__spar-board {
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  gap: 5px;
+  margin: 8px 0;
+  padding: 6px;
+  width: fit-content;
+  border: 1px solid #d5dccb;
+  border-radius: 10px;
+  background: #f3f5e9;
+}
+
+.river-campaign__spar-board button {
+  width: 48px;
+  min-height: 48px;
+  padding: 0;
+  font-size: 19px;
+}
+
+.river-campaign__spar-board button:disabled {
+  background: #f1e2c2;
+  opacity: 1;
+}
+
+.river-campaign__unlock {
+  display: block;
+  margin-top: 7px;
+  color: #687c58;
+  font-weight: 700;
+}
+
+.river-campaign__warning {
+  margin: 8px 0 0;
+  padding: 6px 9px;
+}
+
+.river-campaign__boss-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.river-campaign__boss-entry > span {
+  flex-basis: 100%;
+  color: #66705f;
+}
+
+.river-campaign__note {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-left: 4px solid #9db487;
+  border-radius: 0 11px 11px 0;
+  background: #edf3e6;
+  color: #596953;
+  line-height: 1.45;
+}
+
+.river-campaign__note strong {
+  color: #405c3f;
+}
+
+.river-campaign__note button {
+  justify-self: start;
+  margin-top: 5px;
+}
+
+.river-battle {
+  width: min(1050px, 100%);
+  margin: 0 auto;
+  padding: clamp(12px, 2.4vw, 25px);
+  color: #394a3b;
+  font-family: 'Times New Roman', serif;
+}
+
+.river-battle__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.river-battle__back {
+  flex: 0 0 auto;
+}
+
+.river-battle__hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 14px 0;
+}
+
+.river-battle__hud span {
+  padding: 8px 10px;
+  border: 1px solid #dbe0d1;
+  border-radius: 10px;
+  background: #f7f7ee;
+  color: #4a5e43;
+  font: 700 12px Arial, sans-serif;
+}
+
+.river-battle__layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(240px, .7fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.river-battle__board {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 5px;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  padding: 8px;
+  border: 1px solid #d6dac8;
+  border-radius: 15px;
+  background:
+    linear-gradient(90deg, #c9c4a733 1px, transparent 1px),
+    linear-gradient(#c9c4a733 1px, transparent 1px),
+    #f5efdc;
+  background-size: 16.666% 16.666%;
+  box-shadow: 0 8px 22px #33462916;
+}
+
+.river-battle__cell {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #bdbca2;
+  border-radius: 7px;
+  background: #f7f4e9;
+  color: #37614d;
+  font-size: clamp(18px, 3.3vw, 31px);
+  cursor: default;
+}
+
+.river-battle__cell.is-river {
+  border-color: #82aeb0;
+  background: repeating-linear-gradient(165deg, #c1e0df 0 8px, #acd3d2 9px 13px);
+  color: #5b9997;
+}
+
+.river-battle__cell.is-hero,
+.river-battle__cell.is-boss,
+.river-battle__cell.is-soldier,
+.river-battle__cell.has-trap {
+  border: 2px solid #507b55;
+  background-color: #fff6d8;
+  cursor: pointer;
+}
+
+.river-battle__cell.is-boss {
+  border-color: #ad6450;
+  background-color: #f8e3d8;
+}
+
+.river-battle__cell.is-soldier {
+  border-color: #826a52;
+  background-color: #eee5d6;
+}
+
+.river-battle__cell.has-trap {
+  border-color: #ac8150;
+  background-color: #f3e5bf;
+}
+
+.river-battle__cell.is-move-target {
+  cursor: crosshair;
+}
+
+.river-battle__cell:focus-visible,
+.river-battle__controls button:focus-visible,
+.river-battle__outcome button:focus-visible {
+  outline: 3px solid #bc9553;
+  outline-offset: 2px;
+}
+
+.river-battle__controls {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid #dce1d2;
+  border-radius: 14px;
+  background: #fffdf6;
+}
+
+.river-battle__controls h2 {
+  margin: 0 0 3px;
+  color: #415e42;
+  font-size: 21px;
+}
+
+.river-battle__controls button,
+.river-battle__outcome button {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #bccaaa;
+  border-radius: 10px;
+  background: #eef4e8;
+  color: #3c5b40;
+  font: 700 12px Arial, sans-serif;
+  cursor: pointer;
+}
+
+.river-battle__controls button:disabled,
+.river-battle__outcome button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.river-battle__controls p {
+  margin: 0;
+  color: #755c31;
+  line-height: 1.4;
+}
+
+.river-battle__controls .river-battle__log {
+  padding: 9px;
+  border-radius: 9px;
+  background: #f8f2df;
+  color: #59644e;
+  font-weight: 700;
+}
+
+.river-battle__controls small {
+  color: #76806c;
+  line-height: 1.4;
+}
+
+.river-battle__outcome {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 15px;
+  padding: 14px;
+  border: 1px solid #dfcf9e;
+  border-radius: 13px;
+  background: #fff8e4;
+}
+
+.river-battle__outcome h2,
+.river-battle__outcome p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #65532f;
+}
+
+@media (max-width: 700px) {
+  .river-campaign__header {
+    flex-direction: column;
+  }
+
+  .river-campaign__ap {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .river-campaign__status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .river-campaign__side-quest {
+    grid-template-columns: 1fr;
+  }
+
+  .river-campaign__side-quest button {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: start;
+  }
+
+  .river-battle__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .river-battle__board {
+    gap: 3px;
+    padding: 5px;
+  }
+
+  .river-battle__cell {
+    border-radius: 5px;
+  }
+
+  .river-battle__outcome {
+    grid-template-columns: 1fr;
+  }
+}

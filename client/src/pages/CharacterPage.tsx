@@ -16,7 +16,7 @@ import '../styles/character-wardrobe.css';
 import '../styles/character-screen.css';
 import { useGameStore } from '../context/GameContext';
 import { OUTFIT_DETAILS } from '../game/outfits';
-import type { StartingCharacterId, StartingSkills } from '../game/startingCharacters';
+import type { PlayableCharacterId } from '../game/startingCharacters';
 import {
   CHARACTER_ITEMS,
   normalizeCharacterCustomization, type CharacterCustomization, type CharacterItem, type CharacterItemCategory,
@@ -45,7 +45,7 @@ interface CharacterPageProps {
   expandWardrobe?: boolean;
   initialSetup?: boolean;
   startingTemplateSetup?: boolean;
-  onStart?: (profile?: { displayName: string; appearance: CharacterAppearance; customization: CharacterCustomization; promoCodeRedeemed?: boolean; startingCharacterId?: StartingCharacterId; startingCharacterImage?: string; startingSkills?: StartingSkills; developmentPath?: string }) => void;
+  onStart?: (profile?: { displayName: string; appearance: CharacterAppearance; customization: CharacterCustomization; promoCodeRedeemed?: boolean; startingCharacterId?: PlayableCharacterId; startingCharacterImage?: string }) => void;
   onBack?: () => void;
   localOnly?: boolean;
   initialDisplayName?: string;
@@ -53,7 +53,7 @@ interface CharacterPageProps {
   heading?: string;
   submitLabel?: string;
   initialCustomization?: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   gold?: number;
   fame?: number;
   onPurchaseItem?: (item: CharacterItem) => boolean;

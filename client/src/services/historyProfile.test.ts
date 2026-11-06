@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest';
+import { DEFAULT_APPEARANCES } from '../game/character';
 import { defaultCharacterCustomization } from '../game/characterCustomization';
 import { changeEquipment, initialInventory, startingCharacterInventory } from '../game/characterInventory';
 import { startingCharacterArtwork } from '../game/startingCharacterArtwork';
 import { STARTING_CHARACTERS, startingCharacterAppearance, startingCharacterImageAsset } from '../game/startingCharacters';
-import { freshHistoryProfile, HISTORY_PROFILE_KEY, normalizeHistoryProfile, readHistoryProfile, saveHistoryProfile, trainHistorySkill } from './historyProfile';
+import { freshHistoryProfile, HISTORY_PROFILE_KEY, normalizeHistoryProfile, readHistoryProfile, saveHistoryProfile } from './historyProfile';
 
 afterEach(() => localStorage.clear());
 
@@ -38,18 +39,80 @@ describe('Sử Việt local character profile', () => {
     expect(profile.customization.inventory?.ownedItems).not.toContain('wings-light');
   });
 
-  it('trains a chosen character skill up to, but never beyond, 100', () => {
+  it('starts the main character with the forest appearance and starter equipment', () => {
+    const profile = freshHistoryProfile();
+    expect(profile).toMatchObject({
+      displayName: '',
+      startingCharacterId: 'forest-keeper',
+      startingCharacterImage: 'forest-keeper/reference-base-female.png',
+      appearance: startingCharacterAppearance('forest-keeper', 'female'),
+      customization: {
+        equipped: {
+          clothes: 'clothes-forest-keeper', bottoms: 'bottoms-ranger',
+          shoes: 'shoes-ranger-boots', hat: 'hat-forest-bandana',
+          back: 'back-basket', front: 'front-herb-knife',
+        },
+      },
+    });
+    expect(readHistoryProfile()).toEqual(profile);
+    expect(profile).not.toHaveProperty('startingSkills');
+    expect(profile).not.toHaveProperty('developmentPath');
+    expect(profile.heroDevelopment).toEqual({ talent: null, alignmentGoal: null });
+  });
+
+  it('persists and normalizes Tiểu Mông talent and alignment choices', () => {
     const profile = {
       ...freshHistoryProfile(),
-      startingCharacterId: 'village-apprentice' as const,
-      startingSkills: { herbalism: 72, hunting: 55, stamina: 65, intellect: 99 },
+      displayName: 'Tiểu Mông',
+      heroDevelopment: { talent: 'forest-and-tide' as const, alignmentGoal: 'shadow' as const },
     };
+    saveHistoryProfile(profile);
+    expect(readHistoryProfile().heroDevelopment).toEqual(profile.heroDevelopment);
 
-    const trained = trainHistorySkill(profile, 'herbalism');
-    const capped = trainHistorySkill(profile, 'intellect');
-    expect(trained.startingSkills?.herbalism).toBe(73);
-    expect(capped.startingSkills?.intellect).toBe(100);
-    expect(trainHistorySkill(capped, 'intellect')).toBe(capped);
+    localStorage.setItem(HISTORY_PROFILE_KEY, JSON.stringify({
+      ...profile,
+      heroDevelopment: { talent: 'unknown', alignmentGoal: 'unknown' },
+    }));
+    const normalized = readHistoryProfile();
+    expect(normalized.heroDevelopment).toEqual({ talent: null, alignmentGoal: null });
+  });
+
+  it.each(['field-worker', 'village-apprentice'] as const)('migrates an old %s profile without losing inventory purchases or unrelated saves', id => {
+    const appearance = DEFAULT_APPEARANCES.male;
+    const customization = initialInventory(appearance, 123);
+    customization.inventory!.ownedItems.push('mount-dragon');
+    customization.inventory!.purchasedItems.push('mount-dragon');
+    customization.inventory!.receivedAt['mount-dragon'] = 456;
+    customization.inventory!.equippedItems.mount = 'mount-dragon';
+    localStorage.setItem(HISTORY_PROFILE_KEY, JSON.stringify({
+      displayName: 'Anh Ba', appearance, customization, startingCharacterId: id,
+      startingCharacterImage: 'obsolete/character.png',
+      startingSkills: { herbalism: 72, hunting: 55, stamina: 65, intellect: 99 },
+      developmentPath: 'Lựa chọn nhân vật cũ',
+    }));
+    localStorage.setItem('opening-map-player-position-watercolor', '{"x":700,"y":640}');
+    localStorage.setItem('su-viet-hanh-trinh-progress-v1', '{"gold":500}');
+
+    const restored = readHistoryProfile();
+    expect(restored).toMatchObject({
+      displayName: 'Anh Ba',
+      appearance: startingCharacterAppearance('forest-keeper', 'male'),
+      startingCharacterId: 'forest-keeper',
+      startingCharacterImage: 'forest-keeper/reference-base-male.png',
+      customization: {
+        equipped: {
+          clothes: 'clothes-forest-keeper', bottoms: 'bottoms-ranger',
+          shoes: 'shoes-ranger-boots', hat: 'hat-forest-bandana',
+          front: 'front-herb-knife', mount: 'mount-dragon',
+        },
+        inventory: { purchasedItems: ['mount-dragon'], receivedAt: { 'mount-dragon': 456 } },
+      },
+    });
+    expect(restored).not.toHaveProperty('startingSkills');
+    expect(restored).not.toHaveProperty('developmentPath');
+    expect(JSON.parse(localStorage.getItem(HISTORY_PROFILE_KEY)!)).toEqual(restored);
+    expect(localStorage.getItem('opening-map-player-position-watercolor')).toBe('{"x":700,"y":640}');
+    expect(localStorage.getItem('su-viet-hanh-trinh-progress-v1')).toBe('{"gold":500}');
   });
 
   it('persists only the expected artwork for the selected character and gender', () => {

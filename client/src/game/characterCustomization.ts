@@ -51,17 +51,17 @@ const creationItems:CharacterItem[] = (['hair','outfit','accessory'] as const).f
   const category=key==='outfit'?'clothes':key==='accessory'?'hat':'hair';
   return characterOptions[key].filter(option=>option.value!=='none'&&!baseItems.some(item=>item.category===category&&item.appearanceValue===option.value)).map(option=>({
     id:`creation-${category}-${option.value}`,name:option.label,category,appearanceValue:option.value,
-    rarity:'Common' as const,image:`/assets/icons/${category}.svg`,description:'Diện mạo truyền thống của xóm mình.',unlockCondition:'Lựa chọn khi tạo nhân vật',price:0,fame:0,animation:'idle',equipped:false,
+    rarity:'Common' as const,image:`/assets/icons/${category}.svg`,description:'Diện mạo truyền thống của xóm mình.',unlockCondition:'Trang bị có sẵn',price:0,fame:0,animation:'idle',equipped:false,
   }));
 });
 const starterItems:CharacterItem[]=[
-  {id:'front-herb-knife',name:'Dao hái thuốc nhỏ',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Dụng cụ nhỏ để thu hái thảo dược.',unlockCondition:'Trang bị khởi đầu · Người giữ rừng',price:0,fame:0,animation:'idle',equipped:false},
-  {id:'front-small-hoe',name:'Cuốc nhỏ',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Dụng cụ làm vườn gọn nhẹ.',unlockCondition:'Trang bị khởi đầu · Người con của đồng ruộng',price:0,fame:0,animation:'idle',equipped:false},
-  {id:'front-bamboo-book',name:'Thẻ tre và bút tre',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Bộ dụng cụ ghi chép của người học việc.',unlockCondition:'Trang bị khởi đầu · Người học việc của làng',price:0,fame:0,animation:'idle',equipped:false},
+  {id:'front-herb-knife',name:'Dao hái thuốc nhỏ',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Dụng cụ nhỏ để thu hái thảo dược.',unlockCondition:'Trang bị khởi đầu · Người đi rừng',price:0,fame:0,animation:'idle',equipped:false},
+  {id:'front-small-hoe',name:'Cuốc nhỏ',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Dụng cụ làm vườn gọn nhẹ.',unlockCondition:'Vật phẩm sưu tầm',price:0,fame:0,animation:'idle',equipped:false},
+  {id:'front-bamboo-book',name:'Thẻ tre và bút tre',category:'front',rarity:'Common',image:'/assets/icons/front.svg',description:'Bộ dụng cụ ghi chép bằng tre.',unlockCondition:'Vật phẩm sưu tầm',price:0,fame:0,animation:'idle',equipped:false},
 ];
 export const CHARACTER_ITEMS:CharacterItem[] = [...baseItems,...creationItems,...starterItems,
   {id:'bottoms-cotton',name:'Quần vải nâu',category:'bottoms',rarity:'Common',image:'/assets/icons/clothes.svg',description:'Quần vải thoải mái để dạo làng.',unlockCondition:'Đồ cơ bản',price:15,fame:0,animation:'walk',equipped:false,appearanceValue:'#6f5845'},
-  {id:'bottoms-ranger',name:'Quần short kiểm lâm',category:'bottoms',rarity:'Common',image:'/assets/icons/clothes.svg',description:'Quần short nâu có túi hộp và gấu xắn để đi rừng.',unlockCondition:'Trang bị khởi đầu · Người giữ rừng',price:0,fame:0,animation:'walk',equipped:false,appearanceValue:'#806148'},
+  {id:'bottoms-ranger',name:'Quần short kiểm lâm',category:'bottoms',rarity:'Common',image:'/assets/icons/clothes.svg',description:'Quần short nâu có túi hộp và gấu xắn để đi rừng.',unlockCondition:'Trang bị khởi đầu · Người đi rừng',price:0,fame:0,animation:'walk',equipped:false,appearanceValue:'#806148'},
   {id:'bottoms-skirt',name:'Váy vải quê',category:'bottoms',rarity:'Rare',image:'/assets/icons/clothes.svg',description:'Váy vải màu kem dịu nhẹ.',unlockCondition:'Cần 10 danh vọng',price:25,fame:10,animation:'walk',equipped:false,appearanceValue:'#d4c59c'},
 ];
 export function defaultCharacterCustomization(): CharacterCustomization {

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { CharacterSprite } from '../components/CharacterSprite';
 import { ForestKeeperActionSprite, type CharacterPreviewAction } from '../components/ForestKeeperActionSprite';
-import { WorldMap } from '../components/WorldMap';
+import { OpeningMapPage } from './OpeningMapPage';
 import type { Facing } from '../game/character';
 import { startingCharacterInventory } from '../game/characterInventory';
-import { STARTING_CHARACTERS, startingCharacterAppearance, type StartingCharacterId } from '../game/startingCharacters';
+import { STARTING_CHARACTERS, startingCharacterAppearance } from '../game/startingCharacters';
 import '../styles/character-designer-demo.css';
 
 const actions: { value: CharacterPreviewAction; label: string }[] = [
@@ -22,12 +22,11 @@ const directions: { value: Facing; label: string }[] = [
 ];
 
 export function CharacterDesignerDemo() {
-  const [templateId, setTemplateId] = useState<StartingCharacterId>('forest-keeper');
+  const template = STARTING_CHARACTERS[0];
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [action, setAction] = useState<CharacterPreviewAction>('walk');
   const [facing, setFacing] = useState<Facing>('down');
   const [showMap, setShowMap] = useState(true);
-  const template = STARTING_CHARACTERS.find(item => item.id === templateId) ?? STARTING_CHARACTERS[0];
   const appearance = useMemo(() => startingCharacterAppearance(template.id, gender), [gender, template.id]);
   const customization = useMemo(() => startingCharacterInventory(appearance, template), [appearance, template]);
   const moving = action === 'walk' || action === 'run';
@@ -43,9 +42,7 @@ export function CharacterDesignerDemo() {
     </header>
 
     <section className="character-designer-demo__controls" aria-label="Điều khiển thiết kế nhân vật">
-      <label><span>Mẫu nhân vật</span><select value={templateId} onChange={event => setTemplateId(event.target.value as StartingCharacterId)}>
-        {STARTING_CHARACTERS.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}
-      </select></label>
+      <div><span>Nhân vật đang phát triển</span><strong>{template.name}</strong></div>
       <div><span>Giới tính</span><div className="character-designer-demo__segmented" role="group" aria-label="Giới tính">
         {(['male', 'female'] as const).map(value => <button key={value} type="button" aria-pressed={gender === value} onClick={() => setGender(value)}>{value === 'male' ? 'Nam' : 'Nữ'}</button>)}
       </div></div>
@@ -71,7 +68,7 @@ export function CharacterDesignerDemo() {
 
       {showMap && <article className="character-designer-demo__card character-designer-demo__map-card">
         <div className="character-designer-demo__card-heading"><div><span>MAP PREVIEW</span><h2>Di chuyển thật trên map</h2></div><code>{moving ? `${action} atlas` : 'idle'}</code></div>
-        <div className="character-designer-demo__map"><WorldMap appearance={appearance} customization={customization} startingCharacter={template.id} playerName="Demo" compact persist={false} /></div>
+        <div className="character-designer-demo__map"><OpeningMapPage embedded appearance={appearance} startingCharacter={template.id} playerName="Demo" persistPlayerPosition={false} /></div>
         <p className="character-designer-demo__meta">Dùng WASD / phím mũi tên trong khung map. Nam forest keeper sẽ dùng sprite 4 hướng khi đi bộ/chạy.</p>
       </article>}
     </section>

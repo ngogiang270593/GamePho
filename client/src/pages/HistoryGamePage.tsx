@@ -4,14 +4,18 @@ import { HISTORY_HEROES, FAME_RANKS, fameRank, type HistoryHero } from '../game/
 import { CARD_CAST, CARD_PLAY_STYLES, cardPlayStyleIndex, type CardDifficulty } from '../game/cards';
 import { WorldMap } from '../components/WorldMap';
 import { CharacterSprite } from '../components/CharacterSprite';
+import { HeroSkillTree } from '../components/HeroSkillTree';
+import { MelinRiverCampaign } from '../components/MelinRiverCampaign';
+import { MelinCheckpointBattle } from '../components/MelinCheckpointBattle';
 import { SystemPreferences } from '../components/SystemPreferences';
 import { CharacterPage } from './CharacterPage';
-import { HISTORY_MAPS, historyMap, historyMapPosition, historyMapPositionKey, SUVIET_FEATURE_LABELS } from '../game/suVietMap';
+import { HISTORY_MAPS, historyMapPositionKey } from '../game/suVietMap';
+import { FINAL_CHALLENGE_PROMPT, historyMapScene } from '../game/historyMapScene';
 import { historyMapMandatoryMissionIds, historyMapMissionStats, historyMapStory, historyMission, HISTORY_MISSIONS } from '../game/historyMissions';
 import { historyMissionAvailable } from '../game/historyMissions';
 import { MAP_ONE_CHAPTER_MAIN_REQUIREMENTS, MAP_ONE_CHARACTERS, MAP_ONE_CHAPTERS } from '../game/historyMapOne';
 import { MAP_ONE_NPCS, type MapOneNpcDefinition } from '../game/mapOneNpcs';
-import { freshHistoryProfile, readHistoryProfile, saveHistoryProfile, trainHistorySkill, type HistoryProfile } from '../services/historyProfile';
+import { freshHistoryProfile, readHistoryProfile, saveHistoryProfile, type HistoryProfile } from '../services/historyProfile';
 import {
   createHistorySnapshot,
   deleteHistorySlot,
@@ -61,12 +65,13 @@ import { VillageShop } from '../components/VillageShop';
 import { VillageActivities } from '../components/VillageActivities';
 import { VILLAGE_LOCATIONS } from '../game/villageLocations';
 import { VILLAGE_NPC_ACTIONS } from '../game/villageNpcs';
-import { STARTING_CHARACTERS, type StartingCharacterId, type StartingSkills } from '../game/startingCharacters';
+import type { PlayableCharacterId } from '../game/startingCharacters';
 import { applyVillageCommand, saveVillageResult, type VillageCommand } from '../services/villageGame';
+import { applyRiverCampaignAction, normalizeRiverCampaign, type RiverCampaignAction } from '../game/riverCampaign';
+import { OPENING_MAP_REST_POINT } from '../game/openingMap';
 import '../styles/village-game.css';
 
-type Screen = 'title' | 'offline-home' | 'world' | 'sync-choice' | 'map' | 'atlas' | 'missions' | 'entertainment' | 'training' | 'matchmaking' | 'final-challenge' | 'story' | 'question' | 'map-one-question' | 'collection' | 'achievements' | 'reward' | 'character' | 'backup' | 'settings' | 'help';
-const FINAL_CHALLENGE_PROMPT = 'Bạn đã hoàn thành hành trình tại Mê Linh. Hãy đến khu vực Giải trí để tham gia thử thách cuối bản đồ.';
+type Screen = 'title' | 'offline-home' | 'world' | 'sync-choice' | 'map' | 'skills' | 'river-campaign' | 'river-boss' | 'atlas' | 'missions' | 'entertainment' | 'training' | 'matchmaking' | 'final-challenge' | 'story' | 'question' | 'map-one-question' | 'collection' | 'achievements' | 'reward' | 'character' | 'backup' | 'settings' | 'help';
 
 type TrainingNpc = Pick<MapOneNpcDefinition, 'id' | 'name' | 'activity' | 'appearance' | 'design' | 'icon'> & { style: string };
 
@@ -113,9 +118,7 @@ export function HistoryGamePage() {
   const [initialCharacter] = useState(loadedProfile);
   const [profile, setProfile] = useState(initialCharacter.profile);
   const [saveSlots, setSaveSlots] = useState<HistorySaveSlot[]>([]);
-  const [screen, setScreen] = useState<Screen>(() => location.pathname === '/uno'
-    || localStorage.getItem('xnl-game-mode') === 'offline'
-      && localStorage.getItem('xnl-last-saved-mode') !== 'online' && hasLocalHistory() ? 'map' : 'title');
+  const [screen, setScreen] = useState<Screen>(() => ['/uno', '/map', '/chapter-1'].includes(location.pathname) ? 'map' : 'title');
   const [backupReturnScreen, setBackupReturnScreen] = useState<Screen>('map');
   const [settingsReturnScreen, setSettingsReturnScreen] = useState<Screen>('title');
   const [newJourneySetup, setNewJourneySetup] = useState(false);
@@ -156,17 +159,6 @@ export function HistoryGamePage() {
     } catch(cause) {
       setVillageNotice(cause instanceof Error ? cause.message : 'Chưa lưu được thay đổi. Vui lòng thử lại.');
       return false;
-    }
-  }
-
-  function trainPlayerSkill(skill: 'herbalism' | 'hunting' | 'stamina' | 'intellect') {
-    const nextProfile = trainHistorySkill(profile, skill);
-    if (nextProfile === profile) return;
-    try {
-      saveHistoryProfile(nextProfile);
-      setProfile(nextProfile);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Chưa lưu được tiến bộ kỹ năng.');
     }
   }
 
@@ -304,15 +296,48 @@ export function HistoryGamePage() {
     }
   }, []);
 
+  const requestedChapterEntry = (location.state as { riverCampaignEntry?: unknown } | null)?.riverCampaignEntry;
+  const riverChapterEntry = location.pathname === '/chapter-1'
+    ? requestedChapterEntry === 'righteous' || requestedChapterEntry === 'shadow'
+      ? requestedChapterEntry
+      : normalizeRiverCampaign(initial.progress.riverCampaign).worldMapEntry
+    : null;
+  useEffect(() => {
+    if (location.pathname !== '/chapter-1') return;
+    updateProgress(current => current.currentMapId === 'hai-ba-trung'
+      ? current
+      : { ...current, currentMapId: 'hai-ba-trung', activeHistoryMissionId: null });
+    setScreen('map');
+    setMissionNotice(riverChapterEntry === 'shadow'
+      ? 'Chương 1 · Lối vào Tà đạo: dân làng dè chừng, hãy tìm cách khôi phục lòng tin.'
+      : riverChapterEntry === 'righteous'
+        ? 'Chương 1 · Lối vào Chính đạo: dân làng chào đón người đã bảo vệ xóm làng.'
+        : 'Chương 1 · Mê Linh: bắt đầu hành trình qua các nhiệm vụ lịch sử.');
+  }, [location.pathname, riverChapterEntry, updateProgress]);
+
+  const applyRiverAction = useCallback((action: RiverCampaignAction) => {
+    try {
+      const campaign = applyRiverCampaignAction(
+        progressRef.current.riverCampaign,
+        action,
+        profile.heroDevelopment.talent,
+      );
+      return updateProgress(current => ({ ...current, riverCampaign: campaign }));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Chưa thể cập nhật tiến trình Bến Nước.');
+      return false;
+    }
+  }, [profile.heroDevelopment.talent, updateProgress]);
+
   const fameLevel = fameRank(progress.fame);
-  const currentMap = historyMap(progress.currentMapId);
+  const mapScene = useMemo(() => historyMapScene(progress), [progress]);
+  const currentMap = mapScene.map;
   const currentMapIndex = HISTORY_MAPS.findIndex(map => map.id === currentMap.id);
   const currentMapHero = HISTORY_HEROES.find(hero => hero.id === currentMap.heroId);
   const nextMap = HISTORY_MAPS[(currentMapIndex + 1) % HISTORY_MAPS.length];
   const finalChallengeMap = HISTORY_MAPS.find(map => map.id === progress.finalChallengeMapId);
   const currentMapStory = historyMapStory(currentMap.id);
   const currentMapMissionStats = historyMapMissionStats(currentMap.id, progress.completedHistoryMissions, progress.discoveredHistoryMissions);
-  const startingTemplate = STARTING_CHARACTERS.find(template => template.id === profile.startingCharacterId);
   const requiredChallengeFame = finalChallengeFame(currentMapIndex);
   const mandatoryChallengeMissions = historyMapMandatoryMissionIds(currentMap.id)
     .map(missionId => historyMission(currentMap.id, missionId))
@@ -449,10 +474,7 @@ export function HistoryGamePage() {
     const correct = index === currentQuestion.correct;
     const previousAttempts = progress.attempts[currentQuestion.id] ?? 0;
     let quizGold = correct ? (previousAttempts === 0 ? 20 : 8) : 0;
-    const apprenticeInsight = profile.startingCharacterId === 'village-apprentice'
-      ? Math.floor((profile.startingSkills?.intellect ?? 100) / 35)
-      : 0;
-    let quizFame = correct ? (previousAttempts === 0 ? 20 : 5) + apprenticeInsight : 0;
+    let quizFame = correct ? (previousAttempts === 0 ? 20 : 5) : 0;
     const newlyCorrect = correct && !progress.correctQuestions.includes(currentQuestion.id);
     const correctQuestions = newlyCorrect
       ? [...progress.correctQuestions, currentQuestion.id]
@@ -514,7 +536,6 @@ export function HistoryGamePage() {
       } : null,
     }));
     if (!progressSaved) return;
-    if (newlyCorrect) trainPlayerSkill('intellect');
   }
 
   const onMatchFinished = useCallback((result: { matchId: number; round: number; outcome: HistoryBetOutcome }) => {
@@ -961,21 +982,8 @@ export function HistoryGamePage() {
     const missionResult = completeHistoryMission(progressRef.current, locationItem.id);
     if (missionResult.completedMissionId) {
       const completedMission = historyMission(progressRef.current.currentMapId, missionResult.completedMissionId);
-      const startingSkill = profile.startingSkills;
-      const bonusGold = completedMission && (
-        profile.startingCharacterId === 'forest-keeper' && completedMission.kind === 'hidden'
-        || profile.startingCharacterId === 'field-worker' && completedMission.kind === 'side'
-      ) ? Math.ceil(completedMission.gold * (
-        profile.startingCharacterId === 'forest-keeper'
-          ? (startingSkill?.herbalism ?? 95)
-          : (startingSkill?.stamina ?? 98)
-      ) / 500) : 0;
-      const missionProgress = bonusGold
-        ? { ...missionResult.progress, gold: missionResult.progress.gold + bonusGold }
-        : missionResult.progress;
-      const saved = updateProgress(() => missionProgress);
+      const saved = updateProgress(() => missionResult.progress);
       if (saved && completedMission) {
-        if (completedMission.kind === 'hidden') trainPlayerSkill('hunting');
         const specialRewards = [
           completedMission.badge ? `huy hiệu ${completedMission.badge}` : '',
           completedMission.outfit ? `trang phục ${completedMission.outfit}` : '',
@@ -983,7 +991,7 @@ export function HistoryGamePage() {
           completedMission.tickets ? `${completedMission.tickets} Vé UNO` : '',
         ].filter(Boolean);
         setMissionNotice(
-          `Hoàn thành: ${completedMission.title} · +${completedMission.fame} danh vọng · +${completedMission.gold + bonusGold} xu`
+          `Hoàn thành: ${completedMission.title} · +${completedMission.fame} danh vọng · +${completedMission.gold} xu`
           + (specialRewards.length ? ` · Nhận ${specialRewards.join(', ')}` : ''),
         );
       }
@@ -1046,44 +1054,49 @@ export function HistoryGamePage() {
     appearance: HistoryProfile['appearance'];
     customization: CharacterCustomization;
     promoCodeRedeemed?: boolean;
-    startingCharacterId?: StartingCharacterId;
+    testGameCodeRedeemed?: boolean;
+    startingCharacterId?: PlayableCharacterId;
     startingCharacterImage?: string;
-    startingSkills?: StartingSkills;
-    developmentPath?: string;
-  }) {
+    heroDevelopment?: HistoryProfile['heroDevelopment'];
+  }, forceNewJourney = false) {
     if (!nextProfile) return;
-    const isNewCharacter = newJourneySetup || !profile.displayName;
+    const startsNewJourney = newJourneySetup || forceNewJourney;
+    const isNewCharacter = startsNewJourney || !profile.displayName;
     const redeemPromoCode = isNewCharacter && nextProfile.promoCodeRedeemed === true;
+    const redeemTestCode = import.meta.env.DEV && isNewCharacter && nextProfile.testGameCodeRedeemed === true;
     const savedProfile = {
       ...(isNewCharacter ? freshHistoryProfile() : profile),
       displayName: nextProfile.displayName,
       appearance: nextProfile.appearance,
       customization: nextProfile.customization,
+      ...(nextProfile.heroDevelopment ? { heroDevelopment: nextProfile.heroDevelopment } : {}),
       ...(nextProfile.startingCharacterId ? {
         startingCharacterId: nextProfile.startingCharacterId,
         startingCharacterImage: nextProfile.startingCharacterImage,
-        startingSkills: nextProfile.startingSkills,
-        developmentPath: nextProfile.developmentPath,
       } : {}),
     };
+    const newProgress = freshHistoryProgress();
     const savedProgress = isNewCharacter
       ? {
-          ...freshHistoryProgress(),
-          gold: redeemPromoCode ? 10000 : 0,
-          fame: redeemPromoCode ? 10000 : 0,
+          ...newProgress,
+          riverCampaign: applyRiverCampaignAction(newProgress.riverCampaign, { type: 'rest-at-dock' }, nextProfile.heroDevelopment?.talent ?? null),
+          gold: redeemPromoCode || redeemTestCode ? 10000 : 0,
+          fame: redeemPromoCode || redeemTestCode ? 10000 : 0,
           completedHistoryMissions: redeemPromoCode ? ['promo-codex500'] : [],
         }
       : progress;
     try {
       saveHistoryProgress(savedProgress);
       saveHistoryProfile(savedProfile);
-      if (newJourneySetup) {
+      if (isNewCharacter) {
         for (const map of HISTORY_MAPS) {
           const positionKey = historyMapPositionKey(map.id);
           localStorage.removeItem(positionKey);
           localStorage.removeItem(`${positionKey}:layout-v2`);
           localStorage.removeItem(`${positionKey}:discovered-zones`);
         }
+        localStorage.setItem('opening-map-player-position-landscape-v2', JSON.stringify(OPENING_MAP_REST_POINT));
+        localStorage.removeItem('opening-map-delivery-quest-v1');
       }
       localStorage.setItem('xnl-last-saved-mode', activeMode);
       progressRef.current = savedProgress;
@@ -1093,10 +1106,32 @@ export function HistoryGamePage() {
       setExiting(false);
       setError(initial.error);
       if (isNewCharacter) setMissionNotice('Nhiệm vụ đầu tiên: Qua cổng làng Mê Linh · hãy mở Nhật ký sử để nhận nhiệm vụ và xem mục tiêu.');
-      setScreen('map');
+      if (redeemTestCode || isNewCharacter) navigate('/map');
+      else setScreen('map');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Chưa lưu được nhân vật trên thiết bị.');
     }
+  }
+
+  function startDevelopmentTestJourney() {
+    if (!import.meta.env.DEV) return;
+    if (hasLocalHistory() && !window.confirm('Bắt đầu map test sẽ thay thế hành trình offline hiện tại. Bạn có muốn tiếp tục không?')) return;
+    setActiveMode('offline');
+    localStorage.setItem('xnl-game-mode', 'offline');
+    localStorage.setItem('xnl-last-saved-mode', 'offline');
+    localStorage.removeItem('opening-map-player-position-landscape-v2');
+    localStorage.removeItem('opening-map-delivery-quest-v1');
+    const newProfile = freshHistoryProfile();
+    completeCharacterSetup({
+      displayName: 'Tiểu Mông',
+      appearance: newProfile.appearance,
+      customization: newProfile.customization,
+      promoCodeRedeemed: false,
+      testGameCodeRedeemed: true,
+      startingCharacterId: 'forest-keeper',
+      startingCharacterImage: newProfile.startingCharacterImage,
+      heroDevelopment: { talent: 'forest-and-tide', alignmentGoal: null },
+    }, true);
   }
 
   function changeCharacterCustomization(customization: CharacterCustomization) {
@@ -1115,38 +1150,6 @@ export function HistoryGamePage() {
     if (progress.fame < item.fame || progress.gold < item.price) return false;
     return updateProgress(current => ({ ...current, gold: current.gold - item.price }));
   }
-
-  const activeMapLocations = useMemo(
-    () => currentMap.landmarks
-      .filter(item => !item.id.startsWith('me-linh-hidden-') || HISTORY_MISSIONS.some(mission =>
-        mission.mapId === currentMap.id
-          && mission.kind === 'hidden'
-          && mission.targetLocationId === item.id
-          && progress.discoveredHistoryMissions.includes(mission.id),
-      ))
-      .map(item => {
-      if (!item.destinationMapId) return item;
-      const unlocked = progress.unlockedHistoryMaps.includes(item.destinationMapId)
-        || canStartFinalHistoryChallenge(progress, currentMap.id);
-      const stats = historyMapMissionStats(currentMap.id, progress.completedHistoryMissions, progress.discoveredHistoryMissions);
-      const requiredFame = finalChallengeFame(currentMapIndex);
-      return {
-        ...item,
-        locked: !unlocked,
-        action: progress.unlockedHistoryMaps.includes(item.destinationMapId)
-          ? progress.completedHistoryMaps.includes(currentMap.id)
-            ? `Cổng mở · sang ${nextMap.region.split(' · ')[0]} hoặc đấu lại`
-            : `Đi qua cổng sang ${nextMap.region.split(' · ')[0]}`
-          : unlocked ? 'Đủ điều kiện · đến khu Giải trí' : `Cần ${requiredFame} danh vọng · thử thách cuối (${stats.mainCompleted}/${stats.mainRequired} nhiệm vụ chính)`,
-        dialogue: unlocked
-          ? progress.unlockedHistoryMaps.includes(item.destinationMapId)
-            ? `Cổng đã mở. Bạn có thể sang ${nextMap.name} hoặc đấu lại ${HISTORY_HEROES.find(hero => hero.id === currentMap.heroId)?.name ?? 'nhân vật dẫn chuyện'}.`
-            : FINAL_CHALLENGE_PROMPT
-          : `Cổng tới ${nextMap.name} chỉ mở khi bạn có ${requiredFame} danh vọng, hoàn thành ít nhất ${stats.mainRequired}/${stats.mainTotal} nhiệm vụ chính và thắng UNO thử thách cuối.`,
-      };
-    }),
-    [currentMap, currentMapIndex, nextMap, progress],
-  );
 
   const onMatchStarted = useCallback((matchId: number) => {
     updateProgress(current => ({
@@ -1276,6 +1279,9 @@ export function HistoryGamePage() {
             <button type="button" aria-label="Quê nhà" onClick={openOfflineHome}><span className="sv-title-mode-label">Offline</span>Quê nhà</button>
             <button type="button" aria-label="Thế giới" onClick={openWorld}><span className="sv-title-mode-label">Online</span>Thế giới</button>
             <button type="button" onClick={openSettings}>Hệ thống</button>
+            {import.meta.env.DEV && <button className="sv-dev-test-launch" type="button" onClick={startDevelopmentTestJourney}>
+              🧪 TEST-MELINH · Vào map test
+            </button>}
           </nav>
           <button className="sv-title-install" type="button" onClick={() => setInstallHintRequest(value => value + 1)} aria-describedby={installHintRequest ? 'sv-install-hint' : undefined}>Cài đặt trên Android và iOS</button>
           </div>
@@ -1363,7 +1369,7 @@ export function HistoryGamePage() {
       {screen === 'map' && (
         <section className="sv-map-screen sv-fullscreen-map">
           <header className="sv-map-hud">
-            <div className="sv-map-brand"><Link className="sv-wordmark" to="/" onClick={event => { event.preventDefault(); setScreen('title'); }}>XÓM NHÀ LÁ <span>· SỬ VIỆT</span></Link><small>{currentMap.icon} Chặng {currentMapIndex + 1}/{HISTORY_MAPS.length} · {currentMap.region}</small>{startingTemplate && <small className="sv-starting-template-summary">{startingTemplate.name} · Hái thuốc {profile.startingSkills?.herbalism ?? '—'} · Thể lực {profile.startingSkills?.stamina ?? '—'} · Trí lực {profile.startingSkills?.intellect ?? '—'}</small>}</div>
+            <div className="sv-map-brand"><Link className="sv-wordmark" to="/" onClick={event => { event.preventDefault(); setScreen('title'); }}>XÓM NHÀ LÁ <span>· SỬ VIỆT</span></Link><small>{location.pathname === '/chapter-1' ? `Chương 1 · ${riverChapterEntry === 'shadow' ? 'Lối vào Tà đạo' : riverChapterEntry === 'righteous' ? 'Lối vào Chính đạo' : 'Mê Linh'}` : `${currentMap.icon} Chặng ${currentMapIndex + 1}/${HISTORY_MAPS.length} · ${currentMap.region}`}</small></div>
             <div className="sv-map-wallet" aria-label={`Tiến trình của ${profile.displayName || 'người chơi'}`}><button className="sv-map-wardrobe" type="button" onClick={() => setScreen('character')} aria-label="Mở Nhân vật" title={profile.displayName || 'Khách xóm'}>🧑 Nhân vật</button><span>🪙 {progress.gold}</span><span>⭐ {progress.fame}</span></div>
           </header>
           {missionNotice && <p className="sv-map-mission-notice" role="status">{missionNotice}<button type="button" aria-label="Đóng thông báo nhiệm vụ" onClick={() => setMissionNotice('')}>×</button></p>}
@@ -1374,18 +1380,18 @@ export function HistoryGamePage() {
               customization={profile.customization}
               startingCharacter={profile.startingCharacterId}
               playerName={profile.displayName || 'Người chơi'}
-              locations={currentMap.id === 'hai-ba-trung' ? activeMapLocations : [...activeMapLocations, ...VILLAGE_LOCATIONS]}
+              locations={mapScene.locations}
               suspended={Boolean(villagePlace)}
-              featureLabels={SUVIET_FEATURE_LABELS}
+              featureLabels={mapScene.featureLabels}
               mapName={currentMap.name}
               buildings={currentMap.buildings}
               landscape={currentMap.theme}
-              spawn={historyMapPosition(currentMap.id)}
+              spawn={mapScene.spawn}
               positionStorageKey={historyMapPositionKey(currentMap.id)}
               persist={!exiting}
               historyMode
               fame={progress.fame}
-              activeQuestLocationId={activeHistoryMission?.targetLocationId}
+              activeQuestLocationId={mapScene.activeQuestLocationId}
               onInteract={interactWithMap}
             />
           </div>
@@ -1394,6 +1400,8 @@ export function HistoryGamePage() {
             <button type="button" onClick={()=>openVillage('village-quests')}>📜 <span>Nhiệm vụ</span></button>
             <button type="button" onClick={()=>setScreen('missions')}>📖 <span>Nhật ký sử</span></button>
             <button type="button" onClick={()=>setScreen('character')}>🧑 <span>Nhân vật</span></button>
+            <button type="button" onClick={()=>setScreen('skills')}>🌊 <span>Võ công</span></button>
+            {currentMap.id === 'hai-ba-trung' && <button type="button" onClick={()=>setScreen('river-campaign')}>🛶 <span>Bến nước</span></button>}
             <button type="button" onClick={()=>openVillage('village-mounts')}>🐃 <span>Thú cưỡi</span></button>
           </nav>
           {villagePlace && <MapDialog title={VILLAGE_LOCATIONS.find(place=>place.id===villagePlace)?.name ?? 'Chuyện trong làng'} onClose={()=>setVillagePlace(null)} className="village-modal">
@@ -1402,6 +1410,69 @@ export function HistoryGamePage() {
               ? <VillageShop key={villagePlace} progress={progress} profile={profile} onCommand={villageCommand} initialCategory={villagePlace==='village-mounts'?'mount':'all'} />
               : <VillageActivities progress={progress} onCommand={villageCommand} questId={VILLAGE_LOCATIONS.find(place=>place.id===villagePlace)?.questId} giftId={villagePlace.startsWith('village-gift-')?villagePlace:undefined} />}
           </MapDialog>}
+        </section>
+      )}
+
+      {screen === 'skills' && (
+        <section className="sv-subscreen sv-utility-screen">
+          <header className="sv-subscreen-heading">
+            <button className="sv-back-button" type="button" onClick={() => setScreen('map')}>← Về bản đồ</button>
+          </header>
+          <HeroSkillTree />
+        </section>
+      )}
+
+      {screen === 'river-campaign' && (
+        <section className="sv-subscreen sv-utility-screen">
+          <header className="sv-subscreen-heading">
+            <button className="sv-back-button" type="button" onClick={() => setScreen('map')}>← Về bản đồ</button>
+          </header>
+          <MelinRiverCampaign
+            progress={progress}
+            talent={profile.heroDevelopment.talent}
+            onAction={applyRiverAction}
+            onStartBoss={() => setScreen('river-boss')}
+            onWorldMap={() => setScreen('atlas')}
+            onFastTravel={() => {
+              const dock = mapScene.locations.find(location => location.id === 'me-linh-boat-yard');
+              if (!dock) {
+                setError('Không tìm thấy điểm Bến Thuyền trên bản đồ để đi nhanh.');
+                return;
+              }
+              try {
+                localStorage.setItem(historyMapPositionKey(currentMap.id), JSON.stringify(dock.point));
+                setError('');
+                setScreen('map');
+              } catch (cause) {
+                setError(cause instanceof Error ? cause.message : 'Chưa thể lưu điểm đi nhanh.');
+              }
+            }}
+          />
+        </section>
+      )}
+
+      {screen === 'river-boss' && (
+        <section className="sv-subscreen sv-utility-screen">
+          <MelinCheckpointBattle
+            campaign={normalizeRiverCampaign(progress.riverCampaign)}
+            talent={profile.heroDevelopment.talent}
+            haBaEquipped={normalizeRiverCampaign(progress.riverCampaign).haBaEquipped}
+            onStateChange={battle => applyRiverAction({ type: 'boss-progress', battle })}
+            onVictory={(path, battle) => {
+              const saved = applyRiverAction({
+                type: 'boss-victory',
+                path,
+                hp: battle.hp,
+                mp: battle.mp,
+                bambooUsed: battle.bambooUsed,
+              });
+              if (saved) setScreen('river-campaign');
+              return saved;
+            }}
+            onRetreat={battle => {
+              if (applyRiverAction({ type: 'boss-retreat', ...battle })) setScreen('river-campaign');
+            }}
+          />
         </section>
       )}
 
@@ -1839,8 +1910,8 @@ export function HistoryGamePage() {
       {screen === 'character' && (
         <CharacterPage
           initialSetup={newJourneySetup || !profile.displayName}
-          startingTemplateSetup={newJourneySetup}
-          initialDisplayName={newJourneySetup ? '' : profile.displayName}
+          startingTemplateSetup={newJourneySetup || !profile.displayName}
+          initialDisplayName={newJourneySetup ? '' : profile.displayName || 'Tiểu Mông'}
           initialAppearance={newJourneySetup ? freshHistoryProfile().appearance : profile.appearance}
           initialCustomization={newJourneySetup ? freshHistoryProfile().customization : profile.customization}
           startingCharacterId={newJourneySetup ? undefined : profile.startingCharacterId}

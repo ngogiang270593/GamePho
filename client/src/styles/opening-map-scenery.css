@@ -1,0 +1,76 @@
+.opening-map-scenery { pointer-events: none; }
+.opening-map-scenery .scenery-foliage,
+.opening-map-scenery .scenery-bamboo,
+.opening-map-scenery .scenery-flowers,
+.opening-map-scenery .scenery-awning {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: scenery-leaf-breeze 8s ease-in-out infinite alternate;
+  animation-delay: var(--scenery-delay, 0s);
+}
+.opening-map-scenery .scenery-bamboo { animation-name: scenery-bamboo-breeze; animation-duration: 10s; }
+.opening-map-scenery .scenery-flowers { animation-duration: 6s; }
+.opening-map-scenery .scenery-awning { transform-origin: center top; animation: scenery-cloth-breeze 6s ease-in-out infinite alternate; animation-delay: var(--scenery-delay, 0s); }
+.opening-map-scenery .scenery-current { animation: scenery-water-light 7s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-flow { animation: scenery-water-flow 24s linear infinite; }
+.opening-map-scenery .scenery-water-rings { animation: scenery-ripple 5s ease-in-out infinite; }
+.opening-map-scenery .scenery-smoke { transform-box: fill-box; transform-origin: center bottom; animation: scenery-smoke-rise 9s ease-out infinite; }
+.opening-map-scenery .scenery-boat-hull { transform-box: fill-box; transform-origin: center; animation: scenery-boat-rock 6s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-clouds { animation: scenery-cloud-drift 65s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-clouds--high { animation-duration: 85s; animation-direction: alternate-reverse; }
+.opening-map-scenery .scenery-birds { animation: scenery-bird-flight 25s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-butterfly { animation: scenery-butterfly-flight 17s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-butterfly--second { animation-duration: 23s; animation-direction: alternate-reverse; }
+.opening-map-scenery .scenery-butterfly-wings { transform-box: fill-box; transform-origin: center; animation: scenery-wing-flap .55s ease-in-out infinite alternate; }
+.opening-map-scenery .scenery-pollen { animation: scenery-pollen-drift 12s ease-in-out infinite alternate; }
+.opening-map-scenery.is-simplified * { animation: none !important; }
+.opening-map-npc-homes { pointer-events: none; }
+.opening-map-npc-homes text { fill: #fff3d4; font: 800 17px 'Times New Roman', serif; letter-spacing: 1.4px; paint-order: stroke; stroke: #344a37; stroke-linejoin: round; stroke-width: 5px; }
+.opening-map-npc-homes .opening-map-rest-sign { fill: #f3dfa9; font-size: 13px; letter-spacing: .8px; }
+.opening-map-npc-homes .scenery-npc-vối { transform-box: fill-box; transform-origin: center bottom; animation: scenery-leaf-breeze 8s ease-in-out infinite alternate; }
+.opening-map-npc-homes .scenery-lantern { transform-box: fill-box; transform-origin: center top; animation: scenery-lantern-glow 3.2s ease-in-out infinite alternate; }
+.opening-map-npc-homes .scenery-herb-smoke,
+.opening-map-npc-homes .scenery-steam,
+.opening-map-npc-homes .scenery-forge-smoke,
+.opening-map-npc-homes .scenery-poison-smoke { transform-box: fill-box; transform-origin: center bottom; animation: scenery-smoke-rise 5s ease-out infinite; }
+.opening-map-npc-homes .scenery-silk { transform-box: fill-box; transform-origin: center top; animation: scenery-cloth-breeze 6s ease-in-out infinite alternate; }
+.opening-map-npc-homes .scenery-forge-flame { transform-box: fill-box; transform-origin: center bottom; animation: scenery-fire-flicker .7s ease-in-out infinite alternate; }
+.opening-map-npc-homes .scenery-water-plants > g { transform-box: fill-box; transform-origin: center bottom; animation: scenery-ripple 5s ease-in-out infinite; }
+.opening-map-npc-homes .scenery-water-plants > g:nth-child(2n) { animation-delay: -2.5s; }
+.opening-map-npc-homes .scenery-forest-mist { animation: scenery-mist-drift 19s ease-in-out infinite alternate; }
+.opening-map-npc-homes .scenery-swamp-bubbles circle:nth-child(2n + 1) { transform-box: fill-box; transform-origin: center; animation: scenery-swamp-bubble 3.8s ease-in-out infinite; }
+.opening-map-npc-homes .scenery-swamp-bubbles circle:nth-child(2n) { transform-box: fill-box; transform-origin: center; animation: scenery-swamp-bubble 4.7s ease-in-out -1.7s infinite; }
+.opening-map-npc-homes .scenery-swamp > path:first-child { animation: scenery-water-light 8s ease-in-out infinite alternate; }
+.opening-map-npc-homes.is-simplified * { animation: none !important; }
+.opening-map-rest-point { cursor: pointer; outline: none; }
+.opening-map-rest-point circle { fill: #284638dc; stroke: #efdaa0; stroke-width: 4; filter: drop-shadow(0 4px 8px #24372d8a); }
+.opening-map-rest-point path { fill: none; stroke: #f1e2bb; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+.opening-map-rest-point text { fill: #fff4d6; font: 800 11px 'Times New Roman', serif; letter-spacing: 1px; paint-order: stroke; stroke: #284638; stroke-width: 3px; }
+.opening-map-rest-point:hover circle,.opening-map-rest-point:focus-visible circle { fill: #b48b4f; stroke-width: 6; }
+.opening-map-water-quest { cursor: pointer; outline: none; }
+.opening-map-water-quest circle { fill: #426d72e8; stroke: #e8ddb4; stroke-width: 3; filter: drop-shadow(0 3px 6px #24372d8a); }
+.opening-map-water-quest text { fill: #fff4d6; font: 800 10px 'Times New Roman',serif; paint-order: stroke; stroke: #284638; stroke-width: 3px; }
+.opening-map-water-quest:hover circle,.opening-map-water-quest:focus-visible circle { fill: #ad8448; stroke-width: 5; }
+
+@keyframes scenery-leaf-breeze { from { transform: rotate(-.65deg) translateX(-.5px); } to { transform: rotate(.9deg) translateX(1.5px); } }
+@keyframes scenery-bamboo-breeze { from { transform: skewX(-.7deg); } to { transform: skewX(1.4deg); } }
+@keyframes scenery-cloth-breeze { from { transform: scaleY(1) skewX(-.3deg); } to { transform: scaleY(.975) skewX(.6deg); } }
+@keyframes scenery-water-light { from { opacity: .6; stroke-dashoffset: 0; } to { opacity: 1; stroke-dashoffset: -50; } }
+@keyframes scenery-water-flow { to { stroke-dashoffset: -798; } }
+@keyframes scenery-ripple { 0%, 100% { opacity: .15; } 45% { opacity: .7; } }
+@keyframes scenery-smoke-rise { 0% { opacity: 0; transform: translate(0, 8px) scale(.8); } 25% { opacity: .5; } 100% { opacity: 0; transform: translate(12px, -28px) scale(1.15); } }
+@keyframes scenery-boat-rock { from { transform: rotate(-1.5deg) translateY(-2px); } to { transform: rotate(1.5deg) translateY(3px); } }
+@keyframes scenery-cloud-drift { from { transform: translate(-50px, -8px); } to { transform: translate(120px, 22px); } }
+@keyframes scenery-bird-flight { from { transform: translate(-45px, 15px); } to { transform: translate(110px, -18px); } }
+@keyframes scenery-butterfly-flight { 0% { translate: 0 0; } 40% { translate: 28px -21px; } 75% { translate: -13px -35px; } 100% { translate: 13px -12px; } }
+@keyframes scenery-wing-flap { from { transform: scaleX(.32) rotate(-8deg); } to { transform: scaleX(1) rotate(8deg); } }
+@keyframes scenery-pollen-drift { from { transform: translate(0, 9px); opacity: .2; } to { transform: translate(23px, -15px); opacity: .9; } }
+@keyframes scenery-lantern-glow { from { opacity: .78; filter: drop-shadow(0 0 2px #f4c77855); } to { opacity: 1; filter: drop-shadow(0 0 8px #f4c778aa); } }
+@keyframes scenery-fire-flicker { from { transform: scaleY(.88) translateY(2px); opacity: .8; } to { transform: scaleY(1.08) translateY(-2px); opacity: 1; } }
+@keyframes scenery-mist-drift { from { translate: -18px 0; } to { translate: 24px -8px; } }
+@keyframes scenery-swamp-bubble { 0%, 20% { opacity: .1; scale: .6; } 55% { opacity: .8; scale: 1; } 100% { opacity: 0; scale: 1.4; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-map-scenery *,
+  .opening-map-npc-homes * { animation: none !important; }
+}

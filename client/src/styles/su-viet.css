@@ -375,7 +375,7 @@
 .npc-animation-storytelling .sprite-head,.npc-animation-resting .sprite-head{animation:map-one-npc-story 3.8s ease-in-out infinite}
 .npc-animation-fieldwork .sprite-torso,.npc-animation-hammering .sprite-torso{transform-box:fill-box;transform-origin:center top;animation:map-one-npc-work 1.8s ease-in-out infinite}
 .npc-animation-paddling .sprite-torso{transform-box:fill-box;transform-origin:center center;animation:map-one-npc-paddle 2s ease-in-out infinite}
-.npc-animation-running .sprite-head,.npc-animation-practice .sprite-head{animation:map-one-npc-ready 1.1s ease-in-out infinite alternate}
+.npc-animation-running .sprite-head,.npc-animation-practice .sprite-head{animation:map-one-npc-ready 1.65s ease-in-out infinite alternate}
 .npc-animation-healing .sprite-head,.npc-animation-commanding .sprite-head{animation:map-one-npc-story 2.8s ease-in-out infinite}
 .npc-animation-trading .map-one-identity-accessory,.npc-animation-guarding .map-one-identity-accessory{animation:map-one-npc-breathe 2.4s ease-in-out infinite}
 @keyframes map-one-npc-story{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}

@@ -24,7 +24,7 @@ describe('village economy and activities',()=>{
   });
   it('keeps unequipped starter shoes removed after saving and loading',()=>{
     const {progress,profile}=player();
-    const result=applyVillageCommand(progress,profile,{type:'unequip',id:'shoes-sandals'});
+    const result=applyVillageCommand(progress,profile,{type:'unequip',id:'shoes-ranger-boots'});
     saveVillageResult(result);
     expect(readHistoryProfile().customization.equipped.shoes).toBeUndefined();
   });
@@ -71,7 +71,7 @@ describe('village economy and activities',()=>{
     expect(()=>applyVillageCommand(progress,profile,{type:'gather',id:'village-gift-lotus'},2000)).toThrow('đã được nhặt');
     expect(applyVillageCommand(progress,profile,{type:'gather',id:'village-gift-lotus'},301000).progress.gold).toBe(450);
   });
-  it('applies the forest-keeper gathering bonus from the saved herbalism skill',()=>{
+  it('does not apply bonuses from legacy character creation skills',()=>{
     const {progress,profile}=player();
     const forestProfile={
       ...profile,
@@ -79,8 +79,8 @@ describe('village economy and activities',()=>{
       startingSkills:{herbalism:99,hunting:88,stamina:72,intellect:65},
     };
     const result=applyVillageCommand(progress,forestProfile,{type:'gather',id:'village-gift-lotus'},1000);
-    expect(result.progress.gold).toBeGreaterThan(progress.gold+25);
-    expect(result.profile.startingSkills?.herbalism).toBe(100);
+    expect(result.progress.gold).toBe(progress.gold+25);
+    expect(result.profile).not.toHaveProperty('startingSkills');
     expect(result.message).toContain('xu');
   });
   it('puts every new location on reachable ground',()=>{

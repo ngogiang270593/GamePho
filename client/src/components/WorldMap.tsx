@@ -27,8 +27,9 @@ import '../styles/movement-controls.css';
 import {HISTORY_MENU_PLACES} from '../game/suVietMap';
 import { MAP_ONE_NPCS } from '../game/mapOneNpcs';
 import { MAP_ONE_LAYOUT_SCALE, MAP_ONE_WORLD_SIZE, MAP_ONE_ZONES } from '../game/mapOneMap';
-import type { StartingCharacterId } from '../game/startingCharacters';
+import type { PlayableCharacterId } from '../game/startingCharacters';
 import type { CharacterSpriteSheet, SpriteAction } from '../game/characterSpriteSheet';
+import type { MapCharacterDraft } from '../game/mapCharacterDraft';
 
 interface WorldMapProps {
   appearance: CharacterAppearance;
@@ -48,9 +49,11 @@ interface WorldMapProps {
   fame?: number;
   customization?: CharacterCustomization;
   activeQuestLocationId?: string;
-  startingCharacter?: StartingCharacterId;
+  startingCharacter?: PlayableCharacterId;
   playerSpriteSheet?: CharacterSpriteSheet | null;
   previewMotion?: { action: SpriteAction; facing: Facing; playing?: boolean; frame?: number };
+  designerCharacters?: readonly MapCharacterDraft[];
+  onMapPlace?: (point: Point) => void;
 }
 
 function readMapOnePosition(key: string, fallback: Point): Point {
@@ -87,7 +90,7 @@ function readMapOneDiscoveredZones(key: string): string[] {
   }
 }
 
-export function WorldMap({ appearance, playerName, compact = false, persist = true, suspended = false, onInteract, locations: configuredLocations, featureLabels, mapName = 'Hẻm 28', buildings = BUILDINGS, positionStorageKey = POSITION_STORAGE_KEY, historyMode = false, landscape, spawn = SPAWN, fame = 0, customization, activeQuestLocationId, startingCharacter, playerSpriteSheet, previewMotion }: WorldMapProps) {
+export function WorldMap({ appearance, playerName, compact = false, persist = true, suspended = false, onInteract, locations: configuredLocations, featureLabels, mapName = 'Hẻm 28', buildings = BUILDINGS, positionStorageKey = POSITION_STORAGE_KEY, historyMode = false, landscape, spawn = SPAWN, fame = 0, customization, activeQuestLocationId, startingCharacter, playerSpriteSheet, previewMotion, designerCharacters = [], onMapPlace }: WorldMapProps) {
   const id = `map-${useId().replace(/:/g, '')}`;
   const mapOneMode = historyMode && landscape === 'me-linh';
   const root = useRef<HTMLDivElement>(null);
@@ -383,7 +386,9 @@ export function WorldMap({ appearance, playerName, compact = false, persist = tr
   function endPan(event:PointerEvent<HTMLDivElement>) {
     const clickToWalk=event.pointerType==='mouse'&&event.button===0;
     const tapToWalk=(event.pointerType==='touch'||event.pointerType==='pen')&&tapEnabled;
-    if(event.type==='pointerup'&&drag.current&&!dragged.current&&!pinch.current&&(clickToWalk||tapToWalk)){
+    if(event.type==='pointerup'&&drag.current&&!dragged.current&&!pinch.current&&onMapPlace){
+      setSelectedInteraction(null);
+    }else if(event.type==='pointerup'&&drag.current&&!dragged.current&&!pinch.current&&(clickToWalk||tapToWalk)){
       const rect=event.currentTarget.getBoundingClientRect();
       setSelectedInteraction(null);
       navigateTo({x:camera.x+(event.clientX-rect.left)/rect.width*viewWidth,y:camera.y+(event.clientY-rect.top)/rect.height*viewHeight});
@@ -465,6 +470,20 @@ export function WorldMap({ appearance, playerName, compact = false, persist = tr
       </g>,
     }];
   }) : [];
+  const designerMapNpcs = designerCharacters.filter(character => inView(character.point)).map(character => ({
+    id: `designer-${character.id}`,
+    depth: character.point.y,
+    element: <g className="map-npc map-npc-designer" transform={`translate(${character.point.x} ${character.point.y})`}
+      data-testid="designer-map-npc" data-map-character={character.id} data-x={character.point.x} data-y={character.point.y}
+      role="img" aria-label={`${character.name} · đứng nhìn thẳng`}>
+      <ellipse cy="2" rx="25" ry="8" fill="#6c60474a" />
+      <CharacterSprite x="-31" y="-86" width="62" height="88" appearance={character.appearance} facing="down" />
+      <g className="map-npc-label" transform="translate(0 -101)">
+        <rect x={-Math.max(38, character.name.length * 3.2 + 16)} y="-12" width={Math.max(76, character.name.length * 6.4 + 32)} height="21" rx="10" fill="#fff8e8" fillOpacity=".94" stroke="#8b9b74" />
+        <text y="2" textAnchor="middle" fill="#4a6042" fontSize="10" fontWeight="800">{character.name}</text>
+      </g>
+    </g>,
+  }));
   const featureInfo = (feature: WorldFeature) => featureLabels?.[feature] ?? WORLD_FEATURES[feature];
   const markerLocations = mapLocations.filter(location => !location.id.startsWith('me-linh-hidden-')
     && !(mapOneMode && location.id !== 'hero-hai-ba-trung' && MAP_ONE_NPCS.some(npc => npc.locationId === location.id))
@@ -478,13 +497,21 @@ export function WorldMap({ appearance, playerName, compact = false, persist = tr
     <div ref={root} className={`world-map${compact ? ' world-map-compact' : ''}${blocked ? ' village-world-paused' : ''}${touchMode?' touch-controls-active':''}`} tabIndex={blocked ? -1 : 0} aria-hidden={blocked}
       role="region" aria-label={`Bản đồ ${mapName}. WASD hoặc mũi tên để đi, E để tương tác, M mở sơ đồ xóm.`}
       onKeyDown={keyDown} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)){clearInput();setControlReset(value=>value+1);} }}>
-      <div className="world-map-viewport" ref={viewport} onWheel={event => {
+      <div className={`world-map-viewport${onMapPlace ? ' is-place-mode' : ''}`} ref={viewport} onWheel={event => {
         if (touchMode) return;
         event.preventDefault();
         setPan({ x: 0, y: 0 });
         setZoom(value => Math.max(mapOneMode ? .42 : .6, Math.min(2.2, value + (event.deltaY < 0 ? .12 : -.12))));
       }} onPointerDown={startPan} onPointerMove={movePan} onPointerUp={endPan} onPointerCancel={endPan} onLostPointerCapture={endPan}
-        onClickCapture={event=>{if(dragged.current){event.stopPropagation();dragged.current=false;}}}>
+        onClickCapture={event=>{
+          if(dragged.current){event.stopPropagation();dragged.current=false;return;}
+          if(!onMapPlace||!(event.target instanceof Element)||event.target.closest('button,input,select'))return;
+          const svg=event.currentTarget.querySelector('svg');
+          const rect=svg?.getBoundingClientRect();
+          if(!rect||!rect.width||!rect.height)return;
+          onMapPlace({x:camera.x+(event.clientX-rect.left)/rect.width*viewWidth,y:camera.y+(event.clientY-rect.top)/rect.height*viewHeight});
+          event.stopPropagation();
+        }}>
         <svg className="neighborhood-svg" viewBox={`${camera.x} ${camera.y} ${viewWidth} ${viewHeight}`} role="group" aria-label="Xóm làng Việt Nam với các địa điểm và người hàng xóm">
           <NeighborhoodGround id={id} label={mapName} landscape={landscape} />
           {destination&&<g transform={`translate(${destination.x} ${destination.y})`} aria-hidden="true"><ellipse rx="15" ry="9" fill="#fff5bd88" stroke="#87672e" strokeWidth="2"/><path d="M-6 0H6M0-6V6" stroke="#87672e" strokeWidth="2"/></g>}
@@ -495,7 +522,7 @@ export function WorldMap({ appearance, playerName, compact = false, persist = tr
             <path d="M-5-2L0 2L5-2" fill="none" stroke="#9b7551" strokeWidth="2" />
             {location.icon&&<g transform="translate(0 -22)"><circle r="18" fill="#fff7df" stroke="#c2a576"/><text y="7" textAnchor="middle" fontSize="21">{location.icon}</text><title>{location.name}</title></g>}
           </g>)}
-          {[...scenery, player, ...companions, ...movingNeighbors, ...staticMapNpcs].sort((a, b) => a.depth - b.depth).map(item => <g key={item.id}>{item.element}</g>)}
+          {[...scenery, player, ...companions, ...movingNeighbors, ...staticMapNpcs, ...designerMapNpcs].sort((a, b) => a.depth - b.depth).map(item => <g key={item.id}>{item.element}</g>)}
         </svg>
         {!compact && <div className="map-location-markers" aria-label="Các địa điểm trong xóm">{markerLocations.map(location => {
           const info = infoForLocation(location);

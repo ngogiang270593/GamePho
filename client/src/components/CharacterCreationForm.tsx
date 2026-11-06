@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { CharacterSprite } from './CharacterSprite';
-import { characterGenders, getAppearanceOptions, type CharacterAppearance, type CharacterGender, type Facing } from '../game/character';
+import { characterGenders, getAppearanceOptions, type CharacterAppearance, type CharacterGender } from '../game/character';
+import { SPRITE_ACTION_LABELS, spriteSheetTarget, useAppliedSpriteSheet } from '../game/characterSpriteSheet';
 import type { CharacterCustomization } from '../game/characterCustomization';
-import type { StartingCharacterId } from '../game/startingCharacters';
+import type { PlayableCharacterId } from '../game/startingCharacters';
 import '../styles/character-creation.css';
 
 const fields = [
@@ -13,18 +14,11 @@ const fields = [
   { key: 'accessory', label: 'Phụ kiện' },
 ] as const;
 
-const directions: { value: Facing; label: string; arrow: string }[] = [
-  { value: 'left', label: 'Bên trái', arrow: '←' },
-  { value: 'up', label: 'Mặt sau', arrow: '↑' },
-  { value: 'down', label: 'Mặt trước', arrow: '↓' },
-  { value: 'right', label: 'Bên phải', arrow: '→' },
-];
-
 interface Props {
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  /** Keep a selected starting archetype's artwork and fitted outfit in the live preview. */
-  startingCharacter?: StartingCharacterId;
+  /** Preserve the playable character artwork in the live preview. */
+  startingCharacter?: PlayableCharacterId;
   name: string;
   onName: (name: string) => void;
   onAppearance: (changes: Partial<CharacterAppearance>) => void;
@@ -36,27 +30,26 @@ interface Props {
 }
 
 export function CharacterCreationForm({ appearance, customization, startingCharacter, name, onName, onAppearance, onGender, onRandom, onBack, onSubmit, promo }: Props) {
-  const [facing, setFacing] = useState<Facing>('down');
-  const [walking, setWalking] = useState(false);
+  const action = 'walk';
+  const facing = 'down';
+  const spriteTemplate = startingCharacter
+    ?? (appearance.outfit === 'forest' || customization.equipped.clothes === 'clothes-forest-keeper' ? 'forest-keeper' : null);
+  const spriteSheet = useAppliedSpriteSheet(spriteTemplate ? spriteSheetTarget(spriteTemplate, appearance.gender) : null);
+  const spritePlaying = spriteSheet?.clips.walk.directions.down.count === 8;
   return <section className="character-creation" aria-labelledby="creation-title">
     <div className="creation-shell">
       <header className="creation-header"><h1 id="creation-title">TẠO NHÂN VẬT</h1></header>
       <form className="creation-form" onSubmit={onSubmit}>
         <div className="creation-preview" aria-label="Xem trước nhân vật">
           <div className="creation-stage">
-            <CharacterSprite appearance={appearance} customization={customization} startingCharacter={startingCharacter} facing={facing} walking={walking} className="creation-model" role="img" aria-label={`Nhân vật ${appearance.gender === 'male' ? 'nam' : 'nữ'}${walking ? ' đang bước đi' : ''}`} />
+            <CharacterSprite appearance={appearance} customization={customization} startingCharacter={startingCharacter} spriteSheet={spriteSheet} facing={facing} walking spriteAction={action} spritePlaying={spritePlaying} data-preview-action={action} className="creation-model" role="img" aria-label={`Nhân vật ${appearance.gender === 'male' ? 'nam' : 'nữ'} ${SPRITE_ACTION_LABELS[action].toLowerCase()} phía trước`} />
           </div>
           <span className="creation-preview-name">{name.trim() || 'Nhân vật của bạn'}</span>
           <div className="creation-genders" role="group" aria-label="Chọn nhân vật">
             {characterGenders.map(option => <button key={option.value} type="button" aria-pressed={appearance.gender === option.value} onClick={() => onGender(option.value)}>{option.label}</button>)}
           </div>
           <div className="creator-preview-controls creation-preview-controls" aria-label="Thử chuyển động">
-            <div className="sprite-direction-picker" aria-label="Xoay nhân vật">
-              {directions.map(direction => <button key={direction.value} type="button" aria-label={direction.label} aria-pressed={facing === direction.value} onClick={() => setFacing(direction.value)}>{direction.arrow}</button>)}
-            </div>
-            <button className="sprite-walk-toggle" type="button" aria-pressed={walking} onClick={() => setWalking(value => !value)}>
-              {walking ? 'Ⅱ Dừng bước' : '▷ Xem bước đi'}
-            </button>
+            <span>{SPRITE_ACTION_LABELS[action]} · Mặt trước</span>
           </div>
         </div>
         <div className="creation-controls">

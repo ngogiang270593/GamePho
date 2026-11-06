@@ -1,10 +1,13 @@
 import { cleanup, render } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CharacterItemPreview } from './CharacterItemPreview';
 import { CharacterSprite } from './CharacterSprite';
 import { CHARACTER_ITEMS } from '../game/characterCustomization';
 import { startingCharacterInventory } from '../game/characterInventory';
 import { startingCharacterAppearance, STARTING_CHARACTERS } from '../game/startingCharacters';
+
+// Catalog layering is the built-in baseline; applied imports have their own tests.
+vi.mock('../game/characterSpriteSheets.json', () => ({ default: {} }));
 
 afterEach(cleanup);
 

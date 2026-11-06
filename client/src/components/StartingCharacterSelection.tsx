@@ -1,23 +1,13 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { CharacterSprite } from './CharacterSprite';
-import { ForestKeeperActionSprite, type CharacterPreviewAction } from './ForestKeeperActionSprite';
-import type { CharacterAppearance, CharacterGender, Facing } from '../game/character';
+import { ForestKeeperActionSprite } from './ForestKeeperActionSprite';
+import type { CharacterAppearance, CharacterGender } from '../game/character';
 import { startingCharacterInventory } from '../game/characterInventory';
-import { STARTING_CHARACTERS, STARTING_SKILLS, rollStartingSkills, startingCharacterAppearance, startingCharacterImageAsset, type StartingCharacterId, type StartingSkills } from '../game/startingCharacters';
+import { STARTING_CHARACTERS, startingCharacterAppearance, startingCharacterImageAsset, type PlayableCharacterId } from '../game/startingCharacters';
+import { HERO_ALIGNMENT_PATHS, HERO_BASE_ATTRIBUTES, HERO_BIOGRAPHY, HERO_STARTING_TALENTS, type HeroDevelopment, type HeroTalentId, type HeroAlignmentPath } from '../game/heroDevelopment';
 import type { CharacterCustomization } from '../game/characterCustomization';
+import { spriteSheetTarget, useAppliedSpriteSheet } from '../game/characterSpriteSheet';
 import '../styles/character-creation.css';
-
-const PREVIEW_ACTION = [
-  { facing: 'down', movement: 'idle', duration: 600 },
-  { facing: 'right', movement: 'walk', duration: 3200 },
-  { facing: 'down', movement: 'turn', duration: 2400 },
-  { facing: 'right', movement: 'run', duration: 2800 },
-  { facing: 'down', movement: 'jump', duration: 1200 },
-] as const satisfies readonly { facing: Facing; movement: CharacterPreviewAction; duration: number }[];
-
-const ACTION_LABELS: Record<CharacterPreviewAction, string> = {
-  idle: 'đứng chờ', walk: 'đang đi bộ', turn: 'đang xoay người', run: 'đang chạy', jump: 'đang nhảy',
-};
 
 interface Props {
   name: string;
@@ -29,24 +19,25 @@ interface Props {
     displayName: string;
     appearance: CharacterAppearance;
     customization: CharacterCustomization;
-    startingCharacterId: StartingCharacterId;
+    startingCharacterId: PlayableCharacterId;
     startingCharacterImage: string;
-    startingSkills: StartingSkills;
-    developmentPath: string;
     promoCodeRedeemed: boolean;
+    testGameCodeRedeemed: boolean;
+    heroDevelopment: HeroDevelopment;
   }) => void;
 }
 
 export function StartingCharacterSelection({ name, promoCode, onName, onPromoCode, onBack, onConfirm }: Props) {
-  const fallbackGender: CharacterGender = 'male';
-  const [selectedGender, setSelectedGender] = useState<CharacterGender | null>(null);
-  const [selectedId, setSelectedId] = useState<StartingCharacterId | null>(null);
-  const [previewStep, setPreviewStep] = useState(0);
+  const selectedGender: CharacterGender = 'male';
+  const [selectedTalent, setSelectedTalent] = useState<HeroTalentId | null>(HERO_STARTING_TALENTS[0].id);
+  const [alignmentGoal, setAlignmentGoal] = useState<HeroAlignmentPath | null>(null);
+  const [testCode, setTestCode] = useState('');
+  const [testCodeApplied, setTestCodeApplied] = useState(false);
+  const [testCodeFeedback, setTestCodeFeedback] = useState('');
   const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
-  const previewAction = PREVIEW_ACTION[reducedMotion ? 0 : previewStep];
-  const previewMovement = previewAction.movement;
-  const previewFacing = previewAction.facing;
+  const previewMovement = 'walk';
+  const previewFacing = 'down';
   useEffect(() => {
     const preference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     const updatePreference = () => setReducedMotion(preference?.matches ?? false);
@@ -58,37 +49,40 @@ export function StartingCharacterSelection({ name, promoCode, onName, onPromoCod
       document.removeEventListener('visibilitychange', updateVisibility);
     };
   }, []);
-  useEffect(() => {
-    if (!selectedGender || reducedMotion || !pageVisible) return;
-    const timeout = window.setTimeout(() => {
-      setPreviewStep(step => (step + 1) % PREVIEW_ACTION.length);
-    }, PREVIEW_ACTION[previewStep].duration);
-    return () => window.clearTimeout(timeout);
-  }, [previewStep, selectedGender, selectedId, reducedMotion, pageVisible]);
-  const [skills, setSkills] = useState<Record<StartingCharacterId, StartingSkills>>(() =>
-    Object.fromEntries(STARTING_CHARACTERS.map(template => [template.id, rollStartingSkills(template)])) as Record<StartingCharacterId, StartingSkills>);
-  const selectedTemplate = STARTING_CHARACTERS.find(template => template.id === selectedId);
-  const previewTemplate = selectedTemplate ?? STARTING_CHARACTERS[0];
-  const appearance = startingCharacterAppearance(previewTemplate.id, selectedGender ?? fallbackGender);
+  const template = STARTING_CHARACTERS[0];
+  const appearance = startingCharacterAppearance(template.id, selectedGender);
+  const customSheet = useAppliedSpriteSheet(spriteSheetTarget(template.id, selectedGender));
   const customization = useMemo(
-    () => startingCharacterInventory(appearance, previewTemplate),
-    [appearance, previewTemplate],
+    () => startingCharacterInventory(appearance, template),
+    [appearance, template],
   );
   const validName = name.trim().length >= 2 && name.trim().length <= 24;
+  const isDevBuild = import.meta.env.DEV;
+
+  function applyTestCode() {
+    if (!isDevBuild) return;
+    if (testCode.trim().toUpperCase() === 'TEST-MELINH') {
+      setTestCodeApplied(true);
+      setTestCodeFeedback('Mã hợp lệ! Bạn sẽ bắt đầu với 10.000 xu và 10.000 danh vọng.');
+      return;
+    }
+    setTestCodeApplied(false);
+    setTestCodeFeedback('Mã thử chưa đúng. Hãy kiểm tra lại.');
+  }
 
   function confirm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!selectedGender || !selectedTemplate || !validName) return;
-    const selectedAppearance = startingCharacterAppearance(selectedTemplate.id, selectedGender);
+    if (!validName || !selectedTalent) return;
+    const selectedAppearance = startingCharacterAppearance(template.id, selectedGender);
     onConfirm({
       displayName: name.trim(),
       appearance: selectedAppearance,
-      customization: startingCharacterInventory(selectedAppearance, selectedTemplate),
-      startingCharacterId: selectedTemplate.id,
-      startingCharacterImage: startingCharacterImageAsset(selectedTemplate.id, selectedGender),
-      startingSkills: skills[selectedTemplate.id],
-      developmentPath: selectedTemplate.developmentPath,
+      customization: startingCharacterInventory(selectedAppearance, template),
+      startingCharacterId: template.id,
+      startingCharacterImage: startingCharacterImageAsset(template.id, selectedGender),
       promoCodeRedeemed: promoCode.trim().toUpperCase() === 'CODEX500',
+      testGameCodeRedeemed: isDevBuild && testCodeApplied,
+      heroDevelopment: { talent: selectedTalent, alignmentGoal },
     });
   }
 
@@ -96,136 +90,132 @@ export function StartingCharacterSelection({ name, promoCode, onName, onPromoCod
     <div className="creation-shell">
       <header className="creation-header">
         <button type="button" className="starting-screen-back" onClick={onBack}>← Quay lại</button>
-        <p className="eyebrow">CHỌN HÀNH TRÌNH KHỞI ĐẦU</p>
-        <h1 id="creation-title">Tạo nhân vật</h1>
+        <p className="eyebrow">KHỞI NGHĨA HAI BÀ TRƯNG · NĂM 40–43</p>
+        <h1 id="creation-title">{HERO_BIOGRAPHY.title} · {HERO_BIOGRAPHY.epithet}</h1>
+        <p>{HERO_BIOGRAPHY.age} · {HERO_BIOGRAPHY.home}. Câu chuyện theo chân một chàng trai lớn lên bên sông.</p>
       </header>
 
       <form className="starting-create-layout" onSubmit={confirm}>
         <aside className="starting-create-preview" aria-label="Xem trước nhân vật">
           <div className="starting-create-stage">
-            {!selectedGender
-              ? <div className="starting-await-gender">Chọn Nam hoặc Nữ để xem nhân vật</div>
-              : <div
-                className={`starting-live-character preview-${previewMovement}${!pageVisible ? ' preview-paused' : ''}`}
-                data-preview-action={previewMovement}
-                role="img"
-                aria-label={`${previewTemplate.name} ${selectedGender === 'female' ? 'nữ' : 'nam'} ${ACTION_LABELS[previewMovement]}`}
-              >
-                {previewTemplate.id === 'forest-keeper' ? <ForestKeeperActionSprite
-                  gender={selectedGender} action={previewMovement} facing={previewFacing} className="starting-game-sprite"
-                /> : <CharacterSprite
-                  appearance={appearance}
-                  customization={customization}
-                  startingCharacter={previewTemplate.id}
-                  facing={previewFacing}
-                  walking={previewMovement === 'walk' || previewMovement === 'run'}
-                  running={previewMovement === 'run'}
-                  className="starting-game-sprite"
-                />}
-              </div>}
+            <div
+              className={`starting-live-character preview-${previewMovement}${!pageVisible ? ' preview-paused' : ''}`}
+              data-preview-action={previewMovement}
+              data-preview-facing={previewFacing}
+              role="img"
+              aria-label="Nhân vật nam đang đi bộ về phía trước"
+            >
+              {!customSheet ? <ForestKeeperActionSprite
+                gender={selectedGender} action={previewMovement} facing={previewFacing} className="starting-game-sprite"
+              /> : <CharacterSprite
+                appearance={appearance}
+                customization={customization}
+                startingCharacter={template.id}
+                facing={previewFacing}
+                walking
+                spriteAction={previewMovement}
+                spritePlaying={!reducedMotion && pageVisible}
+                className="starting-game-sprite"
+              />}
+            </div>
           </div>
-          <h2>{name.trim() || 'Nhân vật của bạn'}</h2>
-          <p>{selectedTemplate ? previewTemplate.name : selectedGender ? 'Chọn một trong ba mẫu nhân vật' : 'Chọn giới tính để bắt đầu'}</p>
+          <h2>{name.trim() || 'Tiểu Mông'}</h2>
+          <p>Nam · Lối đánh du kích sông nước</p>
         </aside>
 
         <div className="starting-create-controls">
-          <fieldset className="starting-gender-picker">
-            <legend>1. Giới tính</legend>
-            <div className="creation-genders" role="group" aria-label="Giới tính">
-              {(['male', 'female'] as const).map(value => <button
-                key={value}
-                type="button"
-                aria-pressed={selectedGender === value}
-                onClick={() => {
-                  setSelectedGender(value);
-                  setPreviewStep(0);
-                }}
-              >{value === 'male' ? 'Nam' : 'Nữ'}</button>)}
-            </div>
-            <small>Giới tính chỉ thay đổi hình ảnh và diện mạo.</small>
-          </fieldset>
-
-          <section className="starting-template-picker" aria-label="Chọn mẫu nhân vật">
-            <div className="starting-section-heading">
-              <h2>2. Mẫu nhân vật</h2>
-              <button type="button" className="starting-reroll" onClick={() => setSkills(
-                Object.fromEntries(STARTING_CHARACTERS.map(template => [template.id, rollStartingSkills(template)])) as Record<StartingCharacterId, StartingSkills>,
-              )}>🎲 Tạo lại chỉ số</button>
-            </div>
-            {!selectedGender && <p className="starting-selection-hint">Chọn giới tính trước để xem ba mẫu phù hợp.</p>}
-            {selectedGender && <div className="starting-template-grid">
-              {STARTING_CHARACTERS.map(template => {
-                const imageGender = selectedGender;
-                const isSelected = selectedId === template.id;
-                const cardAppearance = startingCharacterAppearance(template.id, imageGender);
-                const cardCustomization = startingCharacterInventory(cardAppearance, template);
-                return <button
-                  type="button"
-                  key={template.id}
-                  className={`starting-template-card${isSelected ? ' is-selected' : ''}`}
-                  aria-pressed={isSelected}
-                  disabled={!selectedGender}
-                  onClick={() => {
-                    setSelectedId(template.id);
-                    setPreviewStep(0);
-                  }}
-                >
-                  <CharacterSprite
-                    className="starting-template-avatar"
-                    appearance={cardAppearance}
-                    customization={cardCustomization}
-                    startingCharacter={template.id}
-                  />
-                  <span className="starting-template-copy">
-                    <strong>{template.name}</strong>
-                    <span className="starting-template-description">{template.role}</span>
-                    <span className="starting-mini-skills">
-                      {STARTING_SKILLS.map(skill => {
-                        const value = skills[template.id][skill.id];
-                        return <span className="starting-mini-skill" key={skill.id}>
-                          <span>{skill.label}</span><b>{value}</b>
-                          <span className="starting-skill-track" aria-hidden="true"><span style={{ width: `${value}%` }} /></span>
-                        </span>;
-                      })}
-                    </span>
-                  </span>
-                </button>;
-              })}
-            </div>}
+          <section className="starting-template-picker" aria-label="Nhân vật chính">
+            <h2>Nhân vật khởi đầu</h2>
+            <p className="starting-selection-hint">Quen sông nước, cậu dùng dao găm, nỏ tre và bẫy để xoay xở trước đối thủ mạnh hơn.</p>
+            <CharacterSprite
+              className="starting-template-avatar"
+              appearance={appearance}
+              customization={customization}
+              startingCharacter={template.id}
+            />
           </section>
 
+          <details className="hero-biography">
+            <summary>Tiểu sử</summary>
+            <article>
+              <p className="hero-biography-meta">{HERO_BIOGRAPHY.epithet} · {HERO_BIOGRAPHY.age} · {HERO_BIOGRAPHY.home}</p>
+              {HERO_BIOGRAPHY.story.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              <h3>Tính cách</h3><p>{HERO_BIOGRAPHY.personality}</p>
+              <h3>Mục tiêu</h3><p>{HERO_BIOGRAPHY.motivation}</p>
+              <h3>Hành trình trưởng thành</h3><p>{HERO_BIOGRAPHY.arc}</p>
+            </article>
+          </details>
+
+          <section className="hero-attributes" aria-labelledby="hero-attributes-title">
+            <h2 id="hero-attributes-title">Chỉ số ban đầu</h2>
+            <p>Nền tảng cân bằng, thiên về sự nhanh nhẹn và khả năng sinh tồn.</p>
+            <div className="hero-attributes-grid">
+              {HERO_BASE_ATTRIBUTES.map(attribute => <article className="hero-attribute" key={attribute.id}>
+                <div><strong>{attribute.label}</strong><b>{attribute.value} <small>{attribute.unit}</small></b></div>
+                <p>{attribute.description}</p>
+              </article>)}
+            </div>
+          </section>
+
+          <fieldset className="hero-talent-picker">
+            <legend>Thiên phú · Chọn một</legend>
+            <p>Chọn sở trường sẽ đồng hành cùng cậu từ đầu.</p>
+            <div className="hero-talent-options">
+              {HERO_STARTING_TALENTS.map(talent => <button
+                type="button"
+                key={talent.id}
+                className="hero-choice-card"
+                aria-pressed={selectedTalent === talent.id}
+                onClick={() => setSelectedTalent(talent.id)}
+              >
+                <span className="hero-choice-check" aria-hidden="true">{selectedTalent === talent.id ? '✓' : '＋'}</span>
+                <strong>{talent.name}</strong>
+                <span>{talent.description}</span>
+              </button>)}
+            </div>
+          </fieldset>
+
+          <fieldset className="hero-alignment-picker">
+            <legend>Định hướng Chính – Tà</legend>
+            <p>Có thể đổi hướng trong hành trình; tâm pháp và thiên phú đặc quyền cần được mở khóa.</p>
+            <div className="hero-alignment-options">
+              {HERO_ALIGNMENT_PATHS.map(path => {
+                const alignmentValue = HERO_BASE_ATTRIBUTES.find(attribute => attribute.id === (path.id === 'righteous' ? 'virtue' : 'corruption'))!.value;
+                const meetsAlignment = alignmentValue >= path.alignmentThreshold;
+                return <button
+                  type="button"
+                  key={path.id}
+                  className={`hero-alignment-card hero-alignment-card--${path.id}`}
+                  aria-pressed={alignmentGoal === path.id}
+                  onClick={() => setAlignmentGoal(current => current === path.id ? null : path.id)}
+                >
+                  <span className="hero-alignment-heading"><strong>{path.name}</strong><small>{path.alignment}</small></span>
+                  <span>{path.style}</span>
+                  <span className="hero-alignment-requirements">
+                    <b>{meetsAlignment ? '✓' : '○'} {path.id === 'righteous' ? 'Đạo Đức' : 'Tà Khí'} ≥ {path.alignmentThreshold}</b>
+                    <span>Thiên phú: {path.requiredTalent}</span>
+                    <span>Tâm pháp: {path.requiredManual}</span>
+                  </span>
+                  <span className="hero-alignment-lock">{meetsAlignment ? 'Cần mở khóa thiên phú và tâm pháp trong game' : 'Chưa đủ chỉ số và chưa mở khóa thiên phú/tâm pháp'}</span>
+                </button>;
+              })}
+            </div>
+          </fieldset>
+
           <label className="starting-name-field" htmlFor="starting-character-name">
-            <span>3. Tên nhân vật</span>
+            <span>Tên nhân vật</span>
             <input
               id="starting-character-name"
               aria-label="Tên người chơi / Tên nhân vật"
               autoComplete="nickname"
               value={name}
               onChange={event => onName(event.target.value)}
-              placeholder="Ví dụ: Út Mận"
+              placeholder="Tiểu Mông"
               minLength={2}
               maxLength={24}
               required
             />
           </label>
-
-          <section className="starting-selected-details" aria-live="polite">
-            <h2>{selectedTemplate ? `Kỹ năng · ${selectedTemplate.name}` : 'Kỹ năng và trang bị'}</h2>
-            {selectedTemplate ? <>
-              <p className="starting-selected-description">{selectedTemplate.description}</p>
-              <div className="starting-selected-skills">
-                {STARTING_SKILLS.map(skill => {
-                  const value = skills[selectedTemplate.id][skill.id];
-                  return <div className="starting-skill" key={skill.id}>
-                    <span>{skill.label}</span><strong>{value}</strong>
-                    <span className="starting-skill-track" aria-hidden="true"><span style={{ width: `${value}%` }} /></span>
-                  </div>;
-                })}
-              </div>
-              <p className="starting-gear"><strong>Trang bị mặc định:</strong> {selectedTemplate.gearNames.join(' · ')}</p>
-            </> : <p className="starting-selection-hint">Chọn một mẫu để xem chỉ số và trang bị.</p>}
-            <p className="starting-growth-note">Mọi kỹ năng có thể phát triển tới 100; mẫu chỉ tạo lợi thế khởi đầu.</p>
-          </section>
 
           <details className="creation-promo">
             <summary>Mã quà tặng (không bắt buộc)</summary>
@@ -234,8 +224,28 @@ export function StartingCharacterSelection({ name, promoCode, onName, onPromoCod
             {promoCode.trim() && <small role="status">{promoCode.trim().toUpperCase() === 'CODEX500' ? 'Mã hợp lệ! Nhận 10.000 xu và 10.000 danh vọng.' : 'Mã chưa đúng. Kiểm tra lại hoặc để trống.'}</small>}
           </details>
 
+          {isDevBuild && <section className="starting-test-code" aria-label="Mã thử game">
+            <label htmlFor="starting-test-code-input">Mã thử game <small>Chỉ dùng trong bản phát triển</small></label>
+            <div className="starting-test-code__entry">
+              <input
+                id="starting-test-code-input"
+                aria-label="Nhập mã thử game"
+                value={testCode}
+                onChange={event => {
+                  setTestCode(event.target.value);
+                  setTestCodeApplied(false);
+                  setTestCodeFeedback('');
+                }}
+                autoComplete="off"
+                placeholder="Nhập mã để test nhanh"
+              />
+              <button type="button" onClick={applyTestCode}>Áp dụng</button>
+            </div>
+            {testCodeFeedback && <small className={testCodeApplied ? 'is-valid' : 'is-invalid'} role="status">{testCodeFeedback}</small>}
+          </section>}
+
           <footer className="starting-create-actions">
-            <button className="creation-confirm" type="submit" disabled={!selectedGender || !selectedTemplate || !validName}>Xác nhận và vào làng</button>
+            <button className="creation-confirm" type="submit" disabled={!validName}>Vào game</button>
           </footer>
         </div>
       </form>

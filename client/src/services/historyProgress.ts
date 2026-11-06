@@ -2,6 +2,7 @@ import { HISTORY_HEROES } from '../game/suViet';
 import { HISTORY_MAPS } from '../game/suVietMap';
 import { discoverEligibleHiddenMissions, historyMapMandatoryMissionIds, historyMapMissionStats, historyMapStory, historyMission, historyMissionAvailable } from '../game/historyMissions';
 import type { VillageState } from '../game/villageQuests';
+import { freshRiverCampaign, isRiverCampaignState, normalizeRiverCampaign, type RiverCampaignState } from '../game/riverCampaign';
 
 export const HISTORY_PROGRESS_KEY = 'su-viet-hanh-trinh-progress-v1';
 
@@ -91,6 +92,7 @@ export interface HistoryProgress {
   completedHistoryMaps: string[];
   finalChallengeMapId: string | null;
   finalChallengeAttempts: Record<string, number>;
+  riverCampaign: RiverCampaignState;
 }
 
 export function freshHistoryProgress(): HistoryProgress {
@@ -101,6 +103,7 @@ export function freshHistoryProgress(): HistoryProgress {
     totalWins: 0, totalLosses: 0, totalDraws: 0, bettingHistory: [], completedHistoryMissions: [],
     activeHistoryMissionId: null, discoveredHistoryMissions: [],
     unlockedHistoryMaps: [HISTORY_MAPS[0].id], completedHistoryMaps: [], finalChallengeMapId: null, finalChallengeAttempts: {},
+    riverCampaign: freshRiverCampaign(),
   };
 }
 
@@ -151,6 +154,7 @@ export function isHistoryProgress(value: unknown): value is HistoryProgress {
     && (progress.finalChallengeMapId === null || HISTORY_MAPS.some(map => map.id === progress.finalChallengeMapId))
     && progress.finalChallengeAttempts !== null
     && typeof progress.finalChallengeAttempts === 'object'
+    && isRiverCampaignState(progress.riverCampaign)
     && Object.entries(progress.finalChallengeAttempts).every(([mapId, count]) =>
       HISTORY_MAPS.some(map => map.id === mapId) && validNonNegativeInteger(count));
 }
@@ -209,6 +213,7 @@ export function migrateHistoryProgress(value: unknown): HistoryProgress | undefi
       ? Object.fromEntries(Object.entries(stored.finalChallengeAttempts).filter(([mapId, count]) =>
         HISTORY_MAPS.some(map => map.id === mapId) && validNonNegativeInteger(count)))
       : {},
+    riverCampaign: normalizeRiverCampaign(stored.riverCampaign),
   };
 }
 

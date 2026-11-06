@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from '
 import { CharacterItemPreview } from '../components/CharacterItemPreview';
 import { CharacterSprite } from '../components/CharacterSprite';
 import type { CharacterAppearance } from '../game/character';
-import type { StartingCharacterId } from '../game/startingCharacters';
+import type { PlayableCharacterId } from '../game/startingCharacters';
 import {
   CHARACTER_ITEMS,
   type CharacterCustomization,
@@ -44,7 +44,7 @@ function slotTab(item: CharacterItemCategory) {
 function CharacterPreview({ appearance, customization, startingCharacterId, name, onFacingChange }: {
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   name: string;
   onFacingChange: () => void;
 }) {
@@ -76,7 +76,7 @@ function CharacterPreview({ appearance, customization, startingCharacterId, name
 function EquipmentSlots({ appearance, customization, startingCharacterId, selectedCategory, onSelect }: {
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   selectedCategory: CharacterItemCategory;
   onSelect: (category: CharacterItemCategory) => void;
 }) {
@@ -139,7 +139,7 @@ function ItemDetail({ item, equipped, receivedAt, appearance, customization, sta
   receivedAt: number | undefined;
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   onToggle: () => void;
 }) {
   if (!item) return <div className="character-item-detail is-empty"><span aria-hidden="true">✦</span><p>Chọn một vật phẩm để xem chi tiết.</p></div>;
@@ -161,7 +161,7 @@ function InventoryGrid({ items, selectedId, equipped, appearance, customization,
   equipped: EquippedCharacterItems;
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   onSelect: (item: CharacterItem) => void;
 }) {
   if (!items.length) return <p className="character-inventory-empty">Chưa có vật phẩm trong nhóm này.</p>;
@@ -188,7 +188,7 @@ function SaveCharacter({ onSave }: { onSave: () => void }) {
 interface CharacterWardrobeProps {
   appearance: CharacterAppearance;
   customization: CharacterCustomization;
-  startingCharacterId?: StartingCharacterId;
+  startingCharacterId?: PlayableCharacterId;
   name: string;
   gold: number;
   fame: number;

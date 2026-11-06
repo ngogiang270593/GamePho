@@ -1,1 +1,1256 @@
-{}
+{
+  "forest-keeper:male": {
+    "version": 1,
+    "name": "Người đi rừng · Nam",
+    "src": "/assets/character-designer/forest-keeper-male-11d9d8cb9b02a950.png",
+    "imageWidth": 2048,
+    "imageHeight": 2304,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 9,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 16,
+            "count": 8
+          },
+          "right": {
+            "start": 65,
+            "count": 1
+          },
+          "up": {
+            "start": 48,
+            "count": 8
+          },
+          "left": {
+            "start": 57,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 64,
+            "count": 8
+          },
+          "up": {
+            "start": 40,
+            "count": 8
+          },
+          "left": {
+            "start": 48,
+            "count": 8
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 8
+          },
+          "right": {
+            "start": 64,
+            "count": 8
+          },
+          "up": {
+            "start": 40,
+            "count": 8
+          },
+          "left": {
+            "start": 48,
+            "count": 8
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "forest-keeper:female": {
+    "version": 1,
+    "name": "Người đi rừng · Nữ",
+    "src": "/assets/character-designer/forest-keeper-female-e37afafd182c492a.png",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 6,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 16,
+            "count": 8
+          },
+          "right": {
+            "start": 41,
+            "count": 1
+          },
+          "up": {
+            "start": 24,
+            "count": 1
+          },
+          "left": {
+            "start": 33,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 40,
+            "count": 8
+          },
+          "up": {
+            "start": 24,
+            "count": 8
+          },
+          "left": {
+            "start": 32,
+            "count": 8
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 40,
+            "count": 8
+          },
+          "up": {
+            "start": 24,
+            "count": 8
+          },
+          "left": {
+            "start": 32,
+            "count": 8
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:memory-keeper": {
+    "version": 1,
+    "name": "Bà mẹ quê · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-memory-keeper-753638f782e0eebf.png",
+    "imageWidth": 2048,
+    "imageHeight": 4608,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 18,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 136,
+            "count": 1
+          },
+          "up": {
+            "start": 120,
+            "count": 1
+          },
+          "left": {
+            "start": 128,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 112,
+            "count": 8
+          },
+          "right": {
+            "start": 136,
+            "count": 8
+          },
+          "up": {
+            "start": 120,
+            "count": 8
+          },
+          "left": {
+            "start": 128,
+            "count": 8
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 112,
+            "count": 8
+          },
+          "right": {
+            "start": 136,
+            "count": 8
+          },
+          "up": {
+            "start": 120,
+            "count": 8
+          },
+          "left": {
+            "start": 128,
+            "count": 8
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 56,
+            "count": 8
+          },
+          "right": {
+            "start": 64,
+            "count": 8
+          },
+          "up": {
+            "start": 40,
+            "count": 8
+          },
+          "left": {
+            "start": 48,
+            "count": 8
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 32,
+            "count": 8
+          },
+          "right": {
+            "start": 72,
+            "count": 8
+          },
+          "up": {
+            "start": 16,
+            "count": 8
+          },
+          "left": {
+            "start": 24,
+            "count": 8
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 104,
+            "count": 8
+          },
+          "right": {
+            "start": 80,
+            "count": 8
+          },
+          "up": {
+            "start": 88,
+            "count": 8
+          },
+          "left": {
+            "start": 96,
+            "count": 8
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:fisherman-tao": {
+    "version": 1,
+    "name": "Tảo · Nam",
+    "src": "/assets/character-designer/opening-map-npc-fisherman-tao-97041cbcacdab8f6.png",
+    "imageWidth": 2048,
+    "imageHeight": 1024,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 4,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 8
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 16,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:woman-general": {
+    "version": 1,
+    "name": "Võ Sư Nương · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-woman-general-957685d72983ff54.png",
+    "imageWidth": 2048,
+    "imageHeight": 1024,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 4,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 16,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:messenger": {
+    "version": 1,
+    "name": "Giao · Nam",
+    "src": "/assets/character-designer/opening-map-npc-messenger-f8f4a672d1d1fb53.png",
+    "imageWidth": 2048,
+    "imageHeight": 768,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 3,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 16,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:gate-guard": {
+    "version": 1,
+    "name": "Trưởng Đội Tuần Tra · Nam",
+    "src": "/assets/character-designer/opening-map-npc-gate-guard-4c0b5226496429c6.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  }
+}

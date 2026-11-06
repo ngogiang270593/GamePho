@@ -41,7 +41,7 @@ export function nearestWalkablePoint(origin:Point,allowed:(point:Point)=>boolean
 }
 export function moveControlled(point:Point,input:Point,seconds:number,running:boolean,allowed:(point:Point)=>boolean):Point {
   const length=Math.hypot(input.x,input.y);if(!length)return point;
-  const distance=(running?250:160)*Math.min(1,length)*Math.min(.1,Math.max(0,seconds));
+  const distance=(running?190:120)*Math.min(1,length)*Math.min(.1,Math.max(0,seconds));
   const steps=Math.max(1,Math.ceil(distance/4));let next=point;
   for(let i=0;i<steps;i++){
     const x={x:next.x+input.x/length*distance/steps,y:next.y};if(allowed(x))next=x;

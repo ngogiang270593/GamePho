@@ -20,16 +20,16 @@
 .player-sprite .sprite-leg-right { transform-origin: 92px 169px; }
 .player-sprite .sprite-arm-left { transform-origin: 56px 137px; }
 .player-sprite .sprite-arm-right { transform-origin: 104px 137px; }
-.player-sprite.is-walking .sprite-body { animation: sprite-walk-bob .48s linear infinite; }
+.player-sprite.is-walking .sprite-body { animation: sprite-walk-bob .72s linear infinite; }
 .player-sprite.is-walking .sprite-leg-left,
-.player-sprite.is-walking .sprite-arm-right { animation: sprite-step .48s ease-in-out infinite; }
+.player-sprite.is-walking .sprite-arm-right { animation: sprite-step .72s ease-in-out infinite; }
 .player-sprite.is-walking .sprite-leg-right,
-.player-sprite.is-walking .sprite-arm-left { animation: sprite-step .48s ease-in-out -.24s infinite; }
-.player-sprite.is-walking .sprite-coattails { animation: sprite-fabric .48s ease-in-out infinite; transform-origin: 80px 152px; }
+.player-sprite.is-walking .sprite-arm-left { animation: sprite-step .72s ease-in-out -.36s infinite; }
+.player-sprite.is-walking .sprite-coattails { animation: sprite-fabric .72s ease-in-out infinite; transform-origin: 80px 152px; }
 .player-sprite.is-running .sprite-body,
 .player-sprite.is-running .sprite-leg,
 .player-sprite.is-running .sprite-arm,
-.player-sprite.is-running .sprite-coattails { animation-duration: .3s; }
+.player-sprite.is-running .sprite-coattails { animation-duration: .48s; }
 
 @keyframes sprite-breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.012); } }
 @keyframes sprite-blink { 0%, 43%, 47%, 100% { opacity: 1; } 45% { opacity: .05; } }
