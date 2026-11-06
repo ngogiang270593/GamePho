@@ -8,7 +8,14 @@ const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
 const MAX_BODY_BYTES = 29 * 1024 * 1024;
 const TARGETS = new Set([
   ...['male', 'female'].map(gender => `forest-keeper:${gender}`),
-  ...['memory-keeper', 'fisherman-tao', 'woman-general', 'messenger', 'gate-guard', 'NPC_DAN_NONG_01', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03'].map(id => `opening-map-npc:${id}`),
+  // Keep this list in sync with OPENING_MAP_NPC_IDS in openingMapNpcs.ts.
+  // The designer exposes every map NPC, so rejecting the newer IDs here made
+  // the source button fail with the misleading "mẫu nhân vật" error.
+  ...['memory-keeper', 'fisherman-tao', 'woman-general', 'messenger', 'gate-guard',
+    'herbalist-lang', 'inn-server', 'fruit-aunt-tu', 'smith-thiet-chuy', 'woodcutter',
+    'toy-seller', 'beggar-hac-lao', 'singer-le-nuong', 'herdboy-a-sang', 'village-captain',
+    'black-wolf', 'poison-witch', 'double-agent-acau', 'blood-blade-phuong', 'tax-official-trieu',
+    'NPC_DAN_NONG_01', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03'].map(id => `opening-map-npc:${id}`),
 ]);
 const ACTIONS = ['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'];
 const DIRECTIONS = ['down', 'right', 'up', 'left'];

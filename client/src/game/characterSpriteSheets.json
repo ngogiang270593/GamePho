@@ -1846,5 +1846,203 @@
         }
       }
     }
+  },
+  "opening-map-npc:herbalist-lang": {
+    "version": 1,
+    "name": "Lão Lang Trung · Nam",
+    "src": "/assets/character-designer/opening-map-npc-herbalist-lang-23597b6471af3ceb.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
   }
 }

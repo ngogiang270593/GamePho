@@ -28,6 +28,13 @@ export const NeighborhoodGround = memo(function NeighborhoodGround({ id, label =
     <path d="M58 78H1382V962H58Z" fill={historic ? 'transparent' : `url(#${id}-tiles)`} stroke="#758a68" strokeWidth="7" />
     {!historic && <><path d="M80 347H1360V675H968V945H390V675H80Z" fill={`url(#${id}-paving)`} stroke="#b49d7c" strokeWidth="3" />
       <path d="M117 382H1318M416 703V913M945 704V913" fill="none" stroke="#f3e1bb" strokeWidth="4" opacity=".6" />
+      {/* Quy hoạch giao thông: trục đường chính, vỉa hè và các nút giao nằm dưới toàn bộ scenery. */}
+      <path d="M80 515H1360M720 347V945" fill="none" stroke="#8a8f78" strokeWidth="92" opacity=".46" />
+      <path d="M80 515H1360M720 347V945" fill="none" stroke="#d8c89f" strokeWidth="76" />
+      <path d="M80 515H1360M720 347V945" fill="none" stroke="#756f61" strokeWidth="56" />
+      <path d="M80 515H1360M720 347V945" fill="none" stroke="#9a9480" strokeWidth="2" strokeDasharray="18 16" opacity=".8" />
+      <path d="M80 467H1360M80 563H1360M672 347V945M768 347V945" fill="none" stroke="#eee2bf" strokeWidth="5" opacity=".9" />
+      <g fill="#c7b58e" opacity=".9"><rect x="92" y="454" width="1268" height="8" rx="4" /><rect x="92" y="568" width="1268" height="8" rx="4" /><rect x="664" y="359" width="8" height="574" rx="4" /><rect x="768" y="359" width="8" height="574" rx="4" /></g>
       <path d="M125 90H550V326H125ZM587 86H890V323H587ZM976 77H1300V326H976ZM76 681H375V945H76Z" fill="#7c986c" opacity=".4" />
       <path d="M495 775Q529 738 571 774L587 930H482Z" fill="#97ae75" /><path d="M859 779Q916 780 961 837V945H863Z" fill="#a0b47c" />
       <path d="M1020 701Q1172 660 1327 718V927H1006Z" fill="#8da370" /></>}
@@ -85,9 +92,14 @@ function Flowerpot({ x, y }: { x: number; y: number }) {
 
 function Building({ building }: { building: MapBuilding }) {
   const { x, y, width: w, height: h, title, subtitle, roof, color, id } = building;
+  const side = '#876b55';
   return <g transform={`translate(${x} ${y})`} stroke="#715643" strokeWidth="2" strokeLinejoin="round">
+    {/* Ground contact and a small extrusion give the flat artwork an orthographic, near-3D read. */}
+    <ellipse cx={w / 2} cy={h + 8} rx={w * .56} ry="18" fill="#4f543c" opacity=".16" stroke="none" />
+    <path d={`M${w - 3} 76L${w + 18} 64V${h - 3}L${w - 3} ${h}Z`} fill={side} opacity=".82" />
     <rect x="10" y="70" width={w + 4} height={h - 55} rx="6" fill="#4f543c" opacity=".17" stroke="none" />
     <path d={`M0 75H${w}V${h}H0Z`} fill={color} />
+    <path d={`M0 75H${w}L${w + 18} 64L${w + 18} 79L${w} 90H0Z`} fill="#f1d28f" opacity=".56" stroke="none" />
     <path d={`M4 ${h - 14}H${w - 4}V${h}H4Z`} fill="#b59c7b" stroke="none" />
     <rect x={w / 2 - 37} y={h - 104} width="74" height="103" rx="3" fill="#665747" />
     <path d={`M${w / 2 - 32} ${h - 94}H${w / 2 + 32}V${h - 4}H${w / 2 - 32}Z`} fill="#483c36" stroke="#9b7754" strokeWidth="4" />
@@ -102,6 +114,8 @@ function Building({ building }: { building: MapBuilding }) {
     {[0, 1, 2, 3].map(n => <path key={n} d={`M${6 - n * 5} ${35 + n * 14}Q${w / 2} ${18 + n * 17} ${w - 6 + n * 5} ${35 + n * 14}`} fill="none" stroke="#e9bc8b" opacity=".42" />)}
     {Array.from({ length: Math.floor(w / 22) }, (_, n) => <path key={n} d={`M${14 + n * 22} 21L${n * 24 - 5} 85`} fill="none" stroke="#593d36" opacity=".3" />)}
     <path d={`M-17 87Q${w / 2} 96 ${w + 17} 87`} fill="none" stroke="#573e35" strokeWidth="7" />
+    <path d={`M${w / 2 - 52} ${h}H${w / 2 + 52}L${w / 2 + 43} ${h + 12}H${w / 2 - 43}Z`} fill="#a17c5b" />
+    <path d={`M${w / 2 - 46} ${h + 14}H${w / 2 + 46}`} stroke="#e2c18b" strokeWidth="3" />
     <rect className="map-building-sign" x="16" y="96" width={w - 32} height="41" rx="8" />
     <text className="map-building-title" x={w / 2} y="123" textAnchor="middle" fill="#fff0c9" fontSize={id === 'tailor' ? 18 : 21} fontWeight="900" stroke="none" letterSpacing=".6">{title}</text>
     <rect className="map-ground-label-backplate" x={w / 2 - Math.min(w - 20, 240) / 2} y={h - 28} width={Math.min(w - 20, 240)} height="22" rx="8" />
