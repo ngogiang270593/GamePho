@@ -785,18 +785,11 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
           </button>
         </nav>
       </div>
-      <aside className="river-battle__controls">
-        <h2>Chiến trường Chốt Chặn</h2>
-        <p className="river-battle__movement-hint">WASD / ↑↓←→: di chuyển · kỹ năng phím 1–5</p>
-        <p>Bẫy tre: {battle.bambooUsed}/{campaign.oldBamboo} · {haBaEquipped && battle.hero.y >= 2.5 && battle.hero.y <= 3.5 ? 'Hà Bá Tức Công đang hồi phục bên sông.' : 'Không có tâm pháp hồi phục.'}</p>
-        <p>Trưởng Đội {battle.bossHp}/{INITIAL_BOSS_HP} HP{battle.armorTurns > 0 ? ` · giáp vỡ +${battle.armorBreakBonus}%` : ''}{battle.bossPoisonTurns > 0 ? ` · độc ${battle.bossPoisonTurns}` : ''}</p>
-        <p>Lính giáo {battle.soldiers.map(soldier => `${soldier.hp} HP`).join(' · ')}</p>
-        {aimMode && <button type="button" onClick={() => { setAimMode(null); setAimPoint(null); setNotice(''); }}>Hủy ngắm chiêu</button>}
-        <label className="river-battle__quality"><input type="checkbox" checked={reducedEffects} onChange={event => setReducedEffects(event.target.checked)} /><span>Giảm chất lượng hiệu ứng</span></label>
-        {notice && <p role="status">{notice}</p>}
-        <p className="river-battle__log" role="status">{battle.log}</p>
-        <small>Tâm pháp {HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name}. Nhấp kỹ năng rồi chọn điểm ngắm trên bản đồ. Boss báo vùng nguy hiểm trước khi đánh.</small>
-      </aside>
+      <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng">
+        <span className="river-battle__meditation-kicker">TÂM PHÁP</span>
+        <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
+        <small>{haBaEquipped ? 'Hà Bá Tức Công · hồi phục khi đứng trên sông' : 'Nội lực hỗ trợ chiến đấu'}</small>
+      </section>
     </div>
     {battle.status === 'won' && <section className="river-battle__outcome" aria-label={endingStep < 3 ? 'Đối thoại cuối trận' : 'Chọn kết cục'}>
       {endingStep < 3 ? <>

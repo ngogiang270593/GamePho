@@ -1382,6 +1382,26 @@
   font-size: 10px;
 }
 
+.river-battle--realtime .river-battle__meditation {
+  position: absolute;
+  z-index: 9;
+  top: 14px;
+  left: 14px;
+  display: grid;
+  gap: 3px;
+  min-width: 164px;
+  padding: 9px 12px;
+  border: 1px solid #e7d29b99;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1d4036df, #172b27d9);
+  box-shadow: 0 8px 20px #10231d55;
+  color: #fff3d1;
+  pointer-events: none;
+}
+.river-battle__meditation-kicker { color: #e8c878; font: 700 9px/1 Arial, sans-serif; letter-spacing: .16em; }
+.river-battle__meditation strong { font: 700 14px/1.15 Georgia, serif; }
+.river-battle__meditation small { color: #d9e4c8; font-size: 10px; line-height: 1.25; }
+
 .river-battle--realtime .river-battle__controls {
   position: absolute;
   z-index: 9;
