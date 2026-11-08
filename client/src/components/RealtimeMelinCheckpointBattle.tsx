@@ -786,6 +786,7 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
         </nav>
       </div>
       <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng">
+        <span className="river-battle__meditation-orb" aria-hidden="true">✦</span>
         <span className="river-battle__meditation-kicker">TÂM PHÁP</span>
         <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
         <small>{haBaEquipped ? 'Hà Bá Tức Công · hồi phục khi đứng trên sông' : 'Nội lực hỗ trợ chiến đấu'}</small>
