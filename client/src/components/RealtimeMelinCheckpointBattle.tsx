@@ -134,7 +134,6 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
     ?? DEFAULT_OPENING_MAP_NPCS.find(npc => npc.id === 'patrol-swordsman')!;
   const [battle, setBattle] = useState(() => getSnapshot(campaign));
   const [aimMode, setAimMode] = useState<AimMode>(null);
-  const [targetMode, setTargetMode] = useState<'nearest' | 'area'>('nearest');
   const [aimPoint, setAimPoint] = useState<RiverBattlePoint | null>(null);
   const [skillAnimation, setSkillAnimation] = useState<SkillAnimation | null>(null);
   const [notice, setNotice] = useState('');
@@ -791,11 +790,6 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
             <kbd>5</kbd><SkillIcon skill="ha-ba-cuon-luu" /><span>Tuyệt kỹ</span>
           </button>
         </nav>
-        <div className="river-battle__target-mode" aria-label="Cách chọn mục tiêu">
-          <span>ĐÁNH BOSS</span>
-          <button type="button" className={targetMode === 'nearest' ? 'is-active' : ''} onClick={() => setTargetMode('nearest')}>Gần nhất</button>
-          <button type="button" className={targetMode === 'area' ? 'is-active' : ''} onClick={() => setTargetMode('area')}>Vùng AOE</button>
-        </div>
         <div className="river-battle__resource-dock" aria-label="Tài nguyên chiến đấu">
           <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng" title={`${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.action ?? ''}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.effect ?? ''}`}>
             <span className="river-battle__meditation-orb" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m7 8 17-4 3 21-17 4Z" /><path d="m10 10 14-3M11 14l10-2M12 18l9-2M13 22l6-1" /><path d="m7 8 5 3 15-4" /></svg></span><span className="river-battle__meditation-copy"><span className="river-battle__meditation-kicker">TÂM PHÁP</span><strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong><small>{haBaEquipped ? 'Hà Bá Tức Công' : 'Nội lực bị động'}</small></span>

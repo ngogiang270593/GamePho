@@ -1436,9 +1436,6 @@
 .river-battle__resource-tile kbd { position: absolute; top: 3px; left: 3px; padding: 2px 4px; border: 1px solid #e6d39a88; border-radius: 3px; background: #17241fe8; color: #fff4d7; font: 700 8px/1 Arial, sans-serif; }
 .river-battle--realtime .river-battle__resource-dock { position: absolute; z-index: 9; top: 112px; right: 14px; display: grid; width: 112px; gap: 6px; }
 .river-battle--realtime .river-battle__resource-dock .river-battle__meditation { position: relative; }
-.river-battle--realtime .river-battle__target-mode { position: absolute; right: 14px; bottom: 82px; z-index: 9; display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid #d7bd7b88; border-radius: 8px; background: #182d27dd; color: #ecd18b; font: 700 8px Arial, sans-serif; }
-.river-battle__target-mode button { border: 1px solid #bca66b66; border-radius: 5px; padding: 4px 6px; background: #30483c; color: #e9efd8; font: 700 8px Arial, sans-serif; }
-.river-battle__target-mode button.is-active { border-color: #ffe08a; background: #836b38; color: #fff6d2; }
 @keyframes meditation-orbit { to { transform: rotate(360deg); } }
 
 .river-battle--realtime .river-battle__controls {
