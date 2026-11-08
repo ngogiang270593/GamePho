@@ -783,14 +783,14 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
           <button type="button" className="river-battle__skill-button is-ultimate" aria-label={`5 Hà Bá Cuộn Lưu · 30 MP${cooldownText('whirlpool')}`} title={`Hà Bá Cuộn Lưu · 30 MP${cooldownText('whirlpool')}`} disabled={battle.status !== 'playing' || battle.mp < 30 || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); beginAim('whirlpool', 'whirlpool', 30); }}>
             <kbd>5</kbd><SkillIcon skill="ha-ba-cuon-luu" /><span>Tuyệt kỹ</span>
           </button>
+          <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng">
+            <span className="river-battle__meditation-orb" aria-hidden="true">✦</span>
+            <span className="river-battle__meditation-kicker">TÂM PHÁP</span>
+            <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
+            <small>{haBaEquipped ? 'Hà Bá Tức Công' : 'Nội lực bị động'}</small>
+          </section>
         </nav>
       </div>
-      <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng">
-        <span className="river-battle__meditation-orb" aria-hidden="true">✦</span>
-        <span className="river-battle__meditation-kicker">TÂM PHÁP</span>
-        <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
-        <small>{haBaEquipped ? 'Hà Bá Tức Công · hồi phục khi đứng trên sông' : 'Nội lực hỗ trợ chiến đấu'}</small>
-      </section>
     </div>
     {battle.status === 'won' && <section className="river-battle__outcome" aria-label={endingStep < 3 ? 'Đối thoại cuối trận' : 'Chọn kết cục'}>
       {endingStep < 3 ? <>
