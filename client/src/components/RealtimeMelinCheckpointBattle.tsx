@@ -351,7 +351,9 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
         const range = distance(soldier.position, target);
         if (range > .18) return { ...soldier, position: bridgePoint(pointAlong(soldier.position, target, .48 * delta)) };
         const id = soldier.id;
-        if (distance(soldier.position, hero) <= 1.2 && now >= (enemyAttackAt.current[id] ?? 0)) {
+        const otherSoldierId = id === 'spear-1' ? 'spear-2' : 'spear-1';
+        const anotherSoldierIsAttacking = (attackUntil.current[otherSoldierId] ?? 0) > now;
+        if (distance(soldier.position, hero) <= 1.2 && !anotherSoldierIsAttacking && now >= (enemyAttackAt.current[id] ?? 0)) {
           enemyAttackAt.current[id] = now + 2400;
           attackUntil.current[id] = now + 620;
           setClock(now);
