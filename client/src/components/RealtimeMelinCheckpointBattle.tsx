@@ -773,17 +773,17 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
             const equipped = HERO_SKILL_TREE.find(skill => skill.id === id)!;
             const cooldownId: CooldownId = id === 'ca-coc-phon-thuy' ? 'water-dart' : id === 'rai-ca-quan-thuy' ? 'otter-dash' : id === 'rua-dam-lay-thu' ? 'turtle-guard' : 'bamboo-trap';
             const cost = id === 'ca-coc-phon-thuy' ? 40 : id === 'rai-ca-quan-thuy' ? 50 : id === 'rua-dam-lay-thu' ? 16 : 50;
-            return <button key={id} type="button" className="river-battle__skill-button" aria-label={`${index + 1} ${equipped.name} · ${cost} MP${cooldownText(cooldownId)}`} title={`${equipped.name} · ${cost} MP`} disabled={battle.status !== 'playing' || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); useCombatSkill(id); }}>
+            return <button key={id} type="button" className="river-battle__skill-button" aria-label={`${index + 1} ${equipped.name} · ${cost} MP${cooldownText(cooldownId)}`} title={`${equipped.name}\n${equipped.action}\n${equipped.effect}`} disabled={battle.status !== 'playing' || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); useCombatSkill(id); }}>
               <kbd>{index + 1}</kbd><SkillIcon skill={id as SkillVfxSkill} /><span>{equipped.name}</span>
             </button>;
           })}
-          <button type="button" className="river-battle__skill-button" aria-label={`4 Đánh thường${cooldownText('attack')}`} title="Đánh thường" disabled={battle.status !== 'playing' || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); beginAim('attack', 'attack', 0); }}>
+          <button type="button" className="river-battle__skill-button" aria-label={`4 Đánh thường${cooldownText('attack')}`} title="Đánh thường\nTấn công cơ bản bằng vũ khí." disabled={battle.status !== 'playing' || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); beginAim('attack', 'attack', 0); }}>
             <kbd>4</kbd><svg className="river-battle__skill-basic" viewBox="0 0 32 32" aria-hidden="true"><path d="m22 4 6 6-14 14-6-6L22 4Zm-5 3 6 6M8 18l6 6m-2 2 3 3m-7-7-4 4 3 3 4-4" /></svg><span>Đánh thường</span>
           </button>
-          <button type="button" className="river-battle__skill-button is-ultimate" aria-label={`5 Hà Bá Cuộn Lưu · 30 MP${cooldownText('whirlpool')}`} title={`Hà Bá Cuộn Lưu · 30 MP${cooldownText('whirlpool')}`} disabled={battle.status !== 'playing' || battle.mp < 30 || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); beginAim('whirlpool', 'whirlpool', 30); }}>
+          <button type="button" className="river-battle__skill-button is-ultimate" aria-label={`5 Hà Bá Cuộn Lưu · 30 MP${cooldownText('whirlpool')}`} title="Hà Bá Cuộn Lưu\nXoáy nước kéo địch và khiến chúng mất lượt kế tiếp." disabled={battle.status !== 'playing' || battle.mp < 30 || Boolean(skillAnimation)} onClick={event => { event.stopPropagation(); beginAim('whirlpool', 'whirlpool', 30); }}>
             <kbd>5</kbd><SkillIcon skill="ha-ba-cuon-luu" /><span>Tuyệt kỹ</span>
           </button>
-          <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng">
+          <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng" title={`${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.action ?? ''}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.effect ?? ''}`}>
             <span className="river-battle__meditation-orb" aria-hidden="true">✦</span>
             <span className="river-battle__meditation-kicker">TÂM PHÁP</span>
             <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
