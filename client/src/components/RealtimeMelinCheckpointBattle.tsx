@@ -344,10 +344,14 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
       }
       soldiers = soldiers.map(soldier => {
         if (!isAlive(soldier) || (soldier.stunnedTurns ?? 0) > 0) return soldier;
-        const range = distance(soldier.position, hero);
-        if (range > .7) return { ...soldier, position: bridgePoint(pointAlong(soldier.position, hero, .48 * delta)) };
+        // Keep the two NPCs in a loose formation around the hero instead of
+        // steering both to the same center point and visually stacking them.
+        const formationSide = soldier.id === 'spear-1' ? -1 : 1;
+        const target = bridgePoint({ x: hero.x + formationSide * 1.02, y: hero.y + .08 });
+        const range = distance(soldier.position, target);
+        if (range > .18) return { ...soldier, position: bridgePoint(pointAlong(soldier.position, target, .48 * delta)) };
         const id = soldier.id;
-        if (now >= (enemyAttackAt.current[id] ?? 0)) {
+        if (distance(soldier.position, hero) <= 1.2 && now >= (enemyAttackAt.current[id] ?? 0)) {
           enemyAttackAt.current[id] = now + 2400;
           attackUntil.current[id] = now + 620;
           setClock(now);
