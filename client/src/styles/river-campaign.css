@@ -1409,6 +1409,8 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   box-shadow: 0 0 7px #ffd56a, 0 0 13px #67dfff;
+  transform-origin: 50% 50%;
+  will-change: transform;
   animation: meditation-orbit 2.2s linear infinite;
 }
 .river-battle__meditation-orb { position: relative; display: grid; align-content: center; justify-items: center; gap: 2px; width: 32px; color: #ffeaa1; text-shadow: 0 0 8px #fff0a0; }
