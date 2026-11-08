@@ -789,6 +789,8 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
             <strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong>
             <small>{haBaEquipped ? 'Hà Bá Tức Công' : 'Nội lực bị động'}</small>
           </section>
+          <span className="river-battle__resource-tile is-health" title={`Bình máu: ${campaign.healthPotionCount ?? 0}`}><b>♥</b><small>Máu</small><strong>{campaign.healthPotionCount ?? 0}</strong></span>
+          <span className="river-battle__resource-tile is-mana" title="Bình mana: 0"><b>✦</b><small>Mana</small><strong>0</strong></span>
         </nav>
       </div>
     </div>

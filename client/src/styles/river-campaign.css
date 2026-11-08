@@ -403,7 +403,7 @@
 .river-battle__board {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 5px;
   width: min(100%, 620px);
   aspect-ratio: 1;
@@ -487,7 +487,7 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .river-battle__preview-path path {
@@ -1395,7 +1395,7 @@
   background: linear-gradient(145deg, #1d4036df, #172b27d9);
   box-shadow: 0 0 0 1px #f6d77d44, 0 0 18px #f2c95d99, 0 8px 20px #10231d88;
   color: #fff3d1;
-  pointer-events: none;
+  pointer-events: auto;
 }
 .river-battle--realtime .river-battle__meditation::before {
   position: absolute;
@@ -1413,6 +1413,14 @@
 .river-battle__meditation-kicker { color: #e8c878; font: 700 9px/1 Arial, sans-serif; letter-spacing: .16em; }
 .river-battle__meditation strong { overflow: hidden; width: 100%; color: #fff3d4; font: 700 8px/1.1 Arial, sans-serif; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .river-battle__meditation small { overflow: hidden; width: 100%; color: #d9e4c8; font-size: 8px; line-height: 1.1; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.river-battle__resource-tile { display: grid; grid-template-columns: 1fr auto; grid-template-rows: 1fr 1fr; align-items: center; min-width: 0; min-height: 52px; padding: 4px; border: 1px solid #c9ad716e; border-radius: 8px; background: linear-gradient(145deg, #465b43, #273c34); color: #fff3d4; box-shadow: inset 0 1px #ffffff1a, 0 2px 3px #101b17; }
+.river-battle__resource-tile b { grid-row: 1 / 3; font-size: 22px; line-height: 1; }
+.river-battle__resource-tile small { font: 700 8px/1 Arial, sans-serif; text-align: left; }
+.river-battle__resource-tile strong { font: 700 12px/1 Arial, sans-serif; text-align: left; }
+.river-battle__resource-tile.is-health { border-color: #d47c7088; }
+.river-battle__resource-tile.is-health b { color: #ff8b78; }
+.river-battle__resource-tile.is-mana { border-color: #65b9d488; }
+.river-battle__resource-tile.is-mana b { color: #78dfff; }
 @keyframes meditation-orbit { to { transform: rotate(360deg); } }
 @keyframes meditation-pulse { 50% { transform: scale(1.25); opacity: .7; } }
 
