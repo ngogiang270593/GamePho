@@ -403,7 +403,7 @@
 .river-battle__board {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 5px;
   width: min(100%, 620px);
   aspect-ratio: 1;
@@ -1421,6 +1421,8 @@
 .river-battle__resource-tile.is-health b { color: #ff8b78; }
 .river-battle__resource-tile.is-mana { border-color: #65b9d488; }
 .river-battle__resource-tile.is-mana b { color: #78dfff; }
+.river-battle--realtime .river-battle__resource-dock { position: absolute; z-index: 9; top: 112px; right: 14px; display: grid; width: 112px; gap: 6px; }
+.river-battle--realtime .river-battle__resource-dock .river-battle__meditation { position: relative; }
 @keyframes meditation-orbit { to { transform: rotate(360deg); } }
 @keyframes meditation-pulse { 50% { transform: scale(1.25); opacity: .7; } }
 
