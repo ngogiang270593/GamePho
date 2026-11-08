@@ -786,7 +786,7 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
         </nav>
         <div className="river-battle__resource-dock" aria-label="Tài nguyên chiến đấu">
           <section className="river-battle__meditation" aria-label="Tâm pháp đang sử dụng" title={`${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.action ?? ''}\n${HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.effect ?? ''}`}>
-            <span className="river-battle__meditation-orb" aria-hidden="true">✦</span><span className="river-battle__meditation-kicker">TÂM PHÁP</span><strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong><small>{haBaEquipped ? 'Hà Bá Tức Công' : 'Nội lực bị động'}</small>
+            <span className="river-battle__meditation-orb" aria-hidden="true">11<small>MẬT TỊCH</small></span><span className="river-battle__meditation-kicker">TÂM PHÁP</span><strong>{HERO_SKILL_TREE.find(skill => skill.id === loadout.meditationId)?.name ?? 'Chưa lĩnh hội'}</strong><small>{haBaEquipped ? 'Hà Bá Tức Công' : 'Nội lực bị động'}</small>
           </section>
           <span className="river-battle__resource-tile is-health" title={`Bình máu: ${campaign.healthPotionCount ?? 0}`}><b>♥</b><small>Máu</small><strong>{campaign.healthPotionCount ?? 0}</strong></span>
           <span className="river-battle__resource-tile is-mana" title="Bình mana: 0"><b>✦</b><small>Mana</small><strong>0</strong></span>

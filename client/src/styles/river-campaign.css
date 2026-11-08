@@ -1402,14 +1402,15 @@
   inset: -2px;
   border-radius: inherit;
   padding: 2px;
-  background: conic-gradient(from 0deg, transparent 0 26%, #fff0a8 34%, #9ff4d0 42%, transparent 52% 76%, #f7c861 84%, transparent 92%);
+  background: linear-gradient(90deg, transparent 0 35%, #fff0a8 48%, transparent 62%);
   content: '';
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: meditation-orbit 2.8s linear infinite;
+  animation: meditation-scan 1.8s ease-in-out infinite;
 }
-.river-battle__meditation-orb { position: absolute; top: 9px; right: 11px; color: #ffeaa1; font-size: 19px; text-shadow: 0 0 10px #fff0a0; animation: meditation-pulse 1.8s ease-in-out infinite; }
+.river-battle__meditation-orb { position: absolute; top: 5px; right: 5px; display: grid; place-items: center; width: 30px; height: 27px; border: 1px solid #f2d17c99; border-radius: 5px; color: #ffeaa1; font: 800 12px/1 Arial, sans-serif; text-shadow: 0 0 8px #fff0a0; }
+.river-battle__meditation-orb small { color: #f5d88d; font: 600 5px/1 Arial, sans-serif; }
 .river-battle__meditation-kicker { color: #e8c878; font: 700 9px/1 Arial, sans-serif; letter-spacing: .16em; }
 .river-battle__meditation strong { overflow: hidden; width: 100%; color: #fff3d4; font: 700 8px/1.1 Arial, sans-serif; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .river-battle__meditation small { overflow: hidden; width: 100%; color: #d9e4c8; font-size: 8px; line-height: 1.1; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
@@ -1423,8 +1424,7 @@
 .river-battle__resource-tile.is-mana b { color: #78dfff; }
 .river-battle--realtime .river-battle__resource-dock { position: absolute; z-index: 9; top: 112px; right: 14px; display: grid; width: 112px; gap: 6px; }
 .river-battle--realtime .river-battle__resource-dock .river-battle__meditation { position: relative; }
-@keyframes meditation-orbit { to { transform: rotate(360deg); } }
-@keyframes meditation-pulse { 50% { transform: scale(1.25); opacity: .7; } }
+@keyframes meditation-scan { 0%, 100% { opacity: .55; transform: scaleX(.72); } 50% { opacity: 1; transform: scaleX(1); } }
 
 .river-battle--realtime .river-battle__controls {
   position: absolute;
