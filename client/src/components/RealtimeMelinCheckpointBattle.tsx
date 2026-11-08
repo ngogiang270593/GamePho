@@ -153,6 +153,8 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
   const attackUntil = useRef<Record<string, number>>({});
   const timers = useRef<number[]>([]);
   const animationId = useRef(0);
+  const healthPotions = useRef(campaign.healthPotionCount ?? 0);
+  const manaPotions = useRef(Number(campaign.inventory.ITEM_THUOC_HOI_MP ?? 0));
   const lastFrame = useRef(0);
   const lastRender = useRef(0);
   const lastSave = useRef(0);
@@ -195,6 +197,11 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.target instanceof HTMLElement && event.target.closest('input, select, textarea, [contenteditable="true"]')) return;
       const key = event.key.toLowerCase();
+      if (key === 'z' || key === 'x') {
+        event.preventDefault();
+        hotkeyActions.current(key);
+        return;
+      }
       if (/^[1-5]$/.test(key)) {
         event.preventDefault();
         hotkeyActions.current(key);
@@ -651,6 +658,15 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
   }
 
   hotkeyActions.current = key => {
+    if (key === 'z') {
+      if (healthPotions.current < 1) return setNotice('Không còn bình máu.');
+      healthPotions.current -= 1;
+      updateBattle(current => ({ ...current, hp: Math.min(current.maxHp, current.hp + 150), log: 'Đã dùng bình máu · hồi 150 HP.' }));
+    } else if (key === 'x') {
+      if (manaPotions.current < 1) return setNotice('Không còn bình mana.');
+      manaPotions.current -= 1;
+      updateBattle(current => ({ ...current, mp: Math.min(current.maxMp, current.mp + 60), log: 'Đã dùng bình mana · hồi 60 MP.' }));
+    }
     if (key === '1') useCombatSkill(loadout.combatSkillIds[0]);
     else if (key === '2') useCombatSkill(loadout.combatSkillIds[1]);
     else if (key === '3') useCombatSkill(loadout.combatSkillIds[2]);
