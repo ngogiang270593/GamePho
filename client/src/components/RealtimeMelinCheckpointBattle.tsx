@@ -739,8 +739,8 @@ export function RealtimeMelinCheckpointBattle({ campaign, talent, onVictory, onR
           <i className="river-battle__actor-shadow" />
           <span className="river-battle__speech">{heroSpeech}</span>
           <span className="river-battle__actor-vitals" aria-hidden="true">
-            <span className="river-battle__actor-vital-row"><i><b style={{ width: `${hpPercent}%` }} /></i><small>{battle.hp}</small></span>
-            <span className="river-battle__actor-vital-row is-mana"><i><b style={{ width: `${mpPercent}%` }} /></i><small>{battle.mp}</small></span>
+            <span className="river-battle__actor-vital-row"><i><b style={{ width: `${hpPercent}%` }} /></i></span>
+            <span className="river-battle__actor-vital-row is-mana"><i><b style={{ width: `${mpPercent}%` }} /></i></span>
           </span>
           <CharacterSprite appearance={PLAYER_APPEARANCE} customization={PLAYER_CUSTOMIZATION} startingCharacter={PLAYER.id} walking={walking} facing={facing} spriteAction={heroAttacking ? 'attack' : undefined} spritePlaying={heroAttacking ? true : undefined} spritePlaybackIntervalMultiplier={heroAttacking ? .4 : undefined} className="river-battle__sprite" />
           <small>Tiểu Mông</small>
