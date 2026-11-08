@@ -1,4 +1,4 @@
-﻿.sprite-editor {
+.sprite-editor {
   --editor-ink: #344333;
   --editor-muted: #746f60;
   --editor-border: #d9cfb8;
@@ -9,7 +9,7 @@
   padding: clamp(16px, 3vw, 36px);
   color: var(--editor-ink);
   background: #f3efdf;
-  font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -63,6 +63,72 @@
 .sprite-editor button { min-height: 36px; padding: 7px 11px; border: 1px solid #cfc6b0; border-radius: 8px; color: #4f5c45; background: #fffef9; font: inherit; font-size: 12px; font-weight: 700; line-height: 1.4; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; }
 .sprite-editor button:hover:not(:disabled),
 .sprite-editor__header a:hover { border-color: #8a9d79; background: #edf2e5; }
+.sprite-editor__tool-tabs { width:min(1600px,100%); margin:0 auto 18px; display:flex; gap:8px; border-bottom:1px solid var(--editor-border); }
+.sprite-editor__tool-tabs button[aria-pressed='true'] { color:#fff; background:var(--editor-green-dark); border-color:var(--editor-green-dark); }
+.sprite-editor__skill-playground { width: min(1200px,100%); margin:0 auto 20px; padding:20px; border:1px solid var(--editor-border); border-radius:14px; background:var(--editor-paper); }
+.sprite-editor__skill-playground-header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+.sprite-editor__skill-playground-header p { margin:0 0 14px; color:var(--editor-muted); }
+.sprite-editor__skill-playground-controls { display:grid; grid-template-columns:minmax(180px,.8fr) minmax(230px,1.2fr) minmax(190px,auto); align-items:end; gap:12px; margin-bottom:12px; }
+.sprite-editor__skill-playground-controls label { display:grid; gap:6px; }
+.sprite-editor__skill-info { display:grid; min-height:54px; gap:2px; padding:8px 11px; border:1px solid #d9cfb8; border-radius:8px; background:#fffef9; }
+.sprite-editor__skill-info strong { display:flex; align-items:center; gap:7px; }
+.sprite-editor__skill-info span, .sprite-editor__skill-info small { color:var(--editor-muted); }
+.sprite-editor__skill-playground-layout { display:grid; grid-template-columns:minmax(280px,1fr) minmax(220px,.65fr); align-items:start; gap:16px; }
+.sprite-editor__skill-board { position:relative; display:block; width:min(100%,560px); aspect-ratio:1; padding:8px; overflow:hidden; border:1px solid #c6c0aa; border-radius:14px; background:#e9e3ce; box-shadow:0 8px 22px #33462916; isolation:isolate; }
+.sprite-editor__skill-board:focus-visible { outline:3px solid #9cb77b; outline-offset:3px; }
+.sprite-editor__skill-floor { position:absolute; inset:8px; display:grid; grid-template:repeat(6,minmax(0,1fr))/repeat(6,minmax(0,1fr)); gap:5px; overflow:hidden; border-radius:9px; background:#d8d1b8; }
+.sprite-editor__skill-floor span { border:1px solid #ffffff35; border-radius:5px; background:linear-gradient(145deg,#82976a,#657e59 65%,#536e50); box-shadow:inset 1px 1px #ffffff28,inset -2px -3px 4px #314a3840; }
+.sprite-editor__skill-floor span:nth-child(odd) { background:linear-gradient(145deg,#899c70,#6e865c 65%,#5c7552); }
+.sprite-editor__skill-floor span.is-river { border-color:#9de3e1a6; background:repeating-linear-gradient(165deg,#76c3c4 0 7px,#5ca9b0 8px 12px); box-shadow:inset 0 2px 6px #d4ffff70,inset 0 -3px 7px #236f8175; }
+.sprite-editor__skill-actor { position:absolute; z-index:4; display:grid; place-items:center; width:clamp(54px,12vw,76px); height:clamp(70px,16vw,104px); min-height:0 !important; padding:0 !important; border:0 !important; background:transparent !important; box-shadow:none !important; transform:translate(-50%,-78%); }
+.sprite-editor__skill-actor.is-hero { z-index:5; }
+.sprite-editor__skill-actor.is-post { z-index:3; width:clamp(45px,9vw,66px); height:clamp(60px,12vw,84px); }
+.sprite-editor__skill-actor.is-post.is-broken { filter:grayscale(.7) opacity(.75); }
+.sprite-editor__skill-actor:focus-visible { outline:2px solid #f3df86 !important; outline-offset:3px; }
+.sprite-editor__skill-actor small { position:absolute; bottom:-2px; padding:2px 5px; border:1px solid #fff9; border-radius:7px; background:#162a24d9; color:#fffbe7; font:700 10px Arial,sans-serif; white-space:nowrap; }
+.sprite-editor__skill-actor.is-walking .sprite-editor__skill-character { animation:practice-walk-bob 180ms ease-in-out infinite alternate; }
+.sprite-editor__skill-range { position:absolute; z-index:2; aspect-ratio:1; border:1px solid #6be1d391; border-radius:50%; background:radial-gradient(circle,#39c4ba0a 60%,#7eead51c); box-shadow:inset 0 0 16px #71e9d51a; transform:translate(-50%,-50%); pointer-events:none; }
+.sprite-editor__skill-aim { position:absolute; z-index:6; width:16px; height:16px; border:1px solid #ffe78c; border-radius:50%; background:#fff4a655; box-shadow:0 0 13px #fff3a8; transform:translate(-50%,-50%); pointer-events:none; }
+.sprite-editor__skill-movement-hint { align-self:center; margin:0; color:var(--editor-muted); font-size:12px; font-weight:700; white-space:nowrap; }
+.sprite-editor__skill-setup { display:grid; gap:12px; margin:0 0 18px; padding:16px; border:1px solid #d5c9aa; border-radius:12px; background:linear-gradient(145deg,#fffdf4,#f2eddf); }
+.sprite-editor__skill-setup > label, .sprite-editor__loadout-slots label { display:grid; gap:6px; color:#526148; font-size:12px; font-weight:700; }
+.sprite-editor__skill-setup select { width:100%; min-height:38px; padding:6px 9px; border:1px solid #cfc6b0; border-radius:8px; background:#fffef9; color:#435642; font:inherit; }
+.sprite-editor__encounter-card { display:grid; grid-template-columns:minmax(110px,210px) 1fr; align-items:center; gap:12px; min-height:92px; padding:8px !important; border:1px solid #bbb18f !important; background:#f7f1df !important; text-align:left; }
+.sprite-editor__encounter-card img { width:100%; height:84px; border-radius:7px; object-fit:cover; object-position:77% 55%; }
+.sprite-editor__encounter-card span { display:grid; gap:6px; }
+.sprite-editor__encounter-card small, .sprite-editor__loadout-slots small { color:var(--editor-muted); font-weight:400; line-height:1.45; }
+.sprite-editor__encounter-card.is-selected { border-color:#698b59 !important; background:#edf2df !important; box-shadow:0 0 0 2px #698b5944; }
+.sprite-editor__loadout-slots { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.sprite-editor__setup-actions { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; }
+.sprite-editor__setup-actions .is-primary { border-color:#466d4a; background:#527b53; color:#fffdf0; }
+.sprite-editor__setup-actions .is-primary:hover { border-color:#365b3c; background:#416b48; }
+.sprite-editor__skill-hotbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:7px; margin:0 0 14px; }
+.sprite-editor__skill-hotbar button { display:flex; align-items:center; gap:6px; min-height:38px; padding:5px 8px; }
+.sprite-editor__skill-hotbar button[aria-pressed='true'] { border-color:#5d8b73; background:#e2f1e9; box-shadow:inset 0 0 0 1px #5d8b7355; }
+.sprite-editor__skill-hotbar kbd { display:grid; place-items:center; min-width:21px; height:21px; border:1px solid #aeb698; border-radius:5px; background:#fff; color:#405c43; font:800 11px Arial,sans-serif; }
+.sprite-editor__skill-hotbar .skill-icon { width:23px; height:23px; }
+.sprite-editor__skill-hotbar .is-edit { margin-left:auto; }
+.sprite-editor__skill-cell { position:relative; z-index:1; display:grid; min-width:0; min-height:0; place-content:center; gap:1px; padding:2px; border:1px solid #c6c0aa; border-radius:7px; background:linear-gradient(145deg,#fffef8 0%,#f2eddf 100%); box-shadow:inset 1px 1px #fff,inset -2px -3px 4px #d5cebc,0 2px 0 #c7bfa9; color:#435642; cursor:pointer; }
+.sprite-editor__skill-cell.is-in-range { border-color:#55aeb0; background:linear-gradient(145deg,#d9f3e9 0%,#a9d8d0 100%); box-shadow:inset 1px 1px #f4fffa,inset -2px -3px 5px #8ec7ba,0 2px 0 #8db4a7; }
+.sprite-editor__skill-cell.is-move-target { border:2px dashed #648e54; background:#d8e9c7; }
+.sprite-editor__skill-cell.is-hero { z-index:4; border:2px solid #537c54; background:linear-gradient(145deg,#fff6d5 0%,#ead39a 100%); box-shadow:inset 1px 1px #fffdf0,inset -3px -4px 6px #d5bd80,0 3px 0 #9b895d,0 7px 12px #61502d25; }
+.sprite-editor__skill-cell.is-hero::before { content:""; position:absolute; left:23%; bottom:11%; width:54%; height:12%; border-radius:50%; background:radial-gradient(ellipse,#443d2b88 0%,#6653324d 46%,transparent 76%); filter:blur(2px); }
+.sprite-editor__skill-cell.is-post { border:2px solid #946a3b; background:linear-gradient(145deg,#fff0d0 0%,#ddbb82 100%); box-shadow:inset 1px 1px #fff6e3,inset -3px -4px 6px #c19b63,0 3px 0 #8e6d42; }
+.sprite-editor__skill-cell.is-post.is-broken { border-color:#8c6550; background:linear-gradient(145deg,#e9e1d3,#c6b7a5); box-shadow:inset 1px 1px #f6f0e5,inset -3px -4px 6px #ac9a84,0 3px 0 #78624d; color:#645447; }
+.sprite-editor__skill-cell small { font:700 10px Arial,sans-serif; }
+.sprite-editor__skill-character { position:relative; z-index:1; width:145%; height:175%; max-width:none; overflow:visible; transform:translateY(-7%) scale(1.28); transform-origin:50% 78%; filter:drop-shadow(0 4px 2px #332a1d80) drop-shadow(0 0 3px #fff8df88); pointer-events:none; }
+.sprite-editor__skill-post-art { position:relative; z-index:1; width:clamp(32px,6vw,50px); height:clamp(44px,8vw,64px); filter:drop-shadow(0 4px 3px #47351e68); pointer-events:none; }
+.sprite-editor__skill-playground-status { display:grid; gap:8px; padding:14px; border:1px solid var(--editor-border); border-radius:12px; background:#fffef9; }
+.sprite-editor__skill-playground-status h3, .sprite-editor__skill-playground-status p { margin:0; }
+.sprite-editor__skill-playground-status p[role='status'] { min-height:52px; color:#536345; }
+.sprite-editor__skill-playground-status small { color:var(--editor-muted); line-height:1.45; }
+.sprite-editor__skill-quality { display:flex !important; grid-column:1 / -1; align-items:center; gap:8px !important; color:var(--editor-muted) !important; }
+.sprite-editor__skill-damage { z-index:4; }
+.sprite-editor__skill-damage { position:absolute; z-index:3; left:75%; top:28%; color:#b83d25; font:900 clamp(18px,4vw,32px) Arial,sans-serif; text-shadow:0 1px #fff,0 0 8px #fff; animation:practice-damage .8s ease-out both; pointer-events:none; }
+@keyframes practice-damage { from { opacity:0; transform:translateY(12px); } 20% { opacity:1; } to { opacity:0; transform:translateY(-28px); } }
+@keyframes practice-walk-bob { from { transform:translateY(-7%) scale(1.28); } to { transform:translateY(calc(-7% - 3px)) scale(1.28); } }
+.sprite-editor--skills #movement-editor-panel { display:none; }
+.sprite-editor--sprites .sprite-editor__skill-playground { display:none; }
 .sprite-editor :is(button, a, input, select, summary):focus-visible { outline: 3px solid #9cb77b; outline-offset: 3px; }
 .sprite-editor button:disabled { opacity: .45; cursor: not-allowed; }
 
@@ -187,6 +253,13 @@ pre.sprite-editor__source { max-height: 300px; margin: 0; padding: 14px; overflo
   .sprite-editor__map-preview .opening-map--embedded { height: 72svh; min-height: 500px; }
   .sprite-editor { padding: 14px 10px 24px; font-size: 13px; }
   .sprite-editor__header { padding-inline: 5px; margin-bottom: 16px; }
+  .sprite-editor__skill-playground { padding: 12px; }
+  .sprite-editor__skill-playground-header { flex-direction: column; }
+  .sprite-editor__skill-playground-controls,
+  .sprite-editor__skill-playground-layout { grid-template-columns: 1fr; }
+  .sprite-editor__loadout-slots { grid-template-columns:1fr; }
+  .sprite-editor__skill-playground-controls { grid-template-columns:1fr; }
+  .sprite-editor__skill-board { gap: 3px; padding: 5px; }
   .sprite-editor__map-creator-layout { grid-template-columns: 1fr; }
   .sprite-editor__sidebar,
   .sprite-editor__previews { grid-template-columns: 1fr; }

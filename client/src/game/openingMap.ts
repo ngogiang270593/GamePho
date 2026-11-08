@@ -142,11 +142,11 @@ function makeTrees(): OpeningMapTree[] {
   let seed = 1847;
   const random = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
   const regions: { kind: OpeningMapTree['kind']; count: number; x: number; y: number; width: number; height: number }[] = [
-    { kind: 'bamboo', count: 106, x: 180, y: 750, width: 1200, height: 1500 },
-    { kind: 'fruit', count: 48, x: 1400, y: 170, width: 1370, height: 740 },
-    { kind: 'palm', count: 29, x: 3400, y: 500, width: 640, height: 2120 },
-    { kind: 'banyan', count: 28, x: 1330, y: 890, width: 1570, height: 1240 },
-    { kind: 'fruit', count: 25, x: 280, y: 2310, width: 980, height: 490 },
+    { kind: 'bamboo', count: 60, x: 180, y: 750, width: 1200, height: 1500 },
+    { kind: 'fruit', count: 28, x: 1400, y: 170, width: 1370, height: 740 },
+    { kind: 'palm', count: 18, x: 3400, y: 500, width: 640, height: 2120 },
+    { kind: 'banyan', count: 16, x: 1330, y: 890, width: 1570, height: 1240 },
+    { kind: 'fruit', count: 16, x: 280, y: 2310, width: 980, height: 490 },
   ];
   for (const region of regions) {
     for (let attempt = 0, placed = 0; placed < region.count && attempt < region.count * 20; attempt++) {

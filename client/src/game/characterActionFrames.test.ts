@@ -170,6 +170,8 @@ describe('eight real action frames', () => {
     mockCanvas();
     const jumping = await compileActionFrames(null, frames(), 'jump', 'up', 'Jump');
     expect(jumping.clips.jump).toMatchObject({ fps: 8, loop: false, directions: { up: { start: 0, count: 8 } } });
+    const attack = await compileActionFrames(null, frames(), 'attack', 'up', 'Attack');
+    expect(attack.clips.attack).toMatchObject({ fps: 8, loop: false, directions: { up: { start: 0, count: 8 } } });
     expect((await compileActionFrames(null, frames(), 'run', 'down', 'Run')).clips.run.fps).toBe(8);
     await expect(compileActionFrames(null, frames(1), 'walk', 'down', 'Incomplete')).rejects.toThrow('8');
   });

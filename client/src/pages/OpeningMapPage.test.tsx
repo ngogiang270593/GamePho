@@ -14,6 +14,12 @@ import { isOpeningMapWalkable, OPENING_MAP_AREAS, OpeningMapPage } from './Openi
 
 const POSITION_KEY = 'opening-map-player-position-landscape-v2';
 const SPAWN = { x: 2160, y: 1620 };
+function finishNpcDialogue() {
+  while (screen.queryByRole('button', { name: 'Đọc tiếp câu chuyện' })) {
+    fireEvent.click(screen.getByRole('button', { name: 'Đọc tiếp câu chuyện' }));
+  }
+  fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
+}
 const sprite = vi.hoisted(() => ({ playerProps: null as Record<string, unknown> | null }));
 vi.mock('../components/CharacterSprite', () => ({
   CharacterSprite: (props: { facing?: string; className?: string } & Record<string, unknown>) => {
@@ -29,7 +35,7 @@ afterEach(() => {
 });
 
 describe('OpeningMapPage', () => {
-  it('starts in the market with scenery and all twenty NPC map pins', () => {
+  it('starts in the market with scenery and all twenty-two NPC map pins', () => {
     localStorage.setItem(MAP_CHARACTER_DRAFT_KEY, JSON.stringify(DEFAULT_OPENING_MAP_NPCS));
     render(<OpeningMapPage />);
     const art = screen.getByRole('img', { name: /Làng quê Việt Nam ven sông/ });
@@ -39,7 +45,7 @@ describe('OpeningMapPage', () => {
     expect(document.querySelectorAll('[data-npc-id]').length).toBeGreaterThan(0);
     expect(screen.queryByLabelText('Bản đồ thu nhỏ')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Hiện bản đồ nhỏ' }));
-    expect(document.querySelectorAll('.opening-map-minimap__npc-pin')).toHaveLength(23);
+    expect(document.querySelectorAll('.opening-map-minimap__npc-pin')).toHaveLength(25);
     expect(document.querySelector('[data-npc-id="market-vendor"]')).toBeNull();
     expect(document.querySelector('image[href="/assets/maps/thon-que-watercolor.png"]')).toBeNull();
     expect(art.querySelectorAll('path, use, rect, circle').length).toBeGreaterThan(30);
@@ -106,6 +112,7 @@ describe('OpeningMapPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Đóng hành trình' }));
     fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Bà mẹ quê' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: 'Con xin thề bảo vệ xóm làng!' }));
     expect(JSON.parse(localStorage.getItem('su-viet-hanh-trinh-progress-v1')!).riverCampaign)
       .toMatchObject({ actionPoints: 2, morality: 60, vanTien: 50, fastTravel: true });
@@ -119,7 +126,7 @@ describe('OpeningMapPage', () => {
     expect([...document.querySelectorAll('[data-npc-id]')].map(npc => npc.getAttribute('data-npc-id'))).toEqual([
       'woman-general', 'herdboy-a-sang', 'blood-blade-phuong', 'tax-official-trieu',
       'fisherman-tao', 'woodcutter', 'fruit-aunt-tu', 'gate-guard', 'herbalist-lang',
-      'beggar-hac-lao', 'messenger', 'smith-thiet-chuy', 'village-captain', 'singer-le-nuong',
+      'beggar-hac-lao', 'patrol-archer', 'messenger', 'smith-thiet-chuy', 'village-captain', 'patrol-swordsman', 'singer-le-nuong',
       'poison-witch', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03', 'inn-server', 'toy-seller',
       'black-wolf', 'double-agent-acau', 'memory-keeper', 'NPC_DAN_NONG_01',
     ]);
@@ -128,6 +135,7 @@ describe('OpeningMapPage', () => {
   it('runs and saves the herbalist quest from the NPC conversation', () => {
     render(<OpeningMapPage persistPlayerPosition={false} />);
     fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Lão Lang Trung' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: 'Nhận việc tìm Xuyên Khung' }));
     fireEvent.click(screen.getByRole('button', { name: 'Tìm Xuyên Khung ven suối · 1 AP' }));
     fireEvent.click(screen.getByRole('button', { name: /Giao thuốc/ }));
@@ -144,9 +152,75 @@ describe('OpeningMapPage', () => {
     expect(screen.getByText(/Đã hoàn thành · Khí Huyết tối đa \+50/)).toBeTruthy();
   });
 
+  it('shows the NPC schedule and keeps keyboard focus inside the dialogue', () => {
+    render(<OpeningMapPage persistPlayerPosition={false} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Bà mẹ quê' }));
+
+    const dialog = screen.getByRole('dialog', { name: /Bà mẹ quê/ });
+    expect(dialog.querySelector('.opening-map-dialog__portrait-art')).toBeTruthy();
+    expect(dialog.querySelector('.opening-map-dialog__portrait-art')?.getAttribute('data-npc-artwork')).toBe('ba-me-que');
+    expect(dialog.querySelector('.opening-map-dialog__schedule')).toBeNull();
+    expect(dialog.querySelector('.opening-map-dialog__speech')?.textContent).toContain('Chuyến hàng của làng bị Trưởng Đội Tuần Tra chặn lại');
+    expect(within(dialog).queryByText('Nhiệm vụ')).toBeNull();
+    expect(within(dialog).queryByRole('button', { name: 'Tiếp tục đi' })).toBeNull();
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Kết thúc trò chuyện' }));
+    expect(dialog.querySelector('.opening-map-dialog__schedule')?.textContent).toContain('Ngồi trên chiếu rách ngoài hiên');
+    expect(within(dialog).getByRole('button', { name: 'Tiếp tục đi' })).toBeTruthy();
+
+    const controls = dialog.querySelectorAll<HTMLButtonElement>('button:not([disabled])');
+    const closeButton = within(dialog).getByRole('button', { name: 'Đóng trò chuyện' });
+    controls[controls.length - 1].focus();
+    fireEvent.keyDown(controls[controls.length - 1], { key: 'Tab' });
+    expect(document.activeElement).toBe(closeButton);
+    fireEvent.keyDown(closeButton, { key: 'Tab', shiftKey: true });
+    expect(document.activeElement).toBe(controls[controls.length - 1]);
+
+    fireEvent.keyDown(dialog, { key: 'Escape' });
+    expect(screen.queryByRole('dialog', { name: /Bà mẹ quê/ })).toBeNull();
+  });
+
+  it('paginates long NPC dialogue without showing multiple text blocks at once', () => {
+    const longDialogue = 'Con hãy mang chiếc bản đồ tuần tra theo bên mình. Nó sẽ giúp con quan sát lính gác từ xa. Nếu đường cầu bị chặn, hãy men theo bờ sông để tìm lối đi an toàn.';
+    const npcs = DEFAULT_OPENING_MAP_NPCS.map(npc => npc.id === 'smith-thiet-chuy'
+      ? { ...npc, dialogue: longDialogue, schedule: undefined }
+      : npc);
+    render(<OpeningMapPage npcs={npcs} persistPlayerPosition={false} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Thiết Chủy' }));
+
+    const dialog = screen.getByRole('dialog', { name: /Thiết Chủy/ });
+    const speech = dialog.querySelector('.opening-map-dialog__speech')!;
+    const firstPage = speech.querySelector('p')!.textContent;
+    expect(firstPage).toContain('Con hãy mang chiếc bản đồ tuần tra theo bên mình.');
+    expect(within(speech as HTMLElement).getByText(/1\/\d+/)).toBeTruthy();
+
+    fireEvent.click(within(speech as HTMLElement).getByRole('button', { name: 'Lời thoại tiếp' }));
+    expect(speech.querySelectorAll('p')).toHaveLength(1);
+    expect(speech.querySelector('p')?.textContent).not.toBe(firstPage);
+    expect(within(speech as HTMLElement).getByText(/2\/\d+/)).toBeTruthy();
+    fireEvent.click(within(speech as HTMLElement).getByRole('button', { name: 'Lời thoại trước' }));
+    expect(speech.querySelector('p')?.textContent).toBe(firstPage);
+  });
+
+  it('keeps in-progress and pending-choice objectives accurate in the quest log', () => {
+    const progress = freshHistoryProgress();
+    progress.riverCampaign = {
+      ...progress.riverCampaign,
+      npcQuestStages: { 'herbalist-lang': 1, 'singer-le-nuong': 3 },
+    };
+    localStorage.setItem(HISTORY_PROGRESS_KEY, JSON.stringify(progress));
+    render(<OpeningMapPage persistPlayerPosition={false} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Nhiệm vụ' }));
+
+    expect(screen.getByText('Tìm Xuyên Khung ven suối, rồi mang về giao')).toBeTruthy();
+    const singerStatus = screen.getByText('CHỜ CHỌN HƯỚNG');
+    expect(singerStatus.closest('article')?.textContent).toContain('Đã nhận tin tình báo · chọn chia sẻ hoặc giữ bí mật');
+    expect(singerStatus.closest('article')?.textContent).not.toContain('Đã hoàn thành');
+  });
+
   it('buys and gifts fruit for MP recovery or persistent affinity', () => {
     render(<OpeningMapPage persistPlayerPosition={false} />);
     fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Thím Tư' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: /Mua trái cây/ }));
     fireEvent.click(screen.getByRole('button', { name: /Tặng trái cây/ }));
 
@@ -334,8 +408,14 @@ describe('OpeningMapPage', () => {
   });
 
   it('completes Bà mẹ quê’s delivery only through the right NPCs and saves the next clue', async () => {
-    const openNpc = (name: string) => fireEvent.click(screen.getByRole('button', { name: `Trò chuyện với ${name}` }));
-    const closeDialog = () => fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục đi' }));
+    const openNpc = (name: string) => {
+      fireEvent.click(screen.getByRole('button', { name: `Trò chuyện với ${name}` }));
+      finishNpcDialogue();
+    };
+    const closeDialog = () => {
+      if (screen.queryByRole('button', { name: 'Đọc tiếp câu chuyện' }) || screen.queryByRole('button', { name: 'Kết thúc trò chuyện' })) finishNpcDialogue();
+      fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục đi' }));
+    };
     render(<OpeningMapPage persistPlayerPosition={false} />);
 
     openNpc('Giao');
@@ -390,6 +470,13 @@ describe('OpeningMapPage', () => {
     render(<OpeningMapPage persistPlayerPosition={false} />);
     fireEvent.click(screen.getByRole('button', { name: 'Nhiệm vụ' }));
     expect(screen.getByRole('region', { name: 'Nhiệm vụ' }).textContent).toContain('Hỏi Tảo về vật chắn dưới cầu tre');
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng bảng' }));
+    openNpc('Tảo');
+    expect(screen.getByRole('button', { name: 'Hỏi Tảo về vật chắn' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Hỏi Tảo về vật chắn' }));
+    expect(JSON.parse(localStorage.getItem(OPENING_MAP_DELIVERY_QUEST_KEY)!).stage).toBe('tao-informed');
+    fireEvent.click(screen.getByRole('button', { name: 'Nhiệm vụ' }));
+    expect(screen.getByRole('region', { name: 'Nhiệm vụ' }).textContent).toContain('Câu Cá Cóc ở Bến Nước, chọn chia cá và giao cho ba hộ dân để mở Bẫy Tre Gai');
   });
 
   it('opens the bag, quests, martial arts, and professions from separate buttons', () => {
@@ -505,6 +592,7 @@ describe('OpeningMapPage', () => {
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).riverCampaign)
       .toMatchObject({ actionPoints: 2, hp: 240, maxHp: 600, waterItemCarried: true, waterQuestComplete: false });
     fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Bà mẹ quê' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: 'Giao gáo nước · +50 HP tối đa' }));
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).riverCampaign)
       .toMatchObject({ actionPoints: 1, hp: 290, maxHp: 650, waterItemCarried: false, waterQuestComplete: true });
@@ -541,6 +629,7 @@ describe('OpeningMapPage', () => {
     expect(document.querySelector('[data-npc-id="NPC_DAN_NONG_02"] [data-npc-artwork="nong-dan-tre"]')).toBeTruthy();
     expect(document.querySelector('[data-npc-id="NPC_DAN_NONG_03"] [data-npc-artwork="nong-dan"]')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Trò chuyện với Bé Thảo' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: 'Chia Cá Cóc Sông Đáy · 1 AP' }));
     expect(JSON.parse(localStorage.getItem(HISTORY_PROGRESS_KEY)!).riverCampaign)
       .toMatchObject({ fishStock: 2, taoHandoffs: ['NPC_DAN_NONG_01'] });
@@ -635,11 +724,13 @@ describe('OpeningMapPage', () => {
     render(<OpeningMapPage npcs={[npc]} persistPlayerPosition={false} />);
     fireEvent.keyDown(window, { key: 'e' });
     const dialog = screen.getByRole('dialog', { name: npc.name });
-    for (const content of [npc.alias, npc.role, npc.locationLabel]) {
+    for (const content of [npc.alias, npc.locationLabel]) {
       expect(within(dialog).getByText(content)).toBeTruthy();
     }
-    expect(within(dialog).getByText(/GIAO HÀNG · Mang kiện hàng đến Giao ở Chợ Nhỏ/)).toBeTruthy();
+    expect(within(dialog).queryByText(/GIAO HÀNG · Mang kiện hàng đến Giao ở Chợ Nhỏ/)).toBeNull();
     expect(within(dialog).getByText(/Chuyến hàng của làng bị Trưởng Đội Tuần Tra chặn lại/)).toBeTruthy();
+    finishNpcDialogue();
+    expect(within(dialog).getByText(/GIAO HÀNG · Mang kiện hàng đến Giao ở Chợ Nhỏ/)).toBeTruthy();
     const player = screen.getByRole('img', { name: 'Nhân vật chính' });
     const initialX = player.getAttribute('data-player-x');
     fireEvent.keyDown(window, { key: 'd' });
@@ -650,6 +741,7 @@ describe('OpeningMapPage', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: `Trò chuyện với ${npc.name}` }));
     expect(screen.getByRole('dialog', { name: npc.name })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc trò chuyện' }));
     fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục đi' }));
     fireEvent.keyDown(window, { key: 'd' });
     await waitFor(() => expect(Number(player.getAttribute('data-player-x'))).toBeGreaterThan(Number(initialX)));

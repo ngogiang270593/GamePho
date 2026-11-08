@@ -1,4 +1,6 @@
 import { HERO_SKILL_TREE } from '../game/heroSkills';
+import type { SkillVfxSkill } from '../game/skillVfx';
+import { SkillIcon } from './SkillIcon';
 import '../styles/hero-skill-tree.css';
 
 export function HeroSkillTree() {
@@ -19,7 +21,7 @@ export function HeroSkillTree() {
       </header>
 
       <article className="hero-skill-node hero-skill-node--manual">
-        <span className="hero-skill-node__icon" aria-hidden="true">{innerManual.icon}</span>
+        <span className="hero-skill-node__icon"><SkillIcon skill={innerManual.id as SkillVfxSkill} /></span>
         <div className="hero-skill-node__body">
           <div className="hero-skill-node__meta"><span>{innerManual.kind}</span><span>{innerManual.branch}</span></div>
           <h2>{innerManual.name}</h2>
@@ -33,14 +35,14 @@ export function HeroSkillTree() {
       <div className="hero-skill-tree__branches">
         {activeSkills.map((skill, index) => (
           <article className={`hero-skill-node${index === activeSkills.length - 1 ? ' hero-skill-node--ultimate' : ''}`} key={skill.id}>
-            <span className="hero-skill-node__icon" aria-hidden="true">{skill.icon}</span>
+            <span className="hero-skill-node__icon"><SkillIcon skill={skill.id as SkillVfxSkill} /></span>
             <div className="hero-skill-node__body">
               <div className="hero-skill-node__meta"><span>Chiêu {index + 1}</span><span>{skill.branch}</span></div>
               <h2>{skill.name}</h2>
               <p>{skill.action}</p>
               <div className="hero-skill-node__stats">
-                <span>🔹 {skill.innerForce} Nội Lực</span>
-                <span>⏱ Hồi {skill.cooldown} lượt</span>
+                <span>{skill.innerForce} Nội Lực</span>
+                <span>Hồi {skill.cooldown} lượt</span>
               </div>
               <div className="hero-skill-node__effect"><strong>Hiệu ứng</strong><span>{skill.effect}</span></div>
             </div>

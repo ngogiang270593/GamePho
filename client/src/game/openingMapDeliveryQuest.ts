@@ -1,7 +1,7 @@
 export const OPENING_MAP_DELIVERY_QUEST_KEY = 'opening-map-delivery-quest-v1';
 
-export type OpeningMapDeliveryQuestStage = 'available' | 'carrying' | 'delivered' | 'completed' | 'clue-revealed';
-export type OpeningMapDeliveryQuestAction = 'accept' | 'deliver' | 'report' | 'reveal-clue';
+export type OpeningMapDeliveryQuestStage = 'available' | 'carrying' | 'delivered' | 'completed' | 'clue-revealed' | 'tao-informed';
+export type OpeningMapDeliveryQuestAction = 'accept' | 'deliver' | 'report' | 'reveal-clue' | 'ask-tao';
 
 export interface OpeningMapDeliveryQuestState {
   stage: OpeningMapDeliveryQuestStage;
@@ -9,7 +9,7 @@ export interface OpeningMapDeliveryQuestState {
 
 export const INITIAL_OPENING_MAP_DELIVERY_QUEST: OpeningMapDeliveryQuestState = { stage: 'available' };
 const OPENING_MAP_DELIVERY_QUEST_STAGES: readonly OpeningMapDeliveryQuestStage[] = [
-  'available', 'carrying', 'delivered', 'completed', 'clue-revealed',
+  'available', 'carrying', 'delivered', 'completed', 'clue-revealed', 'tao-informed',
 ];
 
 export function readOpeningMapDeliveryQuest(): OpeningMapDeliveryQuestState {
@@ -34,12 +34,14 @@ export function advanceOpeningMapDeliveryQuest(
     deliver: 'delivered',
     report: 'completed',
     'reveal-clue': 'clue-revealed',
+    'ask-tao': 'tao-informed',
   };
   const requiredStage: Record<OpeningMapDeliveryQuestAction, OpeningMapDeliveryQuestStage> = {
     accept: 'available',
     deliver: 'carrying',
     report: 'delivered',
     'reveal-clue': 'completed',
+    'ask-tao': 'clue-revealed',
   };
   if (state.stage !== requiredStage[action]) throw new Error('Nhiệm vụ Giao hàng chưa sẵn sàng cho bước này.');
   return { stage: nextStage[action] };

@@ -20,6 +20,16 @@ const npcActionPoses = [
 
 export const ACTION_POSES: Record<SpriteAction, readonly string[]> = {
   walk: [...walkPoses, ...walkPoses],
+  attack: [
+    'Đứng vững, tay đặt chắc trên chuôi vũ khí, nhìn về hướng đối thủ.',
+    'Xoay vai và hông, đưa vũ khí ra sau lấy đà.',
+    'Hạ trọng tâm, chân trước bước lên giữ thăng bằng.',
+    'Vung vũ khí nhanh theo đường chém ngang về phía trước.',
+    'Duỗi hết đòn đánh, giữ chắc cổ tay và hướng mắt theo mục tiêu.',
+    'Thu vũ khí về, xoay hông giảm lực sau cú đánh.',
+    'Trở lại thế thủ, đầu gối hơi chùng và vũ khí sẵn sàng.',
+    'Giữ thế chiến đấu cân bằng, không đổi vị trí chân.',
+  ],
   idle: ['Đứng cân bằng, hai chân cố định.', 'Hít vào nhẹ, vai nâng rất ít.', 'Ngực nâng nhẹ, giữ nguyên bàn chân.', 'Thở ra chậm, vai hạ nhẹ.', 'Đứng cân bằng, hai chân cố định.', 'Chớp mắt nhẹ, giữ nguyên tư thế.', 'Mở mắt, tay thả tự nhiên.', 'Trở về đúng tư thế của frame đầu.'],
   run: ['Chân trái vươn về trước, tay phải đánh về trước.', 'Chân trái chạm đất, thân hơi nghiêng.', 'Đẩy người bằng chân trái, chân phải thu lên.', 'Hai chân rời đất ngắn, chân phải vươn ra.', 'Chân phải vươn về trước, tay trái đánh về trước.', 'Chân phải chạm đất, thân hơi nghiêng.', 'Đẩy người bằng chân phải, chân trái thu lên.', 'Hai chân rời đất ngắn, trở về bước chân trái.'],
   turn: ['Đứng ở hướng ban đầu.', 'Xoay người 45 độ theo chiều kim đồng hồ.', 'Xoay người 90 độ theo chiều kim đồng hồ.', 'Xoay người 135 độ theo chiều kim đồng hồ.', 'Xoay người 180 độ theo chiều kim đồng hồ.', 'Xoay người 225 độ theo chiều kim đồng hồ.', 'Xoay người 270 độ theo chiều kim đồng hồ.', 'Xoay người 315 độ, chuẩn bị về hướng đầu.'],
@@ -169,7 +179,7 @@ export async function compileActionFrames(base: CharacterSpriteSheet | null, inp
     clips: {
       ...initial.clips,
       [action]: {
-        ...selected, fps: base?.clips[action]?.fps ?? 8, loop: base?.clips[action]?.loop ?? action !== 'jump',
+        ...selected, fps: base?.clips[action]?.fps ?? 8, loop: base?.clips[action]?.loop ?? (action !== 'jump' && action !== 'attack'),
         directions: { ...selected.directions, [facing]: { start, count: frameCount } },
       },
     },

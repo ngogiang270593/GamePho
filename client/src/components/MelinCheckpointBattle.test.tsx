@@ -1,232 +1,229 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MelinCheckpointBattle } from './MelinCheckpointBattle';
-import { freshRiverBattleSnapshot, freshRiverCampaign } from '../game/riverCampaign';
+import { freshRiverBattleSnapshot, freshRiverCampaign, type RiverBattleSnapshot } from '../game/riverCampaign';
+import { SKILL_LOADOUT_STORAGE_KEY } from '../game/heroSkillLoadout';
 
-describe('Mê Linh checkpoint tactical battle', () => {
-  afterEach(cleanup);
+function renderBattle(overrides: Record<string, unknown> = {}) {
+  const campaign = { ...freshRiverCampaign(), bossStarted: true, ...overrides } as ReturnType<typeof freshRiverCampaign>;
+  const onStateChange = vi.fn((_snapshot: RiverBattleSnapshot) => true);
+  render(<MelinCheckpointBattle
+    campaign={campaign}
+    talent={null}
+    haBaEquipped={false}
+    onVictory={vi.fn(() => true)}
+    onRetreat={vi.fn()}
+    onStateChange={onStateChange}
+  />);
+  const stage = screen.getByRole('application', { name: /Đấu trường thời gian thực/ });
+  Object.defineProperty(stage, 'getBoundingClientRect', {
+    configurable: true,
+    value: () => ({ left: 0, top: 0, right: 600, bottom: 600, width: 600, height: 600, x: 0, y: 0, toJSON: () => ({}) }),
+  });
+  return { stage, onStateChange };
+}
 
-  it('uses a 6 by 6 board and spends one AP for a one-cell move', () => {
-    const campaign = {
-      ...freshRiverCampaign(),
-      bossStarted: true,
-      trapRecipe: true,
-      oldBamboo: 3,
-      knowsDaoManual: true,
-      morality: 60,
-    };
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={vi.fn(() => true)}
-    />);
-    const board = screen.getByRole('grid', { name: 'Bàn cờ 6 nhân 6' });
-    expect(within(board).getAllByRole('gridcell')).toHaveLength(36);
-    fireEvent.click(screen.getByRole('button', { name: 'Di chuyển · 1 AP' }));
-    fireEvent.click(within(board).getByRole('gridcell', { name: 'Ô 2, 3' }));
-    expect(screen.getByText('AP 2 / 3 · Lượt 1')).toBeTruthy();
-    expect(within(board).getByRole('gridcell', { name: 'Ô 2, 3, Tiểu Mông' })).toBeTruthy();
+describe('Mê Linh real-time checkpoint battle', () => {
+  beforeEach(() => {
+    window.localStorage.removeItem(SKILL_LOADOUT_STORAGE_KEY);
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => window.setTimeout(() => callback(performance.now()), 16));
+    vi.stubGlobal('cancelAnimationFrame', (timer: number) => window.clearTimeout(timer));
   });
 
-  it('unlocks Nỏ Cóc after fishing and damages a target at range', () => {
-    const campaign = {
-      ...freshRiverCampaign(),
-      bossStarted: true,
-      trapRecipe: true,
-      oldBamboo: 3,
-      knowsDaoManual: true,
-      crossbowUnlocked: true,
-      battle: {
-        ...freshRiverBattleSnapshot(freshRiverCampaign()),
-        hero: { x: 2, y: 2 },
-        boss: { x: 4, y: 2 },
-      },
-    };
-    const onStateChange = vi.fn(() => true);
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped={false}
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={onStateChange}
-    />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Nỏ Cóc Liên Châu · 30 MP · 1 AP' }));
-
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 610,
-      bossPoisonTurns: 0,
-      poisonUsed: false,
-      mp: 320,
-      ap: 2,
-    }));
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    window.localStorage.removeItem(SKILL_LOADOUT_STORAGE_KEY);
   });
 
-  it('applies poison over three turns on the first successful dagger strike', () => {
+  it('replaces tile selection with a continuous arena and movement instructions', () => {
+    renderBattle();
+    const stage = screen.getByRole('application', { name: /Đấu trường thời gian thực/ });
+    expect(screen.queryByRole('gridcell')).toBeNull();
+    expect(screen.queryByRole('button', { name: /Di chuyển/ })).toBeNull();
+    expect(screen.getByText(/WASD \/ ↑↓←→: di chuyển · kỹ năng phím 1–5/)).toBeTruthy();
+    expect(stage.querySelectorAll('.river-battle__floor span')).toHaveLength(36);
+    expect(stage.querySelector('.river-battle__map-art')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__bridge')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--boss [data-sprite-name]')?.getAttribute('data-sprite-name'))
+      .toBe('Trưởng Đội Tuần Tra · Nam');
+    expect(stage.querySelector('.river-battle__actor--soldier[aria-label^="Lính Tuần Tra Cung"] .river-battle__sprite')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--soldier[aria-label^="Lính Tuần Tra Đao"] .river-battle__sprite')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--hero .river-battle__actor-vitals .is-mana')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--boss .river-battle__actor-vitals')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--hero .river-battle__speech')?.textContent).toBe('Ta sẽ phá vòng vây!');
+    expect(stage.querySelector('.river-battle__actor--boss .river-battle__speech')?.textContent).toBe('Qua cầu này, đừng hòng!');
+    expect(stage.querySelectorAll('.river-battle__skill-dock .river-battle__skill-button')).toHaveLength(5);
+    expect(stage.querySelector('.river-battle__map-art img')?.getAttribute('alt')).toMatch(/mũi thuyền.*cọc chắn.*tháp canh/);
+    expect(stage.querySelector('.river-battle__map-art source')?.getAttribute('srcset')).toContain('chot-chan-river-checkpoint-mobile.svg');
+    expect(stage.closest('.river-battle--realtime')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Cá Cóc Phún Thủy/ }).querySelector('kbd')?.textContent).toBe('1');
+    expect(screen.getByRole('button', { name: /Hà Bá Cuộn Lưu/ }).querySelector('kbd')?.textContent).toBe('5');
+  });
+
+  it('moves smoothly while a direction key is held', () => {
+    vi.useFakeTimers();
+    renderBattle();
+    const hero = screen.getByLabelText(/Tiểu Mông · 650 HP/);
+    const initialLeft = parseFloat((hero as HTMLElement).style.left);
+
+    fireEvent.keyDown(hero, { key: 'd' });
+    act(() => vi.advanceTimersByTime(180));
+    fireEvent.keyUp(window, { key: 'd' });
+
+    expect(parseFloat((screen.getByLabelText(/Tiểu Mông · 650 HP/) as HTMLElement).style.left)).toBeGreaterThan(initialLeft);
+  });
+
+  it('keeps hero and enemies inside the bridge when loading and moving', () => {
+    vi.useFakeTimers();
+    const base = freshRiverCampaign();
+    const snapshot = {
+      ...freshRiverBattleSnapshot(base),
+      hero: { x: 2, y: -3 },
+      boss: { x: 8, y: 9 },
+      soldiers: freshRiverBattleSnapshot(base).soldiers.map(soldier => ({
+        ...soldier,
+        position: { x: soldier.position.x, y: 8 },
+      })),
+    };
+    const { onStateChange } = renderBattle({ battle: snapshot });
+    const hero = screen.getByLabelText(/Tiểu Mông · 650 HP/) as HTMLElement;
+    expect(parseFloat(hero.style.top)).toBeCloseTo((2.4 / 6) * 100);
+    const stage = screen.getByRole('application', { name: /Đấu trường thời gian thực/ });
+    fireEvent.click(screen.getByRole('button', { name: /Cá Cóc Phún Thủy · 40 MP/ }));
+    fireEvent.click(stage, { clientX: 300, clientY: 100 });
+    expect(screen.getByText('Chỉ có thể di chuyển và tung chiêu trên mặt cầu.')).toBeTruthy();
+
+    fireEvent.keyDown(window, { key: 's' });
+    act(() => vi.advanceTimersByTime(900));
+    fireEvent.keyUp(window, { key: 's' });
+    const movedHero = screen.getByLabelText(/Tiểu Mông · 650 HP/) as HTMLElement;
+    expect((parseFloat(movedHero.style.top) / 100) * 6 - .5).toBeLessThanOrEqual(3.1);
+    expect(onStateChange.mock.calls.length).toBeGreaterThan(0);
+    expect(onStateChange.mock.calls.every(([saved]) =>
+      [saved.hero, saved.boss, ...saved.soldiers.map(soldier => soldier.position)]
+        .every(point => point.x >= .25 && point.x <= 5 && point.y >= 1.9 && point.y <= 3.1),
+    )).toBe(true);
+  });
+
+  it('updates both characters dialogue at half and critical health', () => {
+    const base = freshRiverCampaign();
+    const halfHealth = { ...freshRiverBattleSnapshot(base), hp: 325, bossHp: 425 };
+    const { stage } = renderBattle({ battle: halfHealth });
+
+    expect(stage.querySelector('.river-battle__actor--hero .river-battle__speech')?.textContent).toBe('Chưa thể dừng bước!');
+    expect(stage.querySelector('.river-battle__actor--boss .river-battle__speech')?.textContent).toBe('Ngươi khá lắm, nhưng chưa xong đâu!');
+  });
+
+  it('shows defeat dialogue when the player loses', () => {
+    const base = freshRiverCampaign();
+    const lost = { ...freshRiverBattleSnapshot(base), hp: 0, status: 'lost' as const };
+    const { stage } = renderBattle({ battle: lost });
+
+    expect(stage.querySelector('.river-battle__actor--hero .river-battle__speech')?.textContent).toBe('Ta… không thể gục ngã…');
+    expect(stage.querySelector('.river-battle__actor--boss .river-battle__speech')?.textContent).toBe('Bỏ vũ khí xuống! Chốt Chặn vẫn là của ta!');
+    expect(screen.getByRole('region', { name: 'Thất bại' })).toBeTruthy();
+  });
+
+  it('aims a water projectile with the mouse and resolves its damage and armor break in real time', () => {
+    vi.useFakeTimers();
+    renderBattle();
+    const stage = screen.getByRole('application', { name: /Đấu trường thời gian thực/ });
+
+    fireEvent.click(screen.getByRole('button', { name: /Cá Cóc Phún Thủy · 40 MP/ }));
+    fireEvent.pointerMove(stage, { clientX: 540, clientY: 340 });
+    expect(stage.querySelector('.river-battle__aim-path')).toBeTruthy();
+    fireEvent.click(stage, { clientX: 540, clientY: 340 });
+    act(() => vi.advanceTimersByTime(900));
+
+    expect(stage.querySelector('.river-battle__actor--boss')?.getAttribute('aria-label')).toContain('750 HP');
+    expect(screen.getByText(/giáp vỡ \+30%/)).toBeTruthy();
+  });
+
+  it('plays the main character authored combat action for a normal attack', () => {
+    const base = freshRiverCampaign();
+    const battle = {
+      ...freshRiverBattleSnapshot(base),
+      hero: { x: 4, y: 2.5 },
+      boss: { x: 4.7, y: 2.5 },
+    };
+    const { stage } = renderBattle({ battle });
+
+    fireEvent.click(screen.getByRole('button', { name: /4 Đánh thường/ }));
+    fireEvent.click(stage, { clientX: 520, clientY: 300 });
+
+    expect(stage.querySelector('.river-battle__actor--hero .river-battle__sprite')?.getAttribute('data-preview-action')).toBe('attack');
+  });
+
+  it('persists the terminal battle snapshot immediately on victory', () => {
+    vi.useFakeTimers();
+    const base = freshRiverCampaign();
+    const battle = { ...freshRiverBattleSnapshot(base), bossHp: 100 };
+    const { onStateChange, stage } = renderBattle({ battle });
+
+    fireEvent.click(screen.getByRole('button', { name: /Cá Cóc Phún Thủy · 40 MP/ }));
+    fireEvent.click(stage, { clientX: 540, clientY: 340 });
+    act(() => vi.advanceTimersByTime(900));
+
+    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({ status: 'won', bossHp: 0 }));
+    expect(screen.getByRole('region', { name: 'Đối thoại cuối trận' })).toBeTruthy();
+    expect(screen.getByText('Ta đã bại… xin hãy tha cho thuộc hạ.')).toBeTruthy();
+    expect(screen.getByText('Đầu hàng đi, đừng làm hại dân làng!')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục đối thoại' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục đối thoại' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn hành động' }));
+    expect(screen.getByRole('region', { name: 'Chọn kết cục' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Tha mạng, buộc mở chốt/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Kết liễu và lấy chiến lợi phẩm/ })).toBeTruthy();
+  });
+
+  it('warns before the boss hook attack and applies its damage only after the tell', () => {
+    vi.useFakeTimers();
+    const { stage } = renderBattle();
+    expect(screen.getByLabelText(/Tiểu Mông · 650 HP/)).toBeTruthy();
+
+    act(() => vi.advanceTimersByTime(2500));
+    expect(stage.querySelector('.river-battle__boss-cast')).toBeTruthy();
+    expect(stage.querySelector('.river-battle__actor--boss')?.classList.contains('is-attacking')).toBe(true);
+    expect(screen.getByText(/Truy Hồn Câu · né vùng đỏ!/)).toBeTruthy();
+    expect(screen.getByLabelText(/Tiểu Mông · 650 HP/)).toBeTruthy();
+    act(() => vi.advanceTimersByTime(500));
+
+    expect(screen.getByText(/Truy Hồn Câu · trúng!/)).toBeTruthy();
+    act(() => vi.advanceTimersByTime(2500));
+    expect(screen.getByLabelText(/Tiểu Mông · (?!650 HP)\d+ HP/)).toBeTruthy();
+  });
+
+  it('uses the otter dash to move continuously around the boss without tile snapping', () => {
+    vi.useFakeTimers();
     const base = freshRiverCampaign();
     const campaign = {
       ...base,
       bossStarted: true,
-      daggerPoisoned: true,
-      battle: {
-        ...freshRiverBattleSnapshot(base),
-        hero: { x: 3, y: 3 },
-        boss: { x: 4, y: 3 },
-        soldiers: [
-          { id: 'spear-1' as const, position: { x: 0, y: 0 }, hp: 200 },
-          { id: 'spear-2' as const, position: { x: 1, y: 0 }, hp: 200 },
-        ],
-      },
-    };
-    const onStateChange = vi.fn(() => true);
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped={false}
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={onStateChange}
-    />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Đánh thường · 1 AP' }));
-    fireEvent.click(screen.getByRole('gridcell', { name: 'Ô 5, 4, Trưởng đội, sông' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 740,
-      bossPoisonTurns: 3,
-      poisonUsed: true,
-      ap: 2,
-    }));
-    expect(screen.getByText(/trúng độc 3 lượt/)).toBeTruthy();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc lượt' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 720,
-      bossPoisonTurns: 2,
-      poisonUsed: true,
-    }));
-  });
-
-  it('uses Hạc Lão’s unlocked technique as a real combat skill', () => {
-    const base = freshRiverCampaign();
-    const campaign = {
-      ...base,
-      bossStarted: true,
-      inventory: { SKILL_DA_NGUU_BAI_TUONG: 1 },
-      battle: {
-        ...freshRiverBattleSnapshot(base),
-        hero: { x: 3, y: 2 },
-        boss: { x: 4, y: 2 },
-        soldiers: [
-          { id: 'spear-1' as const, position: { x: 0, y: 0 }, hp: 200 },
-          { id: 'spear-2' as const, position: { x: 1, y: 0 }, hp: 200 },
-        ],
-      },
-    };
-    const onStateChange = vi.fn(() => true);
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped={false}
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={onStateChange}
-    />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Đả Ngưu Bái Tướng · 40 MP · 1 AP' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({ bossHp: 608, mp: 310, ap: 2 }));
-  });
-
-  it('applies the village-captain armor reward as incoming damage reduction', () => {
-    const base = freshRiverCampaign();
-    const campaign = {
-      ...base,
-      bossStarted: true,
-      banditArmorUnlocked: true,
-      battle: {
-        ...freshRiverBattleSnapshot(base),
-        hero: { x: 0, y: 0 },
-        boss: { x: 5, y: 5 },
-        soldiers: [
-          { id: 'spear-1' as const, position: { x: 1, y: 0 }, hp: 200 },
-          { id: 'spear-2' as const, position: { x: 0, y: 0 }, hp: 0 },
-        ],
-      },
-    };
-    const onStateChange = vi.fn(() => true);
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped={false}
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={onStateChange}
-    />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Kết thúc lượt' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({ hp: 542 }));
-  });
-
-  it('sets the GDD starting positions and wins the two-turn trap, crossbow, and critical combo', () => {
-    const base = freshRiverCampaign();
-    const campaign = {
-      ...base,
-      bossStarted: true,
-      trapRecipe: true,
-      oldBamboo: 3,
-      knowsDaoManual: true,
-      crossbowUnlocked: true,
-      morality: 60,
       battle: freshRiverBattleSnapshot(base),
     };
-    const onStateChange = vi.fn(() => true);
-    render(<MelinCheckpointBattle
-      campaign={campaign}
-      talent={null}
-      haBaEquipped={false}
-      onVictory={vi.fn(() => true)}
-      onRetreat={vi.fn()}
-      onStateChange={onStateChange}
-    />);
-    const board = screen.getByRole('grid', { name: 'Bàn cờ 6 nhân 6' });
-    expect(within(board).getByRole('gridcell', { name: 'Ô 1, 3, Tiểu Mông' })).toBeTruthy();
-    expect(within(board).getByRole('gridcell', { name: 'Ô 4, 2, Lính giáo một 200 HP' })).toBeTruthy();
-    expect(within(board).getByRole('gridcell', { name: 'Ô 4, 4, Lính giáo hai 200 HP, sông' })).toBeTruthy();
-    expect(within(board).getByRole('gridcell', { name: 'Ô 5, 3, Trưởng đội' })).toBeTruthy();
-    expect(screen.getByText(/Trưởng Đội 850 \/ 850 HP/)).toBeTruthy();
+    renderBattle(campaign);
+    const hero = screen.getByLabelText(/Tiểu Mông · 650 HP/) as HTMLElement;
+    const initialLeft = parseFloat(hero.style.left);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Di chuyển · 1 AP' }));
-    fireEvent.click(within(board).getByRole('gridcell', { name: 'Ô 2, 3' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Di chuyển · 1 AP' }));
-    fireEvent.click(within(board).getByRole('gridcell', { name: 'Ô 3, 3' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Bẫy Tre Gai · 50 MP · 1 AP' }));
-    fireEvent.click(within(board).getByRole('gridcell', { name: 'Ô 4, 3' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 730,
-      rootTurns: 1,
-      armorTurns: 2,
-      armorBreakBonus: 50,
-      turn: 2,
-      ap: 3,
-    }));
+    fireEvent.click(screen.getByRole('button', { name: /Rái Cá Quần Thủy · 50 MP/ }));
+    act(() => vi.advanceTimersByTime(1200));
 
-    fireEvent.click(screen.getByRole('button', { name: 'Nỏ Cóc Liên Châu · 30 MP · 1 AP' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 370,
-      mp: 270,
-      ap: 2,
-    }));
-    fireEvent.click(screen.getByRole('button', { name: 'Rái Cá Quần Thủy · 50 MP · 2 AP' }));
-    expect(onStateChange).toHaveBeenLastCalledWith(expect.objectContaining({
-      bossHp: 0,
-      status: 'won',
-      mp: 220,
-      ap: 0,
-    }));
-    expect(screen.getByRole('region', { name: 'Chọn kết cục' })).toBeTruthy();
-    expect(screen.getByText(/hai lính giáo buông vũ khí và đầu hàng/)).toBeTruthy();
+    expect(parseFloat((screen.getByLabelText(/Tiểu Mông · 650 HP/) as HTMLElement).style.left)).toBeGreaterThan(initialLeft + 20);
+    expect(screen.getByText(/lướt vòng ra sau lưng/)).toBeTruthy();
+  });
+
+  it('saves continuous coordinates in the battle snapshot', () => {
+    vi.useFakeTimers();
+    const base = freshRiverCampaign();
+    const { onStateChange } = renderBattle({ battle: { ...freshRiverBattleSnapshot(base), hero: { x: 0, y: 2 } } });
+
+    fireEvent.keyDown(window, { key: 'd' });
+    act(() => vi.advanceTimersByTime(800));
+    fireEvent.keyUp(window, { key: 'd' });
+    act(() => vi.advanceTimersByTime(700));
+
+    expect(onStateChange.mock.calls.some(([snapshot]) => snapshot.hero.x > 0 && !Number.isInteger(snapshot.hero.x))).toBe(true);
   });
 });

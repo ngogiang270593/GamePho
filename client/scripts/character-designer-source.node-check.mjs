@@ -11,7 +11,7 @@ import { characterDesignerSource, saveCharacterDesignerSource, validateCharacter
 const bytes = await sharp({ create: { width: 4, height: 4, channels: 4, background: '#559944' } }).png().toBuffer();
 function sheet() {
   const directions = Object.fromEntries(['down', 'right', 'up', 'left'].map((direction, start) => [direction, { start, count: 1 }]));
-  const clips = Object.fromEntries(['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map(action => [action, { fps: 8, loop: true, directions }]));
+  const clips = Object.fromEntries(['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map(action => [action, { fps: 8, loop: action !== 'attack', directions }]));
   return {
     version: 1, name: 'Sprite test', src: `data:image/png;base64,${bytes.toString('base64')}`,
     imageWidth: 4, imageHeight: 4, cellWidth: 2, cellHeight: 2, columns: 2, rows: 2,
@@ -32,9 +32,10 @@ test('validates all frame ranges and grid bounds; optional actions may be omitte
   const optional = sheet();
   delete optional.clips.run; delete optional.clips.turn; delete optional.clips.jump;
   const normalized = validateCharacterSpriteSheet(optional);
-  assert.deepEqual(Object.keys(normalized.clips), ['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening']);
+  assert.deepEqual(Object.keys(normalized.clips), ['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening']);
   assert.deepEqual(normalized.clips.run.directions, normalized.clips.walk.directions);
   assert.equal(normalized.clips.jump.loop, false);
+  assert.equal(normalized.clips.attack.loop, false);
   assert.deepEqual(normalized.clips['npc-morning'].directions, normalized.clips.idle.directions);
   assert.throws(() => validateCharacterSpriteSheet({ ...sheet(), gapX: 1 }), /vượt ra ngoài ảnh/);
   const outOfBounds = sheet();
@@ -67,12 +68,20 @@ test('writes sheets for the current NPC roster and rejects retired NPC targets',
   const root = await temporaryRoot(t);
   const forest = await saveCharacterDesignerSource(root, { target: 'forest-keeper:male', sheet: sheet() });
   const saved = await saveCharacterDesignerSource(root, { target: 'opening-map-npc:fisherman-tao', sheet: sheet() });
+  const patrolTargets = ['gate-guard', 'patrol-archer', 'patrol-swordsman'];
+  const patrolSheets = [];
+  for (const id of patrolTargets) {
+    patrolSheets.push(await saveCharacterDesignerSource(root, { target: `opening-map-npc:${id}`, sheet: sheet() }));
+  }
   const villager = await saveCharacterDesignerSource(root, { target: 'opening-map-npc:NPC_DAN_NONG_01', sheet: sheet() });
   assert.match(saved.src, /^\/assets\/character-designer\/opening-map-npc-fisherman-tao-[a-f0-9]{16}\.png$/);
   assert.match(villager.src, /^\/assets\/character-designer\/opening-map-npc-npc-dan-nong-01-[a-f0-9]{16}\.png$/);
   const manifest = JSON.parse(await readFile(join(root, 'src/game/characterSpriteSheets.json'), 'utf8'));
   assert.deepEqual(manifest['forest-keeper:male'], forest);
   assert.deepEqual(manifest['opening-map-npc:fisherman-tao'], saved);
+  for (const [index, id] of patrolTargets.entries()) {
+    assert.deepEqual(manifest[`opening-map-npc:${id}`], patrolSheets[index]);
+  }
   assert.deepEqual(manifest['opening-map-npc:NPC_DAN_NONG_01'], villager);
   await assert.rejects(
     saveCharacterDesignerSource(root, { target: 'opening-map-npc:market-vendor', sheet: sheet() }),
@@ -87,8 +96,8 @@ test('saves a full-size single frame and every configured action without losing 
     ...sheet(), src: `data:image/png;base64,${singleFrameBytes.toString('base64')}`,
     imageWidth: 256, imageHeight: 256, cellWidth: 256, cellHeight: 256, columns: 1, rows: 1,
     anchorX: .48, anchorY: .95, scale: .8, singleFrameWalk: true,
-    clips: Object.fromEntries(['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map((action, index) => [action, {
-      fps: 6 + index * 2, loop: action !== 'jump',
+    clips: Object.fromEntries(['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map((action, index) => [action, {
+      fps: 6 + index * 2, loop: action !== 'jump' && action !== 'attack',
       directions: Object.fromEntries(['down', 'right', 'up', 'left'].map(direction => [direction, { start: 0, count: 1 }])),
     }])),
   };
@@ -117,8 +126,8 @@ test('preserves eight real frames per direction and action when writing and reop
   const input = {
     ...sheet(), src: `data:image/png;base64,${atlasBytes.toString('base64')}`,
     imageWidth: 2048, imageHeight: 1024, cellWidth: 256, cellHeight: 256, columns: 8, rows: 4, movementFrameCount: 8,
-    clips: Object.fromEntries(['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map((action, index) => [action, {
-      fps: 6 + index * 2, loop: action !== 'jump',
+    clips: Object.fromEntries(['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map((action, index) => [action, {
+      fps: 6 + index * 2, loop: action !== 'jump' && action !== 'attack',
       directions: Object.fromEntries(['down', 'right', 'up', 'left'].map((direction, row) => [direction, { start: row * 8, count: 8 }])),
     }])),
   };

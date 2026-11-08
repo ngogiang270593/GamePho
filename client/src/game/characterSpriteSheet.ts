@@ -7,11 +7,11 @@ import { OPENING_MAP_VILLAGER_SPRITE_SHEETS } from './openingMapVillagerSpriteSh
 
 export const NPC_SCHEDULE_SPRITE_ACTIONS = ['npc-morning', 'npc-noon', 'npc-evening'] as const;
 export const NPC_WORK_SPRITE_ACTION = 'npc-morning';
-export const SPRITE_ACTIONS = ['idle', 'walk', 'run', 'turn', 'jump', ...NPC_SCHEDULE_SPRITE_ACTIONS] as const;
+export const SPRITE_ACTIONS = ['idle', 'walk', 'run', 'attack', 'turn', 'jump', ...NPC_SCHEDULE_SPRITE_ACTIONS] as const;
 export type SpriteAction = typeof SPRITE_ACTIONS[number];
-export const GAME_SPRITE_ACTIONS = ['idle', 'walk', 'run'] as const satisfies readonly SpriteAction[];
+export const GAME_SPRITE_ACTIONS = ['idle', 'walk', 'run', 'attack'] as const satisfies readonly SpriteAction[];
 export const SPRITE_ACTION_LABELS: Record<SpriteAction, string> = {
-  idle: 'Đứng', walk: 'Đi bộ', run: 'Chạy', turn: 'Xoay', jump: 'Nhảy',
+  idle: 'Đứng', walk: 'Đi bộ', run: 'Chạy', attack: 'Chiến đấu · Tấn công', turn: 'Xoay', jump: 'Nhảy',
   'npc-morning': 'NPC · Động tác đặc trưng', 'npc-noon': 'NPC · Buổi trưa (cũ)', 'npc-evening': 'NPC · Buổi tối (cũ)',
 };
 export const NPC_SCHEDULE_SPRITE_ACTION: Record<OpeningMapNpcDayPeriod, SpriteAction> = {
@@ -55,10 +55,10 @@ export function spriteSheetTarget(template: PlayableCharacterId | string, gender
 export function makeSpriteSheet(src: string, imageWidth: number, imageHeight: number, name = 'Sprite của bạn', columns = 1, rows = 1): CharacterSpriteSheet {
   const clips = Object.fromEntries(SPRITE_ACTIONS.map(action => [action, {
     fps: action === 'run' ? 12 : 8,
-    loop: action !== 'jump',
+    loop: action !== 'jump' && action !== 'attack',
     directions: Object.fromEntries(SPRITE_DIRECTIONS.map((direction, row) => [direction, {
       start: Math.min(row, rows - 1) * columns,
-      count: action === 'idle' || action.startsWith('npc-') ? 1 : columns,
+      count: action === 'idle' || action === 'attack' || action.startsWith('npc-') ? 1 : columns,
     }])),
   }])) as CharacterSpriteSheet['clips'];
   return {

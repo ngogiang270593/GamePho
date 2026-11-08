@@ -35,7 +35,8 @@ const npcArtworks = [
   'a-cau', 'a-sang', 'ba-me-que', 'doi-truong-ho-vuong-lang', 'giao',
   'hac-lang', 'hac-lao', 'huyet-dao-phuong', 'lao-lang-trung', 'lao-tieu-phu',
   'le-nuong', 'mu-doc-ba', 'quan-gia-trieu', 'tao', 'thiet-chuy', 'thim-tu',
-  'tieu-muoi-ban-do-choi', 'tieu-nhi-quan-rap', 'truong-doi-tuan-tra', 'vo-su-nuong',
+  'tieu-muoi-ban-do-choi', 'tieu-nhi-quan-rap', 'linh-tuan-tra-cung', 'linh-tuan-tra-dao',
+  'truong-doi-tuan-tra', 'vo-su-nuong',
   'elder', 'fisherman', 'martial-artist', 'messenger', 'guard',
   'thon-dan-tre', 'nong-dan-tre', 'nong-dan',
 ];

@@ -101,7 +101,7 @@ export function OpeningMapNpcHomes({ simplified = false }: { simplified?: boolea
           <ellipse rx="25" ry="10" fill="#557c61" stroke="#d2dda0" strokeWidth="2" /><path d="M0 1q-20-2-19-17 13 0 19 17m0 0q20-2 19-17Q6-15 0 1" fill="#738d66" /><circle cx="-10" cy="-17" r="4" fill="#ad8db0" /><circle cx="-3" cy="-20" r="4" fill="#c2a2c2" /><circle cx="5" cy="-18" r="4" fill="#ad8db0" />
         </g>)}
       </g>
-      <g data-landmark="buffalo-pasture" transform="translate(2740 850)">
+      <g data-landmark="buffalo-pasture" data-nearby-npc="herdboy-a-sang" transform="translate(2360 820)">
         <path d="M0 123q86-91 191-19-36 81-161 74Z" fill="#79915e" stroke="#556f4e" strokeWidth="5" />
         <path d="M42 130q4-38 51-42 47-4 58 31l-9 33H52Z" fill="#767c75" stroke="#454a44" strokeWidth="5" />
         <path d="M137 105q31-31 50-7l-4 28-35 9m-86-34q-16-16-28 1m7-7q-17-24-30-13m162-2q18-23 29-8" fill="#858a80" stroke="#454a44" strokeWidth="5" strokeLinejoin="round" />
@@ -160,7 +160,7 @@ export function OpeningMapNpcHomes({ simplified = false }: { simplified?: boolea
         <path d="M57 47 83 63m-20-27 29 17" stroke="#594638" strokeWidth="4" />
         <text x="117" y="214" textAnchor="middle">LỀU TIỀU PHU · CỦI KHÔ</text>
       </g>
-      <g data-landmark="ruined-wall" transform="translate(1010 1435)">
+      <g data-landmark="ruined-wall" data-nearby-npc="beggar-hac-lao" transform="translate(1570 1260)">
         <path d="M0 84v-53l38-8v22l33-8V5l40-5v31l38-6V14l49-8v85Z" fill="#69675a" stroke="#423f37" strokeWidth="6" />
         <path d="M8 54h35m-29 15h39m3-35h30m-25 17h36m8-30h31m-30 15h37m10 23h39" stroke="#b6a37b" strokeWidth="5" />
         <path d="M22 82q24-22 48-5 21-22 45-3 27-18 51-2" fill="none" stroke="#547650" strokeWidth="8" />

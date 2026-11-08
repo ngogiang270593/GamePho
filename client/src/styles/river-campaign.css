@@ -386,18 +386,26 @@
   font: 700 12px Arial, sans-serif;
 }
 
+.river-battle__hud .river-battle__attunement {
+  border-color: #80c4c6;
+  background: #e4fbfa;
+  color: #176f79;
+  box-shadow: 0 0 14px #61d7df55;
+}
+
 .river-battle__layout {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(240px, .7fr);
+  grid-template-columns: minmax(0, 1.55fr) minmax(210px, .68fr);
   align-items: start;
-  gap: 16px;
+  gap: 12px;
 }
 
 .river-battle__board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 5px;
-  width: min(100%, 560px);
+  width: min(100%, 620px);
   aspect-ratio: 1;
   padding: 8px;
   border: 1px solid #d6dac8;
@@ -411,6 +419,8 @@
 }
 
 .river-battle__cell {
+  position: relative;
+  z-index: 1;
   display: grid;
   min-width: 0;
   min-height: 0;
@@ -454,8 +464,598 @@
   background-color: #f3e5bf;
 }
 
+.river-battle__cell.is-vortex-area {
+  border-color: #3e8c9c;
+  background: #4aa5bb88;
+  box-shadow: inset 0 0 18px #116b8b55;
+}
+
+.river-battle__cell.is-skill-target {
+  outline: 2px solid #f3d366;
+  outline-offset: -3px;
+  box-shadow: 0 0 14px #ffe887;
+}
+
 .river-battle__cell.is-move-target {
   cursor: crosshair;
+}
+
+.river-battle__preview-path {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.river-battle__preview-path path {
+  fill: none;
+  stroke: #33b9cf;
+  stroke-dasharray: 4 3;
+  stroke-linecap: round;
+  stroke-width: 5;
+  filter: drop-shadow(0 0 4px #b4ffff);
+}
+
+.river-battle__board.is-whirlpooling {
+  animation: river-camera-pulse 1800ms ease-in-out both;
+}
+
+.river-battle__arena {
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  outline: none;
+  cursor: crosshair;
+  touch-action: none;
+  background:
+    radial-gradient(ellipse at 50% 55%, #fff5d329, transparent 72%),
+    linear-gradient(145deg, #78906a, #526d52 58%, #3b594c);
+}
+
+.river-battle__arena:focus-visible {
+  outline: 3px solid #d5bd79;
+  outline-offset: 3px;
+}
+
+.river-battle__floor {
+  position: absolute;
+  inset: 8px;
+  z-index: 1;
+  display: grid;
+  grid-template: repeat(6, 1fr) / repeat(6, 1fr);
+  gap: 0;
+  overflow: hidden;
+  border-radius: 9px;
+  background:
+    linear-gradient(90deg, transparent calc(100% - 1px), #fff7d43d 0),
+    linear-gradient(transparent calc(100% - 1px), #fff7d43d 0);
+  background-size: 16.666% 16.666%;
+}
+
+.river-battle__floor span {
+  border: 1px solid #fff9e50c;
+  background: linear-gradient(145deg, #9fb27a0b, #596e4912 65%, #273f341c);
+  box-shadow: inset 1px 1px #ffffff14;
+}
+
+.river-battle__floor span:nth-child(odd) { background: linear-gradient(145deg, #a5b8820b, #718b5812 65%, #354e381c); }
+.river-battle__floor span.is-river {
+  border-color: #b6f0ee14;
+  background: repeating-linear-gradient(165deg, #84d0d21a 0 7px, #387f8a24 8px 12px);
+  box-shadow: inset 0 2px 6px #d4ffff14, inset 0 -3px 7px #236f811c;
+}
+
+.river-battle__bridge {
+  position: absolute;
+  z-index: 2;
+  top: 40%;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  width: 100%;
+  height: 24%;
+  overflow: hidden;
+  border-block: 4px solid #513a29;
+  background:
+    linear-gradient(180deg, #d8b274 0 6%, #855a36 8% 12%, transparent 14% 86%, #755033 88% 93%, #d2a66c 96%),
+    repeating-linear-gradient(180deg, #bd8a52 0 13%, #795335 14% 17%, #a87948 18% 29%);
+  box-shadow: 0 7px 15px #152b266b, inset 0 5px 8px #f4d29442, inset 0 -6px 9px #30231c85;
+  pointer-events: none;
+}
+
+.river-battle__bridge::before,
+.river-battle__bridge::after {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  left: 0;
+  height: 8%;
+  border: 2px solid #533a28;
+  background: linear-gradient(180deg, #d7b17b, #754d31);
+  box-shadow: 0 2px 4px #18261e99;
+  content: '';
+}
+
+.river-battle__bridge::before { top: 10%; }
+.river-battle__bridge::after { bottom: 10%; }
+
+.river-battle__bridge span {
+  border-inline: 1px solid #4f392a80;
+  background: linear-gradient(90deg, #68482f29, #e0b7771c 48%, #4f392a22);
+}
+
+.river-battle__map-art {
+  position: absolute;
+  z-index: 0;
+  inset: 8px;
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, #23352a1c, #23352a08 42%, #17271f35),
+    url('/assets/maps/thon-que-watercolor.png') 92% 70% / 270% auto no-repeat;
+  filter: saturate(.92) contrast(1.02);
+  transform: scale(1.015);
+}
+
+.river-battle__river-glint {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: calc(8px + 66.66%);
+  width: 16.66%;
+  height: calc(100% - 16px);
+  background: linear-gradient(90deg, #ffffff00, #bdffff20 50%, #ffffff00);
+  pointer-events: none;
+}
+
+.river-battle__checkpoint-bridge {
+  position: absolute;
+  z-index: 2;
+  top: 47%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px;
+  width: 39%;
+  height: 13%;
+  padding: 5px;
+  border: 2px solid #69472e;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #ae8151, #704a31 20%, #8b5a35 80%, #573a2b);
+  box-shadow: 0 5px 8px #1e302d66, inset 0 2px #e3bd7a75;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  pointer-events: none;
+}
+
+.river-battle__checkpoint-bridge i {
+  border: 1px solid #513927a8;
+  border-radius: 2px;
+  background: repeating-linear-gradient(180deg, #c59a63 0 5px, #8b603b 6px 8px);
+  box-shadow: inset 0 1px #efd39b70;
+}
+
+.river-battle__checkpoint-gate {
+  position: absolute;
+  z-index: 2;
+  top: 28%;
+  left: 73%;
+  width: 16%;
+  height: 20%;
+  border-bottom: 5px solid #563d2d;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px #16251f66);
+}
+
+.river-battle__checkpoint-gate i {
+  position: absolute;
+  bottom: 0;
+  width: 12%;
+  height: 82%;
+  border: 1px solid #5b3e2b;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(90deg, #573c2b, #b27b45 40%, #6a452d);
+}
+
+.river-battle__checkpoint-gate i:first-child { left: 8%; }
+.river-battle__checkpoint-gate i:nth-child(2) { right: 8%; }
+.river-battle__checkpoint-gate b {
+  position: absolute;
+  top: 7%;
+  left: 0;
+  width: 100%;
+  height: 18%;
+  border: 2px solid #593c29;
+  border-radius: 50% 50% 8px 8px;
+  background: linear-gradient(180deg, #d5aa62, #745033 65%, #493329);
+}
+
+.river-battle__map-label {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 1px solid #e8d5a755;
+  border-radius: 999px;
+  background: #1d3029a6;
+  color: #fff3d4;
+  font: 800 8px Arial, sans-serif;
+  letter-spacing: .1em;
+  text-shadow: 0 1px 3px #18241f;
+  pointer-events: none;
+}
+
+.river-battle__map-label i { width: 4px; height: 4px; border-radius: 50%; background: #79d9d4; }
+
+.river-battle__actor {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  width: clamp(44px, 9vw, 72px);
+  height: clamp(64px, 14vw, 102px);
+  transform: translate(-50%, -78%);
+  pointer-events: none;
+  transition: left 55ms linear, top 55ms linear;
+}
+
+.river-battle__actor-shadow {
+  position: absolute;
+  z-index: -1;
+  bottom: 8%;
+  left: 13%;
+  width: 74%;
+  height: 15%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #1d2b1caa 0%, #2332226b 52%, transparent 76%);
+  filter: blur(3px);
+}
+
+.river-battle__actor-vitals {
+  position: absolute;
+  z-index: 4;
+  top: -19px;
+  left: 50%;
+  display: grid;
+  width: clamp(56px, 10vw, 78px);
+  gap: 2px;
+  padding: 3px 4px;
+  border: 1px solid #e6d9b6aa;
+  border-radius: 5px;
+  background: #1c2b28d9;
+  box-shadow: 0 2px 5px #17231e6b, inset 0 1px #ffffff20;
+  transform: translateX(-50%);
+}
+
+.river-battle__actor-vitals.is-enemy { top: -13px; width: clamp(48px, 8vw, 66px); padding: 2px; }
+.river-battle__actor-vital-row { display: flex; align-items: center; gap: 3px; min-width: 0; }
+.river-battle__actor-vital-row i { display: block; flex: 1; height: 5px; overflow: hidden; border: 1px solid #e8e2ce77; border-radius: 99px; background: #292e29; }
+.river-battle__actor-vital-row i b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #a43d35, #ef7651); transition: width 180ms ease; }
+.river-battle__actor-vital-row.is-mana i b { background: linear-gradient(90deg, #3286c3, #73d5ec); }
+.river-battle__actor-vital-row small { position: static; flex: 0 0 auto; padding: 0; border: 0; background: transparent; color: #fff9e9; font: 700 7px Arial,sans-serif; }
+
+.river-battle__speech {
+  position: absolute;
+  z-index: 7;
+  bottom: calc(100% + 24px);
+  left: 50%;
+  width: max-content;
+  max-width: min(150px, 34vw);
+  padding: 5px 7px;
+  border: 1px solid #f0dfb8;
+  border-radius: 8px;
+  background: #fff8eaf2;
+  color: #493c2d;
+  font: 700 9px/1.3 Arial, sans-serif;
+  text-align: center;
+  text-wrap: pretty;
+  box-shadow: 0 3px 8px #17231e6b;
+  transform: translateX(-50%);
+}
+
+.river-battle__speech::after {
+  position: absolute;
+  bottom: -6px;
+  left: calc(50% - 5px);
+  width: 9px;
+  height: 9px;
+  border-right: 1px solid #f0dfb8;
+  border-bottom: 1px solid #f0dfb8;
+  background: #fff8eaf2;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.river-battle__sprite {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 2px #1e291b80);
+  transform-origin: 50% 82%;
+}
+
+.river-battle__actor small {
+  position: absolute;
+  bottom: -3px;
+  padding: 2px 5px;
+  border: 1px solid #fff9;
+  border-radius: 7px;
+  background: #162a24c9;
+  color: #fffbe7;
+  font: 700 9px Arial, sans-serif;
+  white-space: nowrap;
+}
+
+.river-battle__actor--boss .river-battle__sprite { filter: drop-shadow(0 4px 3px #4c231eaa) sepia(.18) saturate(1.35); }
+.river-battle__actor--boss.is-enraged { animation: battle-enraged 600ms ease-in-out infinite alternate; }
+.river-battle__actor--soldier .river-battle__sprite { filter: drop-shadow(0 4px 2px #4535268a) sepia(.12) saturate(1.12); }
+.river-battle__actor.is-walking .river-battle__sprite { animation: battle-walk-bob 180ms ease-in-out infinite alternate; }
+.river-battle__actor.is-attacking .river-battle__sprite { animation: battle-attack-cut 520ms ease-in-out both; }
+.river-battle__actor--boss.is-defeated { filter: grayscale(.8) opacity(.78); }
+.river-battle__actor--boss.is-defeated .river-battle__speech { filter: none; }
+
+.river-battle__trap {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #d5bd6238, transparent 72%);
+}
+
+.river-battle__trap .skill-icon { width: 40px; height: 40px; }
+
+.river-battle__aim {
+  position: absolute;
+  z-index: 4;
+  border: 2px solid #e8df71;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffef801c, transparent 70%);
+  box-shadow: 0 0 15px #e6d96988, inset 0 0 10px #e6d96944;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: aim-pulse 700ms ease-in-out infinite alternate;
+}
+
+.river-battle__aim.is-area {
+  border-color: #56e6ef;
+  background: radial-gradient(circle, #34d7ed35, #176b8d13 62%, transparent 72%);
+  box-shadow: 0 0 20px #4ce6ed8c, inset 0 0 20px #3ac3e55c;
+}
+
+.river-battle__aim-path {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.river-battle__aim-path path {
+  fill: none;
+  stroke: #f0eea1;
+  stroke-dasharray: 6 7;
+  stroke-linecap: round;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 5px #fff3a7);
+}
+
+.river-battle__boss-cast {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+}
+
+.river-battle__boss-warning {
+  position: absolute;
+  display: block;
+  transform: translate(-50%, -50%);
+  transition: opacity 120ms ease;
+}
+
+.river-battle__boss-warning--area {
+  aspect-ratio: 1;
+  border: 2px dashed #ffbf78;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f2543e0a 40%, #d8372e32 75%, #ffad5930);
+  box-shadow: inset 0 0 24px #ff5b4355, 0 0 18px #ff745877;
+  animation: boss-warning-pulse 320ms ease-in-out infinite alternate;
+}
+
+.river-battle__boss-warning--line {
+  height: clamp(10px, 2.5vw, 16px);
+  border: 1px solid #ffd1a0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffdb9a16, #fc452d9c 40%, #ffdf9a26);
+  box-shadow: 0 0 15px #f34732aa;
+}
+
+.river-battle__boss-warning--line.is-cross::before,
+.river-battle__boss-warning--line.is-cross::after {
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 8px;
+  border-radius: 50%;
+  background: #fa563cb0;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.river-battle__boss-cast strong {
+  position: absolute;
+  z-index: 2;
+  padding: 4px 8px;
+  border: 1px solid #ffc08b;
+  border-radius: 999px;
+  background: #401d1bdd;
+  color: #fff3da;
+  font: 800 10px Arial, sans-serif;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px #fb503d99;
+}
+
+.river-battle__boss-cast.is-impact .river-battle__boss-warning--area {
+  border-style: solid;
+  background: radial-gradient(circle, #fff5d5a8, #ff6a416b 45%, #f23c3210 72%);
+  animation: boss-impact-ring 420ms ease-out both;
+}
+
+.river-battle__boss-cast.is-impact .river-battle__boss-warning--line {
+  background: linear-gradient(180deg, #fff6cf40, #fff2c9 48%, #ff6949a0);
+  animation: boss-impact-flash 320ms ease-out both;
+}
+
+.river-battle__boss-cast.is-impact strong { opacity: 0; }
+
+.river-battle__skill-dock {
+  position: absolute;
+  z-index: 8;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 7px;
+  border: 1px solid #e4d3ad99;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1d3029d9, #172621ed);
+  box-shadow: 0 5px 16px #17231e75, inset 0 1px #ffffff20;
+  backdrop-filter: blur(7px);
+}
+
+.river-battle__skill-dock .river-battle__skill-button {
+  position: relative;
+  display: grid;
+  grid-template-rows: 27px minmax(16px, auto);
+  justify-items: center;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 4px 3px 3px;
+  border: 1px solid #c9ad716e;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #465b43, #273c34);
+  color: #fff3d4;
+  text-align: center;
+  box-shadow: inset 0 1px #ffffff1a, 0 2px 3px #101b17;
+}
+
+.river-battle__skill-dock .river-battle__skill-button:hover:not(:disabled),
+.river-battle__skill-dock .river-battle__skill-button[aria-pressed='true'] {
+  border-color: #f0d384;
+  background: linear-gradient(145deg, #65764c, #3e5742);
+  box-shadow: 0 0 10px #e6ca6f70, inset 0 1px #fff5d455;
+}
+
+.river-battle__skill-dock .river-battle__skill-button.is-ultimate {
+  border-color: #5ec9d18c;
+  background: linear-gradient(145deg, #216a78, #253f54);
+}
+
+.river-battle__skill-dock .river-battle__skill-button kbd {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-color: #e6d39a88;
+  border-radius: 4px;
+  background: #17241fe8;
+  color: #fff4d7;
+  font-size: 9px;
+}
+
+.river-battle__skill-dock .skill-icon,
+.river-battle__skill-basic {
+  width: 27px;
+  height: 27px;
+  filter: drop-shadow(0 1px 3px #080f0c99);
+}
+
+.river-battle__skill-basic {
+  fill: none;
+  stroke: #f2d794;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.river-battle__skill-dock .river-battle__skill-button > span:last-child {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: #f8efd9;
+  font: 700 8px/1.1 Arial, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.river-battle__skill-dock .river-battle__skill-button:disabled { filter: grayscale(.45); opacity: .56; }
+.river-battle__skill-dock .river-battle__skill-button:focus-visible { outline: 2px solid #ffdf86; outline-offset: 2px; }
+
+.river-battle__health {
+  display: grid;
+  grid-template-columns: auto minmax(75px, 130px) auto;
+  align-items: center;
+  gap: 7px;
+}
+
+.river-battle__health i {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border: 1px solid #526348;
+  border-radius: 8px;
+  background: #e4d8c6;
+}
+
+.river-battle__health i b {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #b64439, #e88453);
+  transition: width 180ms ease;
+}
+
+.river-battle__health--boss i b { background: linear-gradient(90deg, #7d332c, #cb5b48); }
+.river-battle__movement-hint { color: #66745d; font: 600 12px Arial,sans-serif; }
+
+@keyframes battle-walk-bob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+@keyframes battle-attack-cut {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  28% { transform: translateY(-5px) rotate(-8deg) scale(1.06); }
+  58% { transform: translateY(1px) rotate(10deg) scale(1.08); }
+}
+@keyframes battle-enraged { from { filter: drop-shadow(0 4px 3px #4c231eaa); } to { filter: drop-shadow(0 0 12px #fb754b); } }
+@keyframes aim-pulse { from { opacity: .58; } to { opacity: 1; } }
+@keyframes boss-warning-pulse { from { opacity: .55; } to { opacity: 1; } }
+@keyframes boss-impact-ring { from { transform: translate(-50%, -50%) scale(.6); opacity: 1; } to { transform: translate(-50%, -50%) scale(1.25); opacity: 0; } }
+@keyframes boss-impact-flash { from { opacity: 1; filter: brightness(1.8); } to { opacity: 0; filter: brightness(1); } }
+
+@keyframes river-camera-pulse {
+  0%, 75% { transform: scale(1); }
+  88% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .river-battle__board.is-whirlpooling {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
 }
 
 .river-battle__cell:focus-visible,
@@ -491,6 +1091,31 @@
   font: 700 12px Arial, sans-serif;
   cursor: pointer;
 }
+
+.river-battle__controls .river-battle__skill-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  text-align: left;
+}
+
+.river-battle__skill-button kbd {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+  border: 1px solid #8e9d76;
+  border-radius: 6px;
+  background: #fffdf5;
+  color: #465f42;
+  font: 800 12px Arial, sans-serif;
+}
+
+.river-battle__skill-button span { flex: 1; }
+.river-battle__attunement { display:flex; align-items:center; gap:7px; }
+.river-battle__attunement .skill-icon { width:26px; height:26px; }
 
 .river-battle__controls button:disabled,
 .river-battle__outcome button:disabled {
@@ -574,5 +1199,346 @@
 
   .river-battle__outcome {
     grid-template-columns: 1fr;
+  }
+}
+
+.river-battle--realtime {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: #fff5dc;
+  background: #294d42;
+}
+
+.river-battle--realtime .river-battle__header {
+  position: absolute;
+  z-index: 10;
+  inset: max(10px, env(safe-area-inset-top)) 14px auto;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.river-battle--realtime .river-battle__header > div {
+  max-width: min(440px, calc(100vw - 130px));
+  padding: 9px 13px;
+  border: 1px solid #e7d4a266;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #17342fe8, #25473bc9);
+  box-shadow: 0 5px 18px #12231e55, inset 0 1px #fff4d422;
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+
+.river-battle--realtime .river-battle__header .sv-kicker {
+  color: #e4c47f;
+  font: 800 9px Arial, sans-serif;
+  letter-spacing: .14em;
+}
+
+.river-battle--realtime .river-battle__header h1 {
+  margin: 2px 0;
+  color: #fff4d5;
+  font-size: clamp(18px, 2.4vw, 25px);
+  text-shadow: 0 2px 8px #12231e;
+}
+
+.river-battle--realtime .river-battle__header p {
+  color: #e2e8d5;
+  font: 600 10px/1.35 Arial, sans-serif;
+}
+
+.river-battle--realtime .river-battle__back {
+  min-height: 36px;
+  border-color: #e6d3a788;
+  background: #17352fdf;
+  color: #fff2d0;
+  box-shadow: 0 4px 14px #11211c55;
+  pointer-events: auto;
+}
+
+.river-battle--realtime .river-battle__layout {
+  position: absolute;
+  inset: 0;
+  display: block;
+  min-height: 0;
+}
+
+.river-battle--realtime .river-battle__board {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.river-battle--realtime .river-battle__board:focus-visible {
+  outline: none;
+}
+
+.river-battle--realtime .river-battle__map-art {
+  inset: 0;
+  border-radius: 0;
+  background: #547e68;
+  filter: none;
+  transform: none;
+}
+
+.river-battle--realtime .river-battle__map-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+}
+
+.river-battle--realtime .river-battle__map-art picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.river-battle--realtime .river-battle__map-art::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #172b2545, transparent 20%, transparent 64%, #10292355),
+    radial-gradient(ellipse at 50% 45%, transparent 42%, #142a2440 100%);
+  content: '';
+  pointer-events: none;
+}
+
+.river-battle--realtime .river-battle__floor {
+  inset: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, transparent calc(100% - 1px), #fff4d310 0),
+    linear-gradient(transparent calc(100% - 1px), #fff4d310 0);
+  background-size: 16.666% 16.666%;
+}
+
+.river-battle--realtime .river-battle__floor span,
+.river-battle--realtime .river-battle__floor span:nth-child(odd) {
+  border-color: #fff9e50b;
+  background: linear-gradient(145deg, #9fb27a08, #596e4908 65%, #273f340d);
+  box-shadow: none;
+}
+
+.river-battle--realtime .river-battle__floor span.is-river {
+  border-color: #b6f0ee0a;
+  background: repeating-linear-gradient(165deg, #84d0d20a 0 7px, #387f8a0d 8px 12px);
+  box-shadow: none;
+}
+
+.river-battle--realtime .river-battle__river-glint {
+  top: 0;
+  left: 50%;
+  width: 8%;
+  height: 75%;
+  opacity: .5;
+}
+
+.river-battle--realtime .river-battle__map-label {
+  top: auto;
+  right: auto;
+  bottom: 96px;
+  left: 16px;
+  padding: 7px 10px;
+  border-color: #f0daa377;
+  background: #1a382fc9;
+  font-size: 9px;
+  backdrop-filter: blur(5px);
+}
+
+.river-battle--realtime .river-battle__actor {
+  width: clamp(50px, 7vw, 88px);
+  height: clamp(72px, 12vh, 118px);
+}
+
+.river-battle--realtime .river-battle__actor small {
+  color: #fff4da;
+  text-shadow: 0 1px 5px #13241e, 0 0 8px #13241e;
+  font-size: 10px;
+}
+
+.river-battle--realtime .river-battle__controls {
+  position: absolute;
+  z-index: 9;
+  top: 92px;
+  right: 14px;
+  display: grid;
+  width: min(270px, 25vw);
+  max-height: calc(100% - 190px);
+  gap: 7px;
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid #e4d3ad99;
+  border-radius: 13px;
+  background: linear-gradient(150deg, #1d3832e8, #172923df);
+  color: #f7efd9;
+  box-shadow: 0 8px 24px #17231e55, inset 0 1px #ffffff18;
+  backdrop-filter: blur(9px);
+  scrollbar-color: #bca568 #20352f;
+}
+
+.river-battle--realtime .river-battle__controls h2 {
+  margin: 0;
+  color: #f0d48e;
+  font-size: 17px;
+}
+
+.river-battle--realtime .river-battle__movement-hint,
+.river-battle--realtime .river-battle__controls p,
+.river-battle--realtime .river-battle__controls small {
+  color: #e3e8d6;
+  font: 600 11px/1.4 Arial, sans-serif;
+}
+
+.river-battle--realtime .river-battle__controls .river-battle__log {
+  padding: 8px;
+  border: 1px solid #e4d3ad35;
+  background: #f4e3ba17;
+  color: #fff4dc;
+}
+
+.river-battle--realtime .river-battle__controls button {
+  min-height: 34px;
+  border-color: #dbc78b77;
+  background: #4a6047;
+  color: #fff2d4;
+}
+
+.river-battle--realtime .river-battle__quality {
+  color: #e3e8d6;
+  font: 600 11px Arial, sans-serif;
+}
+
+.river-battle--realtime .river-battle__skill-dock {
+  right: auto;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: 50%;
+  width: min(760px, calc(100% - 330px));
+  padding: 8px;
+  border-radius: 14px;
+  transform: translateX(-50%);
+}
+
+.river-battle--realtime .river-battle__outcome {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  left: 50%;
+  width: min(600px, calc(100% - 30px));
+  margin: 0;
+  border-color: #f0d79a;
+  background: #fff8eaf2;
+  box-shadow: 0 12px 40px #10231dcc;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 700px) {
+  .river-battle--realtime .river-battle__header {
+    inset-inline: 8px;
+    gap: 6px;
+  }
+
+  .river-battle--realtime .river-battle__header > div {
+    max-width: calc(100vw - 112px);
+    padding: 7px 9px;
+  }
+
+  .river-battle--realtime .river-battle__header p {
+    max-width: 230px;
+    font-size: 9px;
+  }
+
+  .river-battle--realtime .river-battle__back {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .river-battle--realtime .river-battle__controls {
+    top: 80px;
+    right: 8px;
+    left: 8px;
+    width: auto;
+    max-height: 132px;
+    gap: 5px;
+    padding: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+  }
+
+  .river-battle--realtime .river-battle__controls h2 {
+    grid-column: 1 / -1;
+    font-size: 14px;
+  }
+
+  .river-battle--realtime .river-battle__movement-hint,
+  .river-battle--realtime .river-battle__controls .river-battle__log,
+  .river-battle--realtime .river-battle__controls [role='status'],
+  .river-battle--realtime .river-battle__quality {
+    grid-column: 1 / -1;
+  }
+
+  .river-battle--realtime .river-battle__controls small {
+    display: none;
+  }
+
+  .river-battle--realtime .river-battle__controls p,
+  .river-battle--realtime .river-battle__controls small,
+  .river-battle--realtime .river-battle__movement-hint {
+    font-size: 9px;
+  }
+
+  .river-battle--realtime .river-battle__actor {
+    width: 54px;
+    height: 76px;
+  }
+
+  .river-battle--realtime .river-battle__actor small {
+    font-size: 8px;
+  }
+
+  .river-battle--realtime .river-battle__speech {
+    bottom: calc(100% + 19px);
+    max-width: min(116px, 31vw);
+    padding: 4px 5px;
+    font-size: 8px;
+  }
+
+  .river-battle--realtime .river-battle__map-art img {
+    object-position: 60% center;
+  }
+
+  .river-battle--realtime .river-battle__skill-dock {
+    bottom: max(8px, env(safe-area-inset-bottom));
+    width: calc(100% - 12px);
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .river-battle--realtime .river-battle__skill-dock .river-battle__skill-button {
+    min-height: 48px;
+  }
+
+  .river-battle--realtime .river-battle__map-label {
+    bottom: 72px;
+    left: 8px;
+    font-size: 8px;
   }
 }

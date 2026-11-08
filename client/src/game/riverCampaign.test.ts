@@ -107,6 +107,68 @@ describe('Mê Linh river campaign', () => {
     expect(state).toMatchObject({ morality: 60, banditArmorUnlocked: true, inventory: { CLOTHES_GIAP_DANH_BINH: 1 } });
   });
 
+  it('completes the remaining side quests and updates their rewards', () => {
+    let state = freshRiverCampaign(day);
+    state = applyRiverCampaignAction(state, { type: 'opening-npc-action', npcId: 'woodcutter', action: 'accept' }, null, day);
+    state = applyRiverCampaignAction(state, { type: 'opening-npc-action', npcId: 'woodcutter', action: 'clear-wolves' }, null, day);
+    expect(state).toMatchObject({
+      actionPoints: 1,
+      npcQuestStages: { woodcutter: 3 },
+      inventory: { ITEM_GO_QUY: 3 },
+      oldBamboo: 3,
+      trapRecipe: true,
+    });
+
+    state = applyRiverCampaignAction(freshRiverCampaign(day), {
+      type: 'opening-npc-action', npcId: 'toy-seller', action: 'buy-toy',
+    }, null, day);
+    expect(state).toMatchObject({
+      actionPoints: 2,
+      vanTien: 35,
+      insightBonus: 5,
+      luckBonus: 5,
+      npcQuestStages: { 'toy-seller': 3 },
+      inventory: { ITEM_TO_HE: 1 },
+    });
+
+    state = applyRiverCampaignAction({
+      ...freshRiverCampaign(day),
+      inventory: { ITEM_BANH_BAO: 1, ITEM_RUOU_NEP: 1 },
+    }, { type: 'opening-npc-action', npcId: 'beggar-hac-lao', action: 'give-offering' }, null, day);
+    expect(state).toMatchObject({
+      actionPoints: 2,
+      npcQuestStages: { 'beggar-hac-lao': 3 },
+      inventory: { SKILL_DA_NGUU_BAI_TUONG: 1 },
+    });
+    expect(state.inventory.ITEM_BANH_BAO).toBeUndefined();
+    expect(state.inventory.ITEM_RUOU_NEP).toBeUndefined();
+
+    state = applyRiverCampaignAction(freshRiverCampaign(day), {
+      type: 'opening-npc-action', npcId: 'herdboy-a-sang', action: 'reveal-shortcut',
+    }, null, day);
+    expect(state).toMatchObject({
+      shortcutHintUnlocked: true,
+      fastTravel: true,
+      npcQuestStages: { 'herdboy-a-sang': 3 },
+      inventory: { ITEM_SO_DO_DUONG_TAT: 1 },
+    });
+  });
+
+  it('buys both inn offerings with their listed prices and action costs', () => {
+    let state = freshRiverCampaign(day);
+    state = applyRiverCampaignAction(state, {
+      type: 'opening-npc-action', npcId: 'inn-server', action: 'buy-bun',
+    }, null, day);
+    state = applyRiverCampaignAction(state, {
+      type: 'opening-npc-action', npcId: 'inn-server', action: 'buy-wine',
+    }, null, day);
+    expect(state).toMatchObject({
+      actionPoints: 1,
+      vanTien: 35,
+      inventory: { ITEM_BANH_BAO: 1, ITEM_RUOU_NEP: 1 },
+    });
+  });
+
   it('only equips Hà Bá Tức Công after reaching the virtue threshold', () => {
     const righteous = applyRiverCampaignAction(
       { ...freshRiverCampaign(day), morality: 60 },
@@ -121,12 +183,12 @@ describe('Mê Linh river campaign', () => {
 
   it('creates the combatants and 650/350 combat resources at the specified 6x6 coordinates', () => {
     expect(freshRiverBattleSnapshot(freshRiverCampaign(day))).toMatchObject({
-      hero: { x: 0, y: 2 },
+      hero: { x: .45, y: 2.5 },
       soldiers: [
-        { id: 'spear-1', position: { x: 3, y: 1 }, hp: 200 },
-        { id: 'spear-2', position: { x: 3, y: 3 }, hp: 200 },
+        { id: 'spear-1', position: { x: 3.3, y: 2.35 }, hp: 200 },
+        { id: 'spear-2', position: { x: 3.3, y: 2.65 }, hp: 200 },
       ],
-      boss: { x: 4, y: 2 },
+      boss: { x: 4.7, y: 2.5 },
       hp: 650, maxHp: 650, mp: 350, maxMp: 350, bossHp: 850,
     });
   });

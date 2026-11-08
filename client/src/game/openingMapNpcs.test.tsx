@@ -18,8 +18,8 @@ afterEach(() => {
 });
 
 describe('latest opening-map NPC catalog and storage', () => {
-  it('contains the five core and fifteen supporting identities and retires earlier villagers', () => {
-    expect(DEFAULT_OPENING_MAP_NPCS).toHaveLength(20);
+  it('contains the five core and seventeen supporting identities and retires earlier villagers', () => {
+    expect(DEFAULT_OPENING_MAP_NPCS).toHaveLength(22);
     expect(DEFAULT_OPENING_MAP_NPCS.slice(0, 5).map(npc => [npc.name, npc.alias, npc.locationLabel])).toEqual([
       ['Bà mẹ quê', 'Người giữ bến', 'Bến Thuyền'],
       ['Tảo', 'Ngư dân', 'Bến Cá Ngạnh'],
@@ -35,13 +35,18 @@ describe('latest opening-map NPC catalog and storage', () => {
       'lao-lang-trung', 'tieu-nhi-quan-rap', 'thim-tu', 'thiet-chuy', 'lao-tieu-phu',
       'tieu-muoi-ban-do-choi', 'hac-lao', 'le-nuong', 'a-sang', 'doi-truong-ho-vuong-lang',
       'hac-lang', 'mu-doc-ba', 'a-cau', 'huyet-dao-phuong', 'quan-gia-trieu',
+      'linh-tuan-tra-cung', 'linh-tuan-tra-dao',
     ]);
     expect(DEFAULT_OPENING_MAP_NPCS.slice(5, 15).map(npc => npc.id)).toEqual([
       'herbalist-lang', 'inn-server', 'fruit-aunt-tu', 'smith-thiet-chuy', 'woodcutter',
       'toy-seller', 'beggar-hac-lao', 'singer-le-nuong', 'herdboy-a-sang', 'village-captain',
     ]);
-    expect(DEFAULT_OPENING_MAP_NPCS.slice(15).map(npc => npc.id)).toEqual([
+    expect(DEFAULT_OPENING_MAP_NPCS.slice(15, 20).map(npc => npc.id)).toEqual([
       'black-wolf', 'poison-witch', 'double-agent-acau', 'blood-blade-phuong', 'tax-official-trieu',
+    ]);
+    expect(DEFAULT_OPENING_MAP_NPCS.slice(20).map(npc => [npc.id, npc.name, npc.artwork])).toEqual([
+      ['patrol-archer', 'Lính Tuần Tra Cung', 'linh-tuan-tra-cung'],
+      ['patrol-swordsman', 'Lính Tuần Tra Đao', 'linh-tuan-tra-dao'],
     ]);
     expect(OPENING_MAP_SIDE_NPC_IDS).toEqual(DEFAULT_OPENING_MAP_NPCS.slice(5, 15).map(npc => npc.id));
     expect(OPENING_MAP_AFFINITY_IDS.every(id => DEFAULT_OPENING_MAP_NPCS.some(npc => npc.id === id))).toBe(true);
@@ -101,7 +106,7 @@ describe('latest opening-map NPC catalog and storage', () => {
     const retired: MapCharacterDraft = { id: 'market-vendor', mapId: OPENING_MAP_ID, name: 'Người bán hàng cũ', appearance: DEFAULT_APPEARANCES.male, point: { x: 700, y: 480 } };
     const merged = resolveOpeningMapNpcs([{ ...elder, hidden: true }, retired]);
     expect(merged.find(npc => npc.id === elder.id)).toBeUndefined();
-    expect(merged).toHaveLength(19);
+    expect(merged).toHaveLength(21);
     expect(merged.some(npc => npc.id === retired.id)).toBe(false);
     source[elder.id] = { ...elder, hidden: true };
     expect(resolveOpeningMapNpcs([]).some(npc => npc.id === elder.id)).toBe(false);

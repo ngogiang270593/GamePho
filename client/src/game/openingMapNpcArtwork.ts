@@ -17,6 +17,8 @@ import fruitSeller from '../../assets/nhan-vat/thim-tu.png';
 import toySeller from '../../assets/nhan-vat/tieu-muoi-ban-do-choi.png';
 import innServer from '../../assets/nhan-vat/tieu-nhi-quan-rap.png';
 import gateGuard from '../../assets/nhan-vat/truong-doi-tuan-tra.png';
+import patrolArcher from '../../assets/nhan-vat/linh-tuan-tra-cung.png';
+import patrolSwordsman from '../../assets/nhan-vat/linh-tuan-tra-dao.png';
 import martialArtist from '../../assets/nhan-vat/vo-su-nuong.png';
 import youngVillagerGirl from '../../assets/nhan-vat/thon-dan-tre.png';
 import youngVillagerFarmer from '../../assets/nhan-vat/nong-dan-tre.png';
@@ -27,6 +29,7 @@ export type OpeningMapNpcArtworkId =
   | 'hac-lang' | 'hac-lao' | 'huyet-dao-phuong' | 'lao-lang-trung' | 'lao-tieu-phu'
   | 'le-nuong' | 'mu-doc-ba' | 'quan-gia-trieu' | 'tao' | 'thiet-chuy'
   | 'thim-tu' | 'tieu-muoi-ban-do-choi' | 'tieu-nhi-quan-rap'
+  | 'linh-tuan-tra-cung' | 'linh-tuan-tra-dao'
   | 'truong-doi-tuan-tra' | 'vo-su-nuong' | 'thon-dan-tre' | 'nong-dan-tre' | 'nong-dan'
   | 'elder' | 'fisherman' | 'martial-artist' | 'messenger' | 'guard';
 
@@ -49,6 +52,8 @@ export const OPENING_MAP_NPC_ARTWORKS = {
   'thim-tu': { label: 'Thím Tư', src: fruitSeller },
   'tieu-muoi-ban-do-choi': { label: 'Tiểu Muội Bán Đồ Chơi', src: toySeller },
   'tieu-nhi-quan-rap': { label: 'Tiểu Nhị Quán Rạp', src: innServer },
+  'linh-tuan-tra-cung': { label: 'Lính Tuần Tra Cung', src: patrolArcher },
+  'linh-tuan-tra-dao': { label: 'Lính Tuần Tra Đao', src: patrolSwordsman },
   'truong-doi-tuan-tra': { label: 'Trưởng Đội Tuần Tra', src: gateGuard },
   'vo-su-nuong': { label: 'Võ Sư Nương', src: martialArtist },
   'thon-dan-tre': { label: 'Bé Thảo', src: youngVillagerGirl },
@@ -65,7 +70,7 @@ const ARTWORK_IDS = [
   'a-cau', 'a-sang', 'ba-me-que', 'doi-truong-ho-vuong-lang', 'giao',
   'hac-lang', 'hac-lao', 'huyet-dao-phuong', 'lao-lang-trung', 'lao-tieu-phu',
   'le-nuong', 'mu-doc-ba', 'nong-dan', 'nong-dan-tre', 'quan-gia-trieu', 'tao', 'thon-dan-tre', 'thiet-chuy', 'thim-tu',
-  'tieu-muoi-ban-do-choi', 'tieu-nhi-quan-rap', 'truong-doi-tuan-tra', 'vo-su-nuong',
+  'tieu-muoi-ban-do-choi', 'tieu-nhi-quan-rap', 'linh-tuan-tra-cung', 'linh-tuan-tra-dao', 'truong-doi-tuan-tra', 'vo-su-nuong',
 ] as const satisfies readonly OpeningMapNpcArtworkId[];
 
 export const OPENING_MAP_NPC_ARTWORK_OPTIONS = ARTWORK_IDS.map(id => [

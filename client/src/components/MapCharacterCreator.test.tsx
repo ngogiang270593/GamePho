@@ -55,9 +55,15 @@ describe('MapCharacterCreator on the current opening map', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Chỉnh Lão Lang Trung' }));
     expect(screen.getByRole('link', { name: 'Thêm sprite động tác đặc trưng ↗' }).getAttribute('href'))
       .toContain('npc=herbalist-lang&action=npc-morning');
+    fireEvent.click(screen.getByRole('button', { name: 'Chỉnh Lính Tuần Tra Cung' }));
+    expect(screen.getByRole('link', { name: 'Thêm sprite động tác đặc trưng ↗' }).getAttribute('href'))
+      .toContain('npc=patrol-archer&action=npc-morning');
+    fireEvent.click(screen.getByRole('button', { name: 'Chỉnh Lính Tuần Tra Đao' }));
+    expect(screen.getByRole('link', { name: 'Thêm sprite động tác đặc trưng ↗' }).getAttribute('href'))
+      .toContain('npc=patrol-swordsman&action=npc-morning');
   });
 
-  it('places all twenty NPCs in their areas with separate visual identities', () => {
+  it('places all twenty-two NPCs in their areas with separate visual identities', () => {
     render(<MapCharacterCreator />);
     const expected = [
       ['Bà mẹ quê', 'memory-keeper', 'Bến Thuyền', 2860, 1945],
@@ -80,6 +86,8 @@ describe('MapCharacterCreator on the current opening map', () => {
       ['A Cẩu', 'double-agent-acau', 'Gầm Cầu Gỗ', 3010, 1830],
       ['Huyết Đao Phượng', 'blood-blade-phuong', 'Vách Đá Biên Giới', 1110, 865],
       ['Quản Gia Triệu', 'tax-official-trieu', 'Trạm Thu Thuế', 2780, 1160],
+      ['Lính Tuần Tra Cung', 'patrol-archer', 'Chốt Chặn · Đầu cầu phía Đông', 3260, 1510],
+      ['Lính Tuần Tra Đao', 'patrol-swordsman', 'Chốt Chặn · Đầu cầu phía Tây', 2940, 1670],
     ] as const;
     for (const [name, id, locationLabel, x, y] of expected) {
       expect(screen.getByRole('button', { name: `Chỉnh ${name}` })).toBeTruthy();
@@ -89,7 +97,7 @@ describe('MapCharacterCreator on the current opening map', () => {
     expect(map.props?.embedded).toBe(true);
     expect(map.props?.overview).toBe(true);
     const requested = map.props!.npcs!.filter(npc => expected.some(([, id]) => id === npc.id));
-    expect(new Set(requested.map(npc => `${npc.design.bodyType}:${npc.design.hairstyle}:${npc.design.outfit}:${npc.design.outfitColor}`)).size).toBe(20);
+    expect(new Set(requested.map(npc => `${npc.design.bodyType}:${npc.design.hairstyle}:${npc.design.outfit}:${npc.design.outfitColor}`)).size).toBe(22);
   });
 
   it('autosaves appearance and missions, updates the game subscription, and restores after remount', async () => {

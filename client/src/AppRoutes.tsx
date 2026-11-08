@@ -5,6 +5,7 @@ import { ForestKeeperOutfitPreview } from './pages/ForestKeeperOutfitPreview';
 import { SpriteSheetDesignerDemo } from './pages/SpriteSheetDesignerDemo';
 import { OpeningMapPage } from './pages/OpeningMapPage';
 import { CharacterDesignerMapPreview } from './pages/CharacterDesignerMapPreview';
+import { SceneryStudyPage } from './pages/SceneryStudyPage';
 
 function OpeningMapRoute() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export function AppRoutes() {
     <Route path="/debug/character-designer" element={<SpriteSheetDesignerDemo />} />
     <Route path="/debug/sprite-sheet-designer" element={<SpriteSheetDesignerDemo />} />
     <Route path="/debug/character-designer/map" element={<CharacterDesignerMapPreview />} />
+    <Route path="/debug/scenery-study" element={<SceneryStudyPage />} />
     <Route element={<Layout />}>
     <Route index element={<HistoryGamePage />} />
     <Route path="uno" element={<HistoryGamePage />} />

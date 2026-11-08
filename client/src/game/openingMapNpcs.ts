@@ -28,7 +28,9 @@ export const OPENING_MAP_NPC_IDS = [
   'herbalist-lang', 'inn-server', 'fruit-aunt-tu', 'smith-thiet-chuy', 'woodcutter',
   'toy-seller', 'beggar-hac-lao', 'singer-le-nuong', 'herdboy-a-sang', 'village-captain',
   'black-wolf', 'poison-witch', 'double-agent-acau', 'blood-blade-phuong', 'tax-official-trieu',
+  'patrol-archer', 'patrol-swordsman',
 ] as const;
+export const OPENING_MAP_COMBAT_NPC_IDS = ['gate-guard', 'patrol-archer', 'patrol-swordsman'] as const;
 export const OPENING_MAP_VILLAGER_SPRITE_NPCS = [
   { id: 'NPC_DAN_NONG_01', name: 'Bé Thảo', artwork: 'thon-dan-tre', point: { x: 2160, y: 2200 } },
   { id: 'NPC_DAN_NONG_02', name: 'Cậu Tùng', artwork: 'nong-dan-tre', point: { x: 1800, y: 1760 } },
@@ -285,6 +287,24 @@ export const DEFAULT_OPENING_MAP_NPCS: readonly OpeningMapNpc[] = [
     dialogue: 'Sổ thuế phải đủ từng đồng. Muốn hỏi việc công, hãy trình giấy qua trạm.',
     appearance: { gender: 'male', hair: 'topknot', skin: 'tan', eyes: 'almond', outfit: 'aodai', accessory: 'khandong' },
     design: { bodyType: 'stately', posture: 'upright', hairstyle: 'topknot', faceShape: 'long', skinTone: 'tan', eyebrowShape: 'strong', mouthShape: 'stern', beardStyle: 'short', outfit: 'noble-robe', outfitColor: '#51434a', accentColor: '#c49a50', trouserColor: '#38373d', accessory: 'cloth-tie', weapon: 'scroll', heldItem: 'bamboo-tablet', animationSet: 'commanding', occupation: 'Quản gia trạm thu thuế', historicalRole: 'Tay sai của quan huyện Đông Hán' },
+  }),
+  npc('patrol-archer', 20, {
+    name: 'Lính Tuần Tra Cung', alias: 'Cung thủ tuần tra', locationLabel: 'Chốt Chặn · Đầu cầu phía Đông', point: { x: 3260, y: 1510 }, kind: 'guard', pose: 'order', facing: 'left',
+    artwork: 'linh-tuan-tra-cung',
+    role: 'Cung thủ Đông Hán đứng canh đầu cầu, theo dõi người qua lại từ bờ đông.',
+    mission: 'Canh giữ Chốt Chặn cùng Trưởng Đội Tuần Tra.',
+    dialogue: 'Đứng lại! Cây cung đã giương, không ai được tự tiện qua cầu.',
+    appearance: { gender: 'male', hair: 'topknot', skin: 'tan', eyes: 'almond', outfit: 'nguthan', accessory: 'khandong' },
+    design: { bodyType: 'broad-shouldered', posture: 'alert', hairstyle: 'warrior-knot', faceShape: 'square', skinTone: 'tan', eyebrowShape: 'angled', mouthShape: 'stern', beardStyle: 'short', outfit: 'guard-armor', outfitColor: '#3e4c40', accentColor: '#bda06b', trouserColor: '#3c3b35', accessory: 'headscarf', weapon: 'bow', heldItem: 'none', animationSet: 'guarding', occupation: 'Cung thủ tuần tra', historicalRole: 'Lính gác hư cấu tại Chốt Chặn' },
+  }),
+  npc('patrol-swordsman', 21, {
+    name: 'Lính Tuần Tra Đao', alias: 'Đao thủ tuần tra', locationLabel: 'Chốt Chặn · Đầu cầu phía Tây', point: { x: 2940, y: 1670 }, kind: 'guard', pose: 'order', facing: 'right',
+    artwork: 'linh-tuan-tra-dao',
+    role: 'Đao thủ Đông Hán chốt giữ lối lên cầu gỗ phía tây.',
+    mission: 'Canh giữ Chốt Chặn cùng Trưởng Đội Tuần Tra.',
+    dialogue: 'Lui lại! Qua được ta rồi hẵng nghĩ đến chuyện bước lên cầu.',
+    appearance: { gender: 'male', hair: 'topknot', skin: 'tan', eyes: 'almond', outfit: 'nguthan', accessory: 'khandong' },
+    design: { bodyType: 'athletic', posture: 'ready', hairstyle: 'warrior-knot', faceShape: 'square', skinTone: 'tan', eyebrowShape: 'angled', mouthShape: 'stern', beardStyle: 'none', outfit: 'guard-armor', outfitColor: '#35465c', accentColor: '#bb9652', trouserColor: '#353a43', accessory: 'shoulder-guard', weapon: 'practice-sword', heldItem: 'none', animationSet: 'guarding', occupation: 'Đao thủ tuần tra', historicalRole: 'Lính gác hư cấu tại Chốt Chặn' },
   }),
 ];
 export const OPENING_MAP_NPCS = DEFAULT_OPENING_MAP_NPCS;

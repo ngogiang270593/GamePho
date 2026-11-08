@@ -17,7 +17,6 @@
     "anchorX": 0.5,
     "anchorY": 0.97,
     "singleFrameWalk": false,
-    "movementFrameCount": 8,
     "clips": {
       "idle": {
         "fps": 8,
@@ -1058,13 +1057,13 @@
   "opening-map-npc:gate-guard": {
     "version": 1,
     "name": "Trưởng Đội Tuần Tra · Nam",
-    "src": "/assets/character-designer/opening-map-npc-gate-guard-4c0b5226496429c6.png",
+    "src": "/assets/character-designer/opening-map-npc-gate-guard-43415a46059c2894.png",
     "imageWidth": 2048,
-    "imageHeight": 256,
+    "imageHeight": 1280,
     "cellWidth": 256,
     "cellHeight": 256,
     "columns": 8,
-    "rows": 1,
+    "rows": 5,
     "offsetX": 0,
     "offsetY": 0,
     "gapX": 0,
@@ -1080,19 +1079,19 @@
         "loop": true,
         "directions": {
           "down": {
-            "start": 0,
+            "start": 32,
             "count": 1
           },
           "right": {
-            "start": 0,
+            "start": 24,
             "count": 1
           },
           "up": {
-            "start": 0,
+            "start": 8,
             "count": 1
           },
           "left": {
-            "start": 0,
+            "start": 16,
             "count": 1
           }
         }
@@ -1102,20 +1101,20 @@
         "loop": true,
         "directions": {
           "down": {
-            "start": 0,
-            "count": 1
+            "start": 32,
+            "count": 8
           },
           "right": {
-            "start": 0,
-            "count": 1
+            "start": 24,
+            "count": 8
           },
           "up": {
-            "start": 0,
-            "count": 1
+            "start": 8,
+            "count": 8
           },
           "left": {
-            "start": 0,
-            "count": 1
+            "start": 16,
+            "count": 8
           }
         }
       },
@@ -1124,20 +1123,20 @@
         "loop": true,
         "directions": {
           "down": {
-            "start": 0,
-            "count": 1
+            "start": 32,
+            "count": 8
           },
           "right": {
-            "start": 0,
-            "count": 1
+            "start": 24,
+            "count": 8
           },
           "up": {
-            "start": 0,
-            "count": 1
+            "start": 8,
+            "count": 8
           },
           "left": {
-            "start": 0,
-            "count": 1
+            "start": 16,
+            "count": 8
           }
         }
       },
@@ -1930,6 +1929,3174 @@
           "left": {
             "start": 0,
             "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:inn-server": {
+    "version": 1,
+    "name": "Tiểu Nhị Quán Rạp · Nam",
+    "src": "/assets/character-designer/opening-map-npc-inn-server-0c8a621a2480e760.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:fruit-aunt-tu": {
+    "version": 1,
+    "name": "Thím Tư · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-fruit-aunt-tu-4bae5d2544bac5d9.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:smith-thiet-chuy": {
+    "version": 1,
+    "name": "Thiết Chủy · Nam",
+    "src": "/assets/character-designer/opening-map-npc-smith-thiet-chuy-1e2d83c4873151fe.png",
+    "imageWidth": 2048,
+    "imageHeight": 512,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 2,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 8,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:woodcutter": {
+    "version": 1,
+    "name": "Lão Tiều Phu · Nam",
+    "src": "/assets/character-designer/opening-map-npc-woodcutter-11d444240c575f8b.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:toy-seller": {
+    "version": 1,
+    "name": "Tiểu Muội Bán Đồ Chơi · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-toy-seller-42f9aef24fdcee2a.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:beggar-hac-lao": {
+    "version": 1,
+    "name": "Hạc Lão · Nam",
+    "src": "/assets/character-designer/opening-map-npc-beggar-hac-lao-0744e4174f99e113.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:singer-le-nuong": {
+    "version": 1,
+    "name": "Lệ Nương · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-singer-le-nuong-57fe9908f19310a9.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:herdboy-a-sang": {
+    "version": 1,
+    "name": "A Sáng · Nam",
+    "src": "/assets/character-designer/opening-map-npc-herdboy-a-sang-5fc52223db747ee8.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:village-captain": {
+    "version": 1,
+    "name": "Đội Trưởng Hộ Vệ Làng · Nam",
+    "src": "/assets/character-designer/opening-map-npc-village-captain-610bf66b5de174d1.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:black-wolf": {
+    "version": 1,
+    "name": "Hắc Lang · Nam",
+    "src": "/assets/character-designer/opening-map-npc-black-wolf-95a171c3ac3c1b98.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:poison-witch": {
+    "version": 1,
+    "name": "Mụ Độc Bà · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-poison-witch-4bf7311232261072.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:double-agent-acau": {
+    "version": 1,
+    "name": "A Cẩu · Nam",
+    "src": "/assets/character-designer/opening-map-npc-double-agent-acau-65f0bc64cdf53a67.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:blood-blade-phuong": {
+    "version": 1,
+    "name": "Huyết Đao Phượng · Nữ",
+    "src": "/assets/character-designer/opening-map-npc-blood-blade-phuong-7f01c54df63d460b.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:tax-official-trieu": {
+    "version": 1,
+    "name": "Quản Gia Triệu · Nam",
+    "src": "/assets/character-designer/opening-map-npc-tax-official-trieu-38cb093b5229ac9b.png",
+    "imageWidth": 2048,
+    "imageHeight": 256,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:patrol-swordsman": {
+    "version": 1,
+    "name": "Lính Tuần Tra Đao · Nam",
+    "src": "/assets/character-designer/opening-map-npc-patrol-swordsman-652248ce6d3a8703.png",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 6,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 32,
+            "count": 1
+          },
+          "right": {
+            "start": 40,
+            "count": 1
+          },
+          "up": {
+            "start": 8,
+            "count": 1
+          },
+          "left": {
+            "start": 16,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 32,
+            "count": 8
+          },
+          "right": {
+            "start": 40,
+            "count": 8
+          },
+          "up": {
+            "start": 8,
+            "count": 8
+          },
+          "left": {
+            "start": 16,
+            "count": 8
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 32,
+            "count": 8
+          },
+          "right": {
+            "start": 40,
+            "count": 8
+          },
+          "up": {
+            "start": 8,
+            "count": 8
+          },
+          "left": {
+            "start": 16,
+            "count": 8
+          }
+        }
+      },
+      "turn": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "jump": {
+        "fps": 8,
+        "loop": false,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-morning": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 8
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 24,
+            "count": 8
+          }
+        }
+      },
+      "npc-noon": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      },
+      "npc-evening": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 0,
+            "count": 1
+          },
+          "right": {
+            "start": 0,
+            "count": 1
+          },
+          "up": {
+            "start": 0,
+            "count": 1
+          },
+          "left": {
+            "start": 0,
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "opening-map-npc:patrol-archer": {
+    "version": 1,
+    "name": "Lính Tuần Tra Cung · Nam",
+    "src": "/assets/character-designer/opening-map-npc-patrol-archer-128b02c98829d1bb.png",
+    "imageWidth": 2048,
+    "imageHeight": 1280,
+    "cellWidth": 256,
+    "cellHeight": 256,
+    "columns": 8,
+    "rows": 5,
+    "offsetX": 0,
+    "offsetY": 0,
+    "gapX": 0,
+    "gapY": 0,
+    "scale": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.97,
+    "singleFrameWalk": false,
+    "movementFrameCount": 8,
+    "clips": {
+      "idle": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 1
+          },
+          "right": {
+            "start": 32,
+            "count": 1
+          },
+          "up": {
+            "start": 8,
+            "count": 1
+          },
+          "left": {
+            "start": 16,
+            "count": 1
+          }
+        }
+      },
+      "walk": {
+        "fps": 8,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 8
+          },
+          "right": {
+            "start": 32,
+            "count": 8
+          },
+          "up": {
+            "start": 8,
+            "count": 8
+          },
+          "left": {
+            "start": 16,
+            "count": 8
+          }
+        }
+      },
+      "run": {
+        "fps": 12,
+        "loop": true,
+        "directions": {
+          "down": {
+            "start": 24,
+            "count": 8
+          },
+          "right": {
+            "start": 32,
+            "count": 8
+          },
+          "up": {
+            "start": 8,
+            "count": 8
+          },
+          "left": {
+            "start": 16,
+            "count": 8
           }
         }
       },

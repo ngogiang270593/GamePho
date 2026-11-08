@@ -17,6 +17,8 @@ describe('opening map landmarks', () => {
     ]) {
       expect(container.querySelector(`[data-landmark="${landmark}"]`), landmark).not.toBeNull();
     }
+    expect(container.querySelector('[data-landmark="buffalo-pasture"][data-nearby-npc="herdboy-a-sang"]')).not.toBeNull();
+    expect(container.querySelector('[data-landmark="ruined-wall"][data-nearby-npc="beggar-hac-lao"]')).not.toBeNull();
     expect(container.querySelector('[data-landmark="bounty-stone"]')).toBeNull();
     expect(container.querySelector('[data-detail="acau-broken-cot"]')).not.toBeNull();
     expect(container.querySelector('[data-detail="acau-bowls-and-note"]')).not.toBeNull();

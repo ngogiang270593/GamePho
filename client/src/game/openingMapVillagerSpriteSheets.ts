@@ -12,11 +12,11 @@ function fourFrameSheet(name: string, artwork: string, poses: readonly FramePose
   ).join('');
   const src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="256" viewBox="0 0 1024 256">${cells}</svg>`)}`;
   const directions = Object.fromEntries(['down', 'right', 'up', 'left'].map(direction => [direction, { start: 0, count: 1 }])) as CharacterSpriteSheet['clips']['idle']['directions'];
-  const clips = Object.fromEntries(['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map(action => [
+  const clips = Object.fromEntries(['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'].map(action => [
     action,
     {
       fps: action === 'run' ? 12 : 8,
-      loop: action !== 'jump',
+      loop: action !== 'jump' && action !== 'attack',
       directions: {
         ...directions,
         down: { start: 0, count: action === 'npc-morning' ? 4 : 1 },

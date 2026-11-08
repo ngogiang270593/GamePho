@@ -21,13 +21,23 @@ export function OpeningMapNpcArtwork({ npcId, appearance, design, artwork, pose,
 }) {
   const appliedSheet = useAppliedSpriteSheet(npcId ? openingMapNpcSpriteTarget(npcId) : null);
   const sheet = spriteSheet === undefined ? appliedSheet : spriteSheet;
+  const resolvedAction = action === 'walk' && sheet?.clips.walk?.directions[facing].count !== 8
+    ? 'npc-morning'
+    : action;
   const image = artwork ? OPENING_MAP_NPC_ARTWORKS[artwork] : undefined;
+  if (portrait && image) return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+    className={className}
+    data-character-artwork="npc-image"
+    data-npc-artwork={artwork}
+    aria-hidden="true" focusable="false">
+    <image href={image.src} width="256" height="256" preserveAspectRatio="xMidYMax meet" />
+  </svg>;
   if (sheet) return <CharacterSprite
     className={className}
     appearance={appearance}
     npcDesign={design}
     spriteSheet={sheet}
-    spriteAction={action}
+    spriteAction={resolvedAction}
     spriteFrame={frame}
     spritePlaying={playing}
     spritePlaybackIntervalMultiplier={2}

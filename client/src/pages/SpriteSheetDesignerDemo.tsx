@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { CharacterSprite } from '../components/CharacterSprite';
+import { HeroSkillPlayground } from '../components/HeroSkillPlayground';
 import { SpriteSheetCharacter } from '../components/SpriteSheetCharacter';
 import type { CharacterGender, Facing } from '../game/character';
 import { STARTING_CHARACTERS, startingCharacterAppearance } from '../game/startingCharacters';
-import { createOpeningMapVillagers, DEFAULT_OPENING_MAP_NPCS, OPENING_MAP_NPC_IDS, OPENING_MAP_VILLAGER_SPRITE_NPCS, openingMapNpcSpriteTarget, useOpeningMapNpcs } from '../game/openingMapNpcs';
+import { createOpeningMapVillagers, DEFAULT_OPENING_MAP_NPCS, OPENING_MAP_COMBAT_NPC_IDS, OPENING_MAP_NPC_IDS, OPENING_MAP_VILLAGER_SPRITE_NPCS, openingMapNpcSpriteTarget, useOpeningMapNpcs } from '../game/openingMapNpcs';
 import { OpeningMapNpcArtwork } from '../components/OpeningMapNpcArtwork';
 import { ACTION_FRAME_COUNT, ACTION_POSES, compileActionFrames, makeActionSlots, readActionFrames, type FrameImage } from '../game/characterActionFrames';
 import { GAME_SPRITE_ACTIONS, NPC_SCHEDULE_SPRITE_ACTION, NPC_WORK_SPRITE_ACTION, SPRITE_ACTIONS, SPRITE_ACTION_LABELS, applySpriteSheet, makeSpriteSheet, spriteCell, spriteSheetError, spriteSheetTarget, useAppliedSpriteSheet, type CharacterSpriteSheet, type SpriteAction } from '../game/characterSpriteSheet';
@@ -45,6 +46,7 @@ function readImage(file: File): Promise<FrameImage> {
 
 export function SpriteSheetDesignerDemo() {
   const templateId = 'forest-keeper';
+  const [toolTab, setToolTab] = useState<'sprites' | 'skills'>('sprites');
   const [gender, setGender] = useState<CharacterGender>(cachedSession?.gender ?? 'male');
   const requestedAction = new URLSearchParams(window.location.search).get('action');
   const initialActionValue = SPRITE_ACTIONS.find(item => item === requestedAction);
@@ -76,6 +78,8 @@ export function SpriteSheetDesignerDemo() {
     ?? DEFAULT_OPENING_MAP_NPCS[0];
   const editorNpcs = [...mapNpcs, ...createOpeningMapVillagers(villagerTemplate)];
   const editingNpc = editorNpcs.find(npc => npc.id === editingNpcId);
+  const isCombatNpc = OPENING_MAP_COMBAT_NPC_IDS.includes(editingNpcId as typeof OPENING_MAP_COMBAT_NPC_IDS[number]);
+  const isNpcWalkAction = !!editingNpc && isCombatNpc && action === 'walk';
   const usesFourFrameAction = VILLAGER_SPRITE_NPC_IDS.includes(editingNpcId as typeof VILLAGER_SPRITE_NPC_IDS[number]);
   const actionFrameCount = usesFourFrameAction ? 4 : ACTION_FRAME_COUNT;
   const template = STARTING_CHARACTERS.find(item => item.id === templateId) ?? STARTING_CHARACTERS[0];
@@ -105,11 +109,11 @@ export function SpriteSheetDesignerDemo() {
   const frameInstructions = ACTION_POSES[action];
   const npcActionReady = isNpcWorkAction
     && directionFrameCount('down') === actionFrameCount;
-  const movementReady = editingNpc ? npcActionReady : action === 'idle' || missingDirections.length === 0;
+  const movementReady = editingNpc ? isNpcWalkAction ? missingDirections.length === 0 : npcActionReady : action === 'idle' || missingDirections.length === 0;
   const error = sheet ? spriteSheetError(sheet) : null;
   const hasCompletedFrames = Object.values(sheet?.clips ?? {}).some(item => Object.values(item.directions).some(item => item.count === actionFrameCount));
   const canSave = !!sheet && hasCompletedFrames && !pending?.some(slot => !slot) && !compilationFailed && !error && !busy
-    && (!editingNpc || npcActionReady);
+    && (!editingNpc || (isNpcWalkAction ? movementReady : npcActionReady));
   currentSession = { drafts, gender, action, facing, npcId: editingNpcId, atlasDraft, atlasStart };
   const hasWorkspace = !!sheet || !!atlas || Object.values(draft?.pending ?? {}).some(slots => slots.some(Boolean));
   const atlasView = atlas ?? sheet;
@@ -118,12 +122,14 @@ export function SpriteSheetDesignerDemo() {
   const appearance = editingNpc?.appearance ?? mainAppearance;
   const subjectName = editingNpc?.name ?? template.name;
   const subjectGender = appearance.gender;
-  const prompt = `Tạo frame ${frame + 1}/${actionFrameCount} của hành động ${labels[action]} cho nhân vật “${subjectName}”, ${subjectGender === 'male' ? 'nam' : 'nữ'}, ${facingPrompt[facing]}. ${isNpcWorkAction ? `Tạo một động tác ngắn, dễ lặp thể hiện vai trò “${editingNpc?.role ?? subjectName}”; giữ chân gần như cố định, chọn đạo cụ đơn giản và giữ nguyên vị trí trên map.` : ''}Tư thế: ${frameInstructions[frame]} Giữ nguyên mẫu ảnh tham chiếu: khuôn mặt, tóc, trang phục, màu sắc và tỷ lệ cơ thể. Camera orthographic cố định, toàn thân ở giữa ảnh, bàn chân cùng đường nền. PNG RGBA 256x256 nền trong suốt, không chữ, không crop tay hoặc chân. Chỉ xuất đúng một frame, đặt tên ${action}-${facing}-${String(frame + 1).padStart(2, '0')}.png.`;
+  const prompt = `Tạo frame ${frame + 1}/${actionFrameCount} của hành động ${labels[action]} cho nhân vật “${subjectName}”, ${subjectGender === 'male' ? 'nam' : 'nữ'}, ${facingPrompt[facing]}. ${action === 'attack' ? 'Đây là hoạt ảnh chiến đấu của nhân vật chính: giữ đúng vũ khí và nhận diện, chuyển động chém rõ lực nhưng không đổi vị trí chân quá xa; các frame nối thành một đòn đánh gọn, không tạo vòng lặp đi bộ.' : ''}${isNpcWalkAction ? 'Tạo chu kỳ đi bộ chiến đấu rõ bước chân, thân người và vũ khí chuyển động tự nhiên nhưng giữ nguyên nhận diện, trang phục và điểm neo bàn chân; khung hình kế tiếp phải nối mượt để lặp liên tục.' : isNpcWorkAction ? `Tạo một động tác ngắn, dễ lặp thể hiện vai trò “${editingNpc?.role ?? subjectName}”; giữ chân gần như cố định, chọn đạo cụ đơn giản và giữ nguyên vị trí trên map.` : ''}Tư thế: ${frameInstructions[frame]} Giữ nguyên mẫu ảnh tham chiếu: khuôn mặt, tóc, trang phục, màu sắc và tỷ lệ cơ thể. Camera orthographic cố định, toàn thân ở giữa ảnh, bàn chân cùng đường nền. PNG RGBA 256x256 nền trong suốt, không chữ, không crop tay hoặc chân. Chỉ xuất đúng một frame, đặt tên ${action}-${facing}-${String(frame + 1).padStart(2, '0')}.png.`;
   const incompleteImage = pending?.some(slot => !slot) ? pending[frame] ?? pending.find(Boolean) : null;
   const previewSheet = incompleteImage ? { ...makeSpriteSheet(incompleteImage.src, incompleteImage.width, incompleteImage.height, incompleteImage.name), singleFrameWalk: false } : sheet;
   const previewPlaying = playing && ready && !incompleteImage;
   const previewFrame = incompleteImage ? 0 : previewPlaying ? undefined : Math.min(frame, Math.max(0, (range?.count ?? 1) - 1));
-  const availableActions: readonly SpriteAction[] = editingNpc ? [NPC_WORK_SPRITE_ACTION] : GAME_SPRITE_ACTIONS;
+  const availableActions: readonly SpriteAction[] = editingNpc
+    ? isCombatNpc ? [NPC_WORK_SPRITE_ACTION, 'walk'] : [NPC_WORK_SPRITE_ACTION]
+    : GAME_SPRITE_ACTIONS;
 
   useEffect(() => { setFrame(0); setStatus(undefined); }, [target, action, facing]);
 
@@ -131,7 +137,7 @@ export function SpriteSheetDesignerDemo() {
     setRepeatFour(!!editingNpc && !VILLAGER_SPRITE_NPC_IDS.includes(editingNpc.id as typeof VILLAGER_SPRITE_NPC_IDS[number]));
     if (editingNpc) setFacing('down');
     setAction(current => editingNpc
-      ? NPC_WORK_SPRITE_ACTION
+      ? isCombatNpc && initialAction === 'walk' ? 'walk' : NPC_WORK_SPRITE_ACTION
       : Object.values(NPC_SCHEDULE_SPRITE_ACTION).includes(current) ? 'walk' : current);
   }, [editingNpcId]);
 
@@ -144,7 +150,7 @@ export function SpriteSheetDesignerDemo() {
         setDrafts(all => all[target] ? all : { ...all, [target]: saved.draft });
         if (saved.atlas) setAtlasDraft({ target, sheet: saved.atlas });
         const restoredAction = initialAction ?? saved.action;
-        setAtlasStart(saved.atlasStart); setAction(editingNpc ? NPC_WORK_SPRITE_ACTION : Object.values(NPC_SCHEDULE_SPRITE_ACTION).includes(restoredAction) ? 'walk' : restoredAction); setFacing(editingNpc ? 'down' : saved.facing);
+        setAtlasStart(saved.atlasStart); setAction(editingNpc ? isCombatNpc && restoredAction === 'walk' ? 'walk' : NPC_WORK_SPRITE_ACTION : Object.values(NPC_SCHEDULE_SPRITE_ACTION).includes(restoredAction) ? 'walk' : restoredAction); setFacing(editingNpc && !isCombatNpc ? 'down' : saved.facing);
         setDraftNotice({ target, text: 'Đã khôi phục bản nháp, gồm cả ảnh và các ô frame đang nhập dở.' });
       }
     }).catch(cause => {
@@ -375,9 +381,13 @@ export function SpriteSheetDesignerDemo() {
     });
   }
 
-  return <main className="sprite-editor">
-    <header className="sprite-editor__header"><div><span className="sprite-editor__eyebrow">CHARACTER DESIGNER</span><h1>Thiết kế nhân vật và chuyển động</h1><p>Chọn nhân vật rồi thử sprite trực tiếp trên map. NPC chỉ cần một vòng đi bộ và một động tác ngắn.</p></div><nav><a href={`/debug/character-designer/map?${editingNpc ? `npc=${encodeURIComponent(editingNpc.id)}` : `gender=${gender}`}`} target="_blank" rel="noreferrer">Mở map thử ở tab mới ↗</a><a href="/map">Vào game ↗</a></nav></header>
-    <div id="movement-editor-panel">
+  return <main className={`sprite-editor sprite-editor--${toolTab}`}>
+    <header className="sprite-editor__header"><div><span className="sprite-editor__eyebrow">{toolTab === 'skills' ? 'CHỐT CHẶN · COMBAT TRIAL' : 'CHARACTER DESIGNER'}</span><h1>{toolTab === 'skills' ? 'Đột Phá Vòng Vây' : 'Thiết kế nhân vật và chuyển động'}</h1><p>{toolTab === 'skills' ? 'Chọn trận, trang bị một tâm pháp và ba chiêu chiến đấu; dùng phím 1–5 để giao chiến.' : 'Chọn nhân vật rồi thử sprite trực tiếp trên map. NPC chỉ cần một vòng đi bộ và một động tác ngắn.'}</p></div><nav><a href={`/debug/character-designer/map?${editingNpc ? `npc=${encodeURIComponent(editingNpc.id)}` : `gender=${gender}`}`} target="_blank" rel="noreferrer">Mở map thử ở tab mới ↗</a><a href="/map">Vào game ↗</a></nav></header>
+    <nav className="sprite-editor__tool-tabs" aria-label="Công cụ">
+      <button type="button" aria-pressed={toolTab === 'sprites'} onClick={() => setToolTab('sprites')}>Thiết kế sprite</button>
+      <button type="button" aria-pressed={toolTab === 'skills'} onClick={() => setToolTab('skills')}>Võ công</button>
+    </nav>
+    <div id="movement-editor-panel" hidden={toolTab !== 'sprites'}>
     <div className="sprite-editor__layout">
       <aside className="sprite-editor__sidebar">
         <section className="sprite-editor__panel sprite-editor__target">
@@ -387,19 +397,21 @@ export function SpriteSheetDesignerDemo() {
           {!editingNpc && <label>Giới tính<select disabled={busy} value={gender} onChange={event => setGender(event.target.value as CharacterGender)}><option value="male">Nam</option><option value="female">Nữ</option></select></label>}
         </section>
         <section className="sprite-editor__panel"><h2>1. Động tác nhân vật</h2>
-          <div className="sprite-editor__actions">{availableActions.map(item => <button key={item} disabled={busy} type="button" aria-pressed={action === item} onClick={() => setAction(item)}>{editingNpc ? 'Động tác đặc trưng' : labels[item]}</button>)}</div>
-          {editingNpc
-            ? <p className="sprite-editor__hint">NPC chỉ dùng động tác đặc trưng và luôn hướng mặt về trước trên map.</p>
-            : <><div className="sprite-editor__directions">{directions.map(item => <button key={item.value} disabled={busy} type="button" aria-pressed={facing === item.value} onClick={() => setFacing(item.value)}>{item.label}</button>)}</div><p className="sprite-editor__hint">Trong game: thả phím = đứng; WASD = đi bộ; Shift + WASD = chạy. Hướng nhìn tự đổi theo phím di chuyển. Một hành động di chuyển đủ 4 hướng cần 32 frame (8 × 4).</p><div className="sprite-editor__direction-status">{directions.map(direction => <p key={direction.value} data-direction-status={direction.value}>{direction.label}: <strong>{directionFrameCount(direction.value)}/8</strong></p>)}</div></>}
+          <div className="sprite-editor__actions">{availableActions.map(item => <button key={item} disabled={busy} type="button" aria-pressed={action === item} onClick={() => setAction(item)}>{editingNpc && item === NPC_WORK_SPRITE_ACTION ? 'Động tác đặc trưng' : labels[item]}</button>)}</div>
+          {editingNpc && isNpcWalkAction
+            ? <><div className="sprite-editor__directions">{directions.map(item => <button key={item.value} disabled={busy} type="button" aria-pressed={facing === item.value} onClick={() => setFacing(item.value)}>{item.label}</button>)}</div><p className="sprite-editor__hint">Sprite đi bộ chiến đấu của NPC được dùng khi truy đuổi Tiểu Mông trong trận Chốt Chặn. Tạo đủ 8 frame cho từng hướng; bản đồ và trận dùng chung bộ sprite.</p><div className="sprite-editor__direction-status">{directions.map(direction => <p key={direction.value} data-direction-status={direction.value}>{direction.label}: <strong>{directionFrameCount(direction.value)}/8</strong></p>)}</div></>
+            : editingNpc
+              ? <p className="sprite-editor__hint">NPC chỉ dùng động tác đặc trưng và luôn hướng mặt về trước trên map.</p>
+            : <><div className="sprite-editor__directions">{directions.map(item => <button key={item.value} disabled={busy} type="button" aria-pressed={facing === item.value} onClick={() => setFacing(item.value)}>{item.label}</button>)}</div><p className="sprite-editor__hint">{action === 'attack' ? 'Trong trận Chốt Chặn, đòn đánh thường phát hoạt ảnh chiến đấu theo hướng đối thủ. Tạo 8 frame cho mỗi hướng để nhân vật có thể chém về trước, sau, trái và phải.' : 'Trong game: thả phím = đứng; WASD = đi bộ; Shift + WASD = chạy. Hướng nhìn tự đổi theo phím di chuyển. Một hành động di chuyển đủ 4 hướng cần 32 frame (8 × 4).'}</p><div className="sprite-editor__direction-status">{directions.map(direction => <p key={direction.value} data-direction-status={direction.value}>{direction.label}: <strong>{directionFrameCount(direction.value)}/8</strong></p>)}</div></>}
         </section>
         {editingNpc && <section className="sprite-editor__panel" aria-label="Yêu cầu sprite NPC" data-testid="npc-action-requirements">
           <h2>NPC trên map</h2>
-          <p className="sprite-editor__hint">{usesFourFrameAction ? 'Hộ dân này dùng đúng 4 frame riêng cho động tác đặc trưng, không lặp frame; có thể nhập ảnh từng ô hoặc cả atlas. NPC đứng tại vị trí đã đặt và phát động tác này trên map.' : 'Giai đoạn đầu chỉ cần 4 hình động tác đặc trưng hướng trước; tool tự lặp thành 8 frame. Có thể thêm đủ 8 hình riêng nếu muốn. NPC đứng tại vị trí đã đặt và phát động tác này trên map.'}</p>
-          <p className="sprite-editor__patrol-status" role="status">{npcActionReady ? 'Đã có đủ sprite động tác hướng trước. Lưu và áp dụng để xem trên map.' : `Chưa có sprite. Thêm ${usesFourFrameAction ? 'đúng 4' : '4 hoặc 8'} hình động tác đặc trưng hướng trước để bắt đầu.`}</p>
+          <p className="sprite-editor__hint">{isNpcWalkAction ? 'Mỗi hướng cần 8 frame đi bộ chiến đấu. Có thể nhập 4 frame và lặp lại thành 8, hoặc chọn atlas; các hướng đã hoàn thành sẽ được dùng chung trên map và trận.' : usesFourFrameAction ? 'Hộ dân này dùng đúng 4 frame riêng cho động tác đặc trưng, không lặp frame; có thể nhập ảnh từng ô hoặc cả atlas. NPC đứng tại vị trí đã đặt và phát động tác này trên map.' : 'Giai đoạn đầu chỉ cần 4 hình động tác đặc trưng hướng trước; tool tự lặp thành 8 frame. Có thể thêm đủ 8 hình riêng nếu muốn. NPC đứng tại vị trí đã đặt và phát động tác này trên map.'}</p>
+          <p className="sprite-editor__patrol-status" role="status">{isNpcWalkAction ? movementReady ? 'Đã có đủ sprite đi bộ 4 hướng. Lưu và áp dụng để dùng trong trận.' : `Sprite đi bộ còn thiếu hướng: ${missingDirections.map(direction => direction.label).join(', ')}.` : npcActionReady ? 'Đã có đủ sprite động tác hướng trước. Lưu và áp dụng để xem trên map.' : `Chưa có sprite. Thêm ${usesFourFrameAction ? 'đúng 4' : '4 hoặc 8'} hình động tác đặc trưng hướng trước để bắt đầu.`}</p>
         </section>}
         <section className="sprite-editor__panel"><h2>2. Nhập {actionFrameCount} frame</h2>
           <label className="sprite-editor__drop"><strong>{usesFourFrameAction ? 'Chọn đúng 4 ảnh khác nhau theo thứ tự tên file' : editingNpc ? 'Chọn 4 hoặc 8 ảnh theo thứ tự tên file' : 'Chọn 8 ảnh theo thứ tự tên file'}</strong><input aria-label="Nhập frame hành động" disabled={busy} type="file" multiple accept="image/png,image/jpeg,image/webp" onChange={event => void importFrames(event)} /><small>{usesFourFrameAction ? 'Bốn ảnh được giữ thành 4 frame riêng biệt; không tự nhân đôi. Vẽ đúng động tác đặc trưng, giữ cùng kích thước và vị trí chân.' : editingNpc ? '4 ảnh sẽ tự lặp thành 8 frame. Vẽ nhân vật nhìn thẳng, giữ cùng kích thước và vị trí chân.' : 'Ví dụ walk-down-01.png … walk-down-08.png. Giữ nguyên kích thước ảnh, căn giữa và chân cùng đường nền.'}</small></label>
-          {!editingNpc && <label className="sprite-editor__check"><input type="checkbox" checked={repeatFour} onChange={event => setRepeatFour(event.target.checked)} /><span>Nhập 4 tư thế rồi lặp thành 8 frame: 1–2–3–4–1–2–3–4</span></label>}
+          {(!editingNpc || isNpcWalkAction) && <label className="sprite-editor__check"><input type="checkbox" checked={repeatFour} onChange={event => setRepeatFour(event.target.checked)} /><span>Nhập 4 tư thế rồi lặp thành 8 frame: 1–2–3–4–1–2–3–4</span></label>}
           <label className="sprite-editor__drop"><strong>Hoặc chọn ảnh đơn / sprite sheet</strong><input aria-label="Nhập ảnh sprite" disabled={busy} type="file" accept="image/png,image/jpeg,image/webp" onChange={event => void importAtlas(event)} /><small>Ảnh đơn ở hành động không tự nhận làm frame; hãy chỉnh atlas và chọn đúng {actionFrameCount} ô.</small></label>
           {!editingNpc && <button disabled={busy || filled < 4} type="button" onClick={() => void work(async () => { const slots = await currentSlots(); if (slots.slice(0, 4).some(slot => !slot)) throw new Error('Cần đủ frame 1–4 trước khi lặp.'); await installFrames(makeActionSlots(slots.slice(0, 4) as FrameImage[], true)); })}>Lặp frame 1–4 thành 5–8</button>}
           {pending && <button disabled={busy} type="button" onClick={() => { setDrafts(all => { const next = { ...all[target], pending: { ...all[target]?.pending } }; delete next.pending[key]; return { ...all, [target]: next }; }); setStatus(undefined); }}>Bỏ lượt sửa frame này</button>}
@@ -415,7 +427,7 @@ export function SpriteSheetDesignerDemo() {
           <div className="sprite-editor__toolbar"><button type="button" disabled={!ready || busy} onClick={() => setPlaying(value => !value)}>{playing ? 'Tạm dừng' : 'Phát animation'}</button><button className="primary" type="button" disabled={!hasWorkspace || busy} onClick={() => void saveDraft()}>Lưu bản nháp</button><button className="primary" type="button" disabled={!canSave} onClick={() => void save(false)}>Lưu và áp dụng vào game</button><button className="primary" type="button" disabled={!canSave} onClick={() => void save(true)}>{busy ? 'Đang xử lý…' : 'Ghi ảnh + hành động vào source'}</button><button disabled={!hasWorkspace || busy} type="button" onClick={() => void exportConfig()}>Xuất JSON kèm ảnh</button></div>
           <label className="sprite-editor__hint">Nhập JSON kèm ảnh<input aria-label="Nhập cấu hình sprite" type="file" accept="application/json,.json" disabled={busy} onChange={event => void importConfig(event)} /></label>
           {!ready && <p className="sprite-editor__hint">Lưu bản nháp giữ được ảnh ngay cả khi mới có 1 frame. Cần đủ {actionFrameCount} frame để phát và áp dụng hướng đang sửa.</p>}
-          {!movementReady && <p className="sprite-editor__hint">{editingNpc ? 'Cần đủ 4 hoặc 8 hình động tác hướng trước để áp dụng lên map.' : `Hành động ${labels[action]} còn thiếu hướng: ${missingDirections.map(direction => direction.label).join(', ')}. Các hướng đã đủ 8 frame vẫn lưu và áp dụng được; hướng chưa thiết kế dùng hình gốc đúng hướng.`}</p>}
+          {!movementReady && <p className="sprite-editor__hint">{editingNpc ? isNpcWalkAction ? `Cần đủ 8 frame đi bộ cho các hướng: ${missingDirections.map(direction => direction.label).join(', ')}.` : 'Cần đủ 4 hoặc 8 hình động tác hướng trước để áp dụng lên map.' : `Hành động ${labels[action]} còn thiếu hướng: ${missingDirections.map(direction => direction.label).join(', ')}. Các hướng đã đủ 8 frame vẫn lưu và áp dụng được; hướng chưa thiết kế dùng hình gốc đúng hướng.`}</p>}
           {unfinished && <p className="sprite-editor__hint">Ảnh nhập dở được giữ trong bản nháp. Các hướng đã ghép xong có thể áp dụng vào game riêng.</p>}
           {compilationFailed && <p className="sprite-editor__status is-error" role="alert">Có bộ frame chưa ghép thành công. Lưu bản nháp hoặc xuất JSON để giữ ảnh rồi kiểm tra lại kích thước frame.</p>}
           <p className="sprite-editor__hint">Lưu trên trình duyệt dùng cùng địa chỉ game. Ghi source lưu ảnh và toàn bộ hành động vào dự án để mang sang máy khác.</p>
@@ -451,6 +463,9 @@ export function SpriteSheetDesignerDemo() {
         <details className="sprite-editor__source"><summary>JSON cấu hình hiện tại</summary><pre>{JSON.stringify({ target, sheet: sheet ? { ...sheet, src: sheet.src.startsWith('data:') ? '[ảnh nhúng; Xuất JSON kèm ảnh để lấy đầy đủ]' : sheet.src } : null }, null, 2)}</pre></details>
       </div>
     </div>
+    </div>
+    <div role="tabpanel" hidden={toolTab !== 'skills'}>
+      <HeroSkillPlayground />
     </div>
   </main>;
 }

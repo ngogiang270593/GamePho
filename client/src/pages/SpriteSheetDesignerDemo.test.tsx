@@ -103,6 +103,15 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); window.history.replaceState({}, '', '/debug/character-designer'); });
 
 describe('character designer saving', () => {
+  it('opens the encounter selection instead of the sprite editor in the Võ công tab', () => {
+    render(<SpriteSheetDesignerDemo />);
+    fireEvent.click(screen.getByRole('button', { name: 'Võ công' }));
+
+    expect(screen.getByRole('heading', { name: 'Đột Phá Vòng Vây', level: 1 })).toBeTruthy();
+    expect(screen.getByRole('region', { name: 'Chọn trận' })).toBeTruthy();
+    expect(document.getElementById('movement-editor-panel')?.hasAttribute('hidden')).toBe(true);
+  });
+
   it('edits the forest character without showing a reference gallery', async () => {
     render(<SpriteSheetDesignerDemo />);
     expect(screen.getByRole('link', { name: 'Vào game ↗' }).getAttribute('href')).toBe('/map');
@@ -115,6 +124,22 @@ describe('character designer saving', () => {
     fireEvent.change(screen.getByLabelText('Giới tính'), { target: { value: 'female' } });
     await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith('forest-keeper:female'));
     expect(mocks.loadWorkspace.mock.calls.every(([key]) => key.startsWith('forest-keeper:'))).toBe(true);
+  });
+
+  it('creates and applies a directional combat attack for the main character', async () => {
+    window.history.replaceState({}, '', '/debug/character-designer?action=attack');
+    render(<SpriteSheetDesignerDemo />);
+    await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith(target));
+
+    expect(button('Chiến đấu · Tấn công').getAttribute('aria-pressed')).toBe('true');
+    expect(screen.getByText(/đòn đánh thường phát hoạt ảnh chiến đấu theo hướng đối thủ/)).toBeTruthy();
+    expect(screen.getAllByText(/Đứng vững, tay đặt chắc trên chuôi vũ khí/).length).toBeGreaterThan(0);
+    upload('Nhập frame hành động', completedFiles.map((_, index) => `attack-down-${index + 1}.png`));
+    await waitFor(() => expect(screen.getByTestId('action-frame-count').textContent).toBe('8/8 frame'));
+    fireEvent.click(button('Lưu và áp dụng vào game'));
+    await screen.findByText(/Đã lưu và áp dụng các hướng hoàn thành cho forest-keeper:male/);
+    expect((mocks.apply.mock.calls[0][1] as CharacterSpriteSheet).clips.attack.directions.down.count).toBe(8);
+    window.history.replaceState({}, '', '/debug/character-designer');
   });
 
   it('loads the selected NPC workspace so its actions can be edited independently', async () => {
@@ -140,6 +165,47 @@ describe('character designer saving', () => {
     await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith('opening-map-npc:fisherman-tao'));
     expect(button('Động tác đặc trưng').getAttribute('aria-pressed')).toBe('true');
     expect((screen.getByLabelText('Prompt tạo frame') as HTMLTextAreaElement).value).toContain('động tác ngắn, dễ lặp');
+    window.history.replaceState({}, '', '/');
+  });
+
+  it('offers four-direction combat walking sprites for all three checkpoint characters', async () => {
+    for (const npcId of ['gate-guard', 'patrol-archer', 'patrol-swordsman']) {
+      cleanup();
+      window.history.replaceState({}, '', `/debug/character-designer?npc=${npcId}&action=walk`);
+      render(<SpriteSheetDesignerDemo />);
+      await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith(`opening-map-npc:${npcId}`));
+      expect(button('Đi bộ').getAttribute('aria-pressed')).toBe('true');
+      expect(button('Động tác đặc trưng').getAttribute('aria-pressed')).toBe('false');
+      expect(button('↑ W · Sau / quay lưng')).toBeTruthy();
+      expect(button('← A · Trái')).toBeTruthy();
+      expect(button('↓ S · Trước')).toBeTruthy();
+      expect(button('→ D · Phải')).toBeTruthy();
+      expect(screen.getByText(/Sprite đi bộ chiến đấu của NPC được dùng khi truy đuổi Tiểu Mông/)).toBeTruthy();
+    }
+    window.history.replaceState({}, '', '/');
+  });
+
+  it('assembles and applies an eight-frame walk cycle for each direction of a checkpoint fighter', async () => {
+    window.history.replaceState({}, '', '/debug/character-designer?npc=patrol-archer&action=walk');
+    render(<SpriteSheetDesignerDemo />);
+    await waitFor(() => expect(mocks.loadWorkspace).toHaveBeenCalledWith('opening-map-npc:patrol-archer'));
+    for (const [direction, prefix] of [
+      ['↑ W · Sau / quay lưng', 'up'],
+      ['← A · Trái', 'left'],
+      ['↓ S · Trước', 'down'],
+      ['→ D · Phải', 'right'],
+    ] as const) {
+      fireEvent.click(button(direction));
+      upload('Nhập frame hành động', Array.from({ length: 4 }, (_, index) => `walk-${prefix}-${index + 1}.png`));
+      await waitFor(() => expect(screen.getByTestId('action-frame-count').textContent).toBe('8/8 frame'));
+    }
+
+    await waitFor(() => expect(button('Lưu và áp dụng vào game').disabled).toBe(false));
+    fireEvent.click(button('Lưu và áp dụng vào game'));
+    await screen.findByText(/Đã lưu và áp dụng các hướng hoàn thành cho opening-map-npc:patrol-archer/);
+    const appliedSheet = mocks.apply.mock.calls[0][1] as CharacterSpriteSheet;
+    expect(['up', 'left', 'down', 'right'].map(direction => appliedSheet.clips.walk.directions[direction as keyof typeof appliedSheet.clips.walk.directions].count))
+      .toEqual([8, 8, 8, 8]);
     window.history.replaceState({}, '', '/');
   });
 

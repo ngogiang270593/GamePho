@@ -15,11 +15,13 @@ describe('opening map delivery quest', () => {
     const delivered = advanceOpeningMapDeliveryQuest(carrying, 'deliver');
     const completed = advanceOpeningMapDeliveryQuest(delivered, 'report');
     const clue = advanceOpeningMapDeliveryQuest(completed, 'reveal-clue');
-    expect([carrying.stage, delivered.stage, completed.stage, clue.stage]).toEqual([
-      'carrying', 'delivered', 'completed', 'clue-revealed',
+    const taoInformed = advanceOpeningMapDeliveryQuest(clue, 'ask-tao');
+    expect([carrying.stage, delivered.stage, completed.stage, clue.stage, taoInformed.stage]).toEqual([
+      'carrying', 'delivered', 'completed', 'clue-revealed', 'tao-informed',
     ]);
     expect(() => advanceOpeningMapDeliveryQuest(INITIAL_OPENING_MAP_DELIVERY_QUEST, 'deliver')).toThrow(/chưa sẵn sàng/);
     expect(() => advanceOpeningMapDeliveryQuest(carrying, 'report')).toThrow(/chưa sẵn sàng/);
+    expect(() => advanceOpeningMapDeliveryQuest(completed, 'ask-tao')).toThrow(/chưa sẵn sàng/);
   });
 
   it('persists delivery progress and reports corrupt saved state', () => {

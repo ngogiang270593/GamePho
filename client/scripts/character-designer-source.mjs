@@ -15,9 +15,10 @@ const TARGETS = new Set([
     'herbalist-lang', 'inn-server', 'fruit-aunt-tu', 'smith-thiet-chuy', 'woodcutter',
     'toy-seller', 'beggar-hac-lao', 'singer-le-nuong', 'herdboy-a-sang', 'village-captain',
     'black-wolf', 'poison-witch', 'double-agent-acau', 'blood-blade-phuong', 'tax-official-trieu',
+    'patrol-archer', 'patrol-swordsman',
     'NPC_DAN_NONG_01', 'NPC_DAN_NONG_02', 'NPC_DAN_NONG_03'].map(id => `opening-map-npc:${id}`),
 ]);
-const ACTIONS = ['idle', 'walk', 'run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'];
+const ACTIONS = ['idle', 'walk', 'run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening'];
 const DIRECTIONS = ['down', 'right', 'up', 'left'];
 const ASSET_URL = /^\/assets\/character-designer\/[a-z0-9-]+\.(png|jpg|webp)$/;
 
@@ -79,12 +80,12 @@ export function validateCharacterSpriteSheet(input) {
   }
   // The runtime manifest uses a complete action map. Optional actions inherit a
   // stable base clip so a designer can begin with only idle + walk ranges.
-  for (const action of ['run', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening']) {
+  for (const action of ['run', 'attack', 'turn', 'jump', 'npc-morning', 'npc-noon', 'npc-evening']) {
     if (result.clips[action]) continue;
     const fallback = action === 'jump' || action.startsWith('npc-') ? result.clips.idle : result.clips.walk;
     result.clips[action] = {
       fps: fallback.fps,
-      loop: action === 'jump' ? false : fallback.loop,
+      loop: action === 'jump' || action === 'attack' ? false : fallback.loop,
       directions: Object.fromEntries(DIRECTIONS.map(direction => [direction, { ...fallback.directions[direction] }])),
     };
   }

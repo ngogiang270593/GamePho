@@ -51,6 +51,7 @@ export interface RiverBattleSoldier {
   id: 'spear-1' | 'spear-2';
   position: RiverBattlePoint;
   hp: number;
+  stunnedTurns?: number;
 }
 export interface RiverBattleSnapshot {
   hero: RiverBattlePoint;
@@ -65,6 +66,7 @@ export interface RiverBattleSnapshot {
   armorTurns: number;
   armorBreakBonus: number;
   rootTurns: number;
+  bossSlowTurns?: number;
   bossPoisonTurns: number;
   poisonUsed: boolean;
   evasionTurns: number;
@@ -394,15 +396,16 @@ export function isRiverBattleSnapshot(value: unknown): value is RiverBattleSnaps
   const point = (candidate: unknown): candidate is RiverBattlePoint => {
     if (!candidate || typeof candidate !== 'object') return false;
     const position = candidate as Partial<RiverBattlePoint>;
-    return Number.isSafeInteger(position.x) && (position.x ?? -1) >= 0 && (position.x ?? 6) < 6
-      && Number.isSafeInteger(position.y) && (position.y ?? -1) >= 0 && (position.y ?? 6) < 6;
+    return typeof position.x === 'number' && Number.isFinite(position.x) && position.x >= 0 && position.x < 6
+      && typeof position.y === 'number' && Number.isFinite(position.y) && position.y >= 0 && position.y < 6;
   };
   const soldiers = battle.soldiers === undefined || (Array.isArray(battle.soldiers)
     && battle.soldiers.length === 2
     && battle.soldiers.every(soldier => soldier !== null && typeof soldier === 'object'
       && (soldier.id === 'spear-1' || soldier.id === 'spear-2')
       && point(soldier.position)
-      && Number.isSafeInteger(soldier.hp) && soldier.hp >= 0 && soldier.hp <= 200));
+      && Number.isSafeInteger(soldier.hp) && soldier.hp >= 0 && soldier.hp <= 200
+      && (soldier.stunnedTurns === undefined || (Number.isSafeInteger(soldier.stunnedTurns) && soldier.stunnedTurns >= 0))));
   return point(battle.hero) && point(battle.boss)
     && soldiers
     && (battle.hero.x !== battle.boss.x || battle.hero.y !== battle.boss.y)
@@ -413,6 +416,7 @@ export function isRiverBattleSnapshot(value: unknown): value is RiverBattleSnaps
     && Number.isSafeInteger(battle.armorTurns) && (battle.armorTurns ?? -1) >= 0
     && Number.isSafeInteger(battle.armorBreakBonus ?? 0) && (battle.armorBreakBonus ?? -1) >= 0 && (battle.armorBreakBonus ?? 51) <= 50
     && Number.isSafeInteger(battle.rootTurns) && (battle.rootTurns ?? -1) >= 0
+    && (battle.bossSlowTurns === undefined || (Number.isSafeInteger(battle.bossSlowTurns) && battle.bossSlowTurns >= 0))
     && Number.isSafeInteger(battle.bossPoisonTurns ?? 0) && (battle.bossPoisonTurns ?? -1) >= 0
     && (battle.poisonUsed === undefined || typeof battle.poisonUsed === 'boolean')
     && Number.isSafeInteger(battle.evasionTurns ?? 0) && (battle.evasionTurns ?? -1) >= 0
@@ -430,11 +434,11 @@ export function isRiverBattleSnapshot(value: unknown): value is RiverBattleSnaps
 
 export function freshRiverBattleSnapshot(campaign: RiverCampaignState): RiverBattleSnapshot {
   return {
-    hero: { x: 0, y: 2 },
-    boss: { x: 4, y: 2 },
+    hero: { x: .45, y: 2.5 },
+    boss: { x: 4.7, y: 2.5 },
     soldiers: [
-      { id: 'spear-1', position: { x: 3, y: 1 }, hp: 200 },
-      { id: 'spear-2', position: { x: 3, y: 3 }, hp: 200 },
+      { id: 'spear-1', position: { x: 3.3, y: 2.35 }, hp: 200 },
+      { id: 'spear-2', position: { x: 3.3, y: 2.65 }, hp: 200 },
     ],
     hp: Math.max(650, campaign.hp),
     maxHp: Math.max(650, campaign.maxHp),
@@ -445,6 +449,7 @@ export function freshRiverBattleSnapshot(campaign: RiverCampaignState): RiverBat
     armorTurns: 0,
     armorBreakBonus: 0,
     rootTurns: 0,
+    bossSlowTurns: 0,
     bossPoisonTurns: 0,
     poisonUsed: false,
     evasionTurns: 0,

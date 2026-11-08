@@ -28,6 +28,9 @@ describe('startup and opening map routes', () => {
     expect(screen.getByRole('region', { name: 'Bản đồ khởi đầu' })).toBeTruthy();
     expect(screen.getByRole('img', { name: /Làng quê Việt Nam ven sông/ })).toBeTruthy();
     expect(screen.getByRole('img', { name: 'Nhân vật chính' })).toBeTruthy();
+    const showMiniMap = screen.getByRole('button', { name: 'Hiện bản đồ nhỏ' });
+    expect(showMiniMap.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.click(showMiniMap);
     expect(screen.getByRole('button', { name: 'Ẩn bản đồ nhỏ' })).toBeTruthy();
     expect(screen.getByLabelText('Bản đồ thu nhỏ')).toBeTruthy();
     expect(document.querySelector('image[href="/assets/maps/thon-que-watercolor.png"]')).toBeNull();

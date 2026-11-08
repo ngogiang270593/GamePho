@@ -9,6 +9,7 @@ import {
   OPENING_MAP_GATES,
   OPENING_MAP_PONDS,
   OPENING_MAP_MEMORY_KEEPER_CLEARING,
+  type OpeningMapTree,
 } from '../game/openingMap';
 import '../styles/opening-map-scenery.css';
 
@@ -42,27 +43,28 @@ const MEADOW_PATCHES = [
 ];
 
 const MEADOW_SHRUBS = [
-  [415, 425, 1.25], [680, 350, .9], [1050, 410, 1.1], [1245, 630, 1.1],
-  [1400, 390, 1], [1650, 550, .9], [1845, 400, 1.1], [2045, 650, 1.25],
-  [2395, 510, 1.15], [2590, 720, 1.3], [2805, 495, 1.2], [2910, 875, .85],
-  [3480, 540, 1.15], [3745, 660, 1.45], [4050, 410, 1.2], [4180, 800, 1.1],
-  [3670, 1040, 1.2], [3980, 1170, 1.35], [3500, 1900, 1.1], [3890, 1830, 1.4],
-  [4140, 2090, 1.2], [3580, 2390, 1.2], [3840, 2640, 1.6], [4180, 2820, 1.15],
-  [360, 2660, 1.2], [620, 2810, 1.45], [1120, 2570, .85], [1220, 2810, 1.35],
-  [2940, 2300, 1.1], [2810, 2690, 1.2], [2620, 2900, 1],
+  [415, 425, 1.25], [1050, 410, 1.1], [1650, 550, .9], [2395, 510, 1.15],
+  [2805, 495, 1.2], [3745, 660, 1.45], [4180, 800, 1.1], [3980, 1170, 1.35],
+  [3890, 1830, 1.4], [3580, 2390, 1.2], [4180, 2820, 1.15], [620, 2810, 1.45],
+  [1220, 2810, 1.35], [2940, 2300, 1.1], [2810, 2690, 1.2], [2620, 2900, 1],
 ];
 
 const FLOWERS = [
-  [1320, 1280], [1445, 1840], [1590, 2160], [1890, 2060], [2470, 2090],
-  [2680, 1830], [2860, 1280], [1780, 915], [2410, 920], [1180, 1540],
-  [3580, 1630], [3770, 1340], [3330, 2190], [1250, 2300], [840, 2580],
+  [1320, 1280], [1590, 2160], [2470, 2090], [2860, 1280],
+  [1780, 915], [3580, 1630], [3330, 2190], [840, 2580],
 ];
 
 const ROCKS = [
-  [1400, 660, .9], [1740, 745, 1.3], [2410, 380, 1.2], [2680, 780, 1],
-  [1250, 1090, .8], [1200, 1880, .7], [2990, 1050, 1.05], [3000, 1820, .85],
-  [3400, 2280, .85], [3540, 820, .9], [970, 2420, .9], [2860, 2800, .9],
+  [1400, 660, .9], [2410, 380, 1.2], [1250, 1090, .8],
+  [2990, 1050, 1.05], [3400, 2280, .85], [970, 2420, .9],
 ];
+
+const TREE_VARIANTS: Record<OpeningMapTree['kind'], readonly string[]> = {
+  bamboo: ['bamboo', 'bambooGrove'],
+  fruit: ['fruitTree', 'blossomTree'],
+  palm: ['palm', 'palmFruit'],
+  banyan: ['banyan', 'willow'],
+};
 
 /** The village is intentionally unpopulated: these are scenery and ordinary market stalls. */
 export const OpeningMapScenery = memo(function OpeningMapScenery({ idPrefix, simplified = false }: OpeningMapSceneryProps) {
@@ -197,6 +199,40 @@ export const OpeningMapScenery = memo(function OpeningMapScenery({ idPrefix, sim
         </g>
         <g fill="#a3a66a"><circle cx="14" cy="-153" r="9" /><circle cx="31" cy="-151" r="8" /><circle cx="24" cy="-140" r="8" /></g>
       </g>
+      <g id={`${prefix}-blossomTree`}>
+        <use href={href('tree')} />
+        <g className="scenery-foliage" fill="#d99d91" stroke="#a56f69" strokeWidth="1.5">
+          <circle cx="-56" cy="-133" r="9" /><circle cx="-49" cy="-128" r="6" />
+          <circle cx="-8" cy="-163" r="8" /><circle cx="-2" cy="-157" r="6" />
+          <circle cx="46" cy="-139" r="9" /><circle cx="53" cy="-134" r="6" />
+          <circle cx="71" cy="-103" r="8" /><circle cx="77" cy="-98" r="5" />
+          <circle cx="-67" cy="-96" r="7" /><circle cx="-61" cy="-91" r="5" />
+        </g>
+        <g fill="#f1d9a8"><circle cx="-52" cy="-135" r="2" /><circle cx="-5" cy="-164" r="2" /><circle cx="49" cy="-141" r="2" /><circle cx="74" cy="-105" r="2" /></g>
+      </g>
+      <g id={`${prefix}-willow`}>
+        <use href={href('banyan')} />
+        <g className="scenery-foliage" fill="none" stroke="#6b915b" strokeWidth="7" strokeLinecap="round" opacity=".9">
+          <path d="M-119-111q-7 32 7 61m26-54q-4 42 13 76m120-83q8 39-2 68m31-56q10 31 2 50" />
+        </g>
+        <path d="M-95-107q-5 27 7 47m119-45q6 24 0 42" fill="none" stroke="#a8bd70" strokeWidth="3" strokeLinecap="round" />
+      </g>
+      <g id={`${prefix}-bambooGrove`}>
+        <use href={href('bamboo')} />
+        <g className="scenery-bamboo" fill="none" strokeLinecap="round">
+          <path d="M-45 0Q-63-83-70-169M42 0Q60-96 77-161" stroke="#345d48" strokeWidth="10" />
+          <path d="M-47 0Q-65-84-72-169M40 0Q58-97 75-161" stroke={ref('bambooGreen')} strokeWidth="6" />
+          <path d="M-58-52l12-2m-19-48 11-2m94 44 12 3m-5-49 12 3" stroke="#d0d18b" strokeWidth="3" />
+          <path d="M-70-161q-45-49-75-29 26 4 75 29m145-15q46-40 72-20-32 1-72 20" fill="#5f8d55" stroke="#436f4e" strokeWidth="2" />
+        </g>
+      </g>
+      <g id={`${prefix}-palmFruit`}>
+        <use href={href('palm')} />
+        <g fill="#8d8c50" stroke="#5d704c" strokeWidth="2">
+          <ellipse cx="6" cy="-143" rx="7" ry="10" /><ellipse cx="19" cy="-138" rx="7" ry="10" /><ellipse cx="31" cy="-144" rx="7" ry="10" />
+        </g>
+        <path d="M6-148v8m13-3v8m12-13v8" stroke="#c9bd88" strokeWidth="2" />
+      </g>
       <g id={`${prefix}-rock`}>
         <ellipse cx="15" cy="4" rx="48" ry="15" fill={ref('shadow')} /><path d="M-39-3-26-34 7-44 34-29 43-6 20 6-15 6Z" fill="#889087" /><path d="m-39-3 13-31 33-10 12 18-20 15Z" fill="#bec1a7" /><path d="m7-44 27 15 9 23-24-20Z" fill="#9fa797" /><path d="m-23-29 20-7m-26 24 12-5" stroke="#d9d5b1" strokeWidth="4" strokeLinecap="round" />
       </g>
@@ -300,24 +336,10 @@ export const OpeningMapScenery = memo(function OpeningMapScenery({ idPrefix, sim
       {OPENING_MAP_ROADS.map(road => <path key={road.id} d={flowingPath(road.points)} stroke={ref('road')} strokeWidth={road.width} opacity=".78" />)}
       {OPENING_MAP_ROADS.map(road => <path key={`${road.id}-wear`} d={flowingPath(road.points)} stroke="#d8bd91" strokeWidth={road.width * .31} opacity=".28" />)}
     </g>
-    {/* Irregular compound lanes give the village the angled, lived-in layout from the reference. */}
-    <g className="scenery-reference-lanes" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2160 1500C2085 1425 2170 1325 2078 1228C1982 1128 1850 1102 1756 1017" stroke="#8d7960" strokeWidth="156" opacity=".25" />
-      <path d="M2160 1500C2312 1482 2438 1528 2575 1458C2705 1392 2834 1326 2964 1250" stroke="#967e61" strokeWidth="142" opacity=".28" />
-      <path d="M2160 1500C2010 1560 1864 1645 1693 1718C1518 1793 1367 1903 1219 2000" stroke="#917961" strokeWidth="138" opacity=".27" />
-      <path d="M2160 1500C2180 1632 2140 1755 2198 1872C2252 1976 2395 2045 2492 2130" stroke="#90785d" strokeWidth="142" opacity=".25" />
-      <path d="M2160 1500C2085 1425 2170 1325 2078 1228C1982 1128 1850 1102 1756 1017M2160 1500C2312 1482 2438 1528 2575 1458C2705 1392 2834 1326 2964 1250M2160 1500C2010 1560 1864 1645 1693 1718C1518 1793 1367 1903 1219 2000M2160 1500C2180 1632 2140 1755 2198 1872C2252 1976 2395 2045 2492 2130" stroke="#d0b48a" strokeWidth="82" opacity=".7" />
-      <path d="M1756 1017C1850 1102 1982 1128 2078 1228M2575 1458C2438 1528 2312 1482 2160 1500M1693 1718C1864 1645 2010 1560 2160 1500" stroke="#e4cca0" strokeWidth="19" opacity=".34" />
-    </g>
     <g className="scenery-compound-walls" fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M1595 1170Q1680 1060 1810 1085L1945 1112M2300 1085Q2420 1038 2555 1120L2665 1220M2660 1770Q2545 1874 2425 1848L2320 1825M1910 1850Q1770 1905 1650 1785L1578 1690" stroke="#665e53" strokeWidth="25" opacity=".36" />
       <path d="M1595 1160Q1680 1050 1810 1075L1945 1102M2300 1075Q2420 1028 2555 1110L2665 1210M2660 1760Q2545 1864 2425 1838L2320 1815M1910 1840Q1770 1895 1650 1775L1578 1680" stroke="#b4a48b" strokeWidth="13" strokeDasharray="31 15" opacity=".72" />
     </g>
-    <g fill="none" stroke="#bfa979" strokeWidth="3" opacity=".43">
-      <path d="M1950 1476q70-15 114-8m173 41 85-7m-176 206 14 79m-12-517 5-57M1145 1482l106 8m1439 32 92-6m-510 717 9 94" />
-      <path d="M1920 1535l16-2m290-86 20 2m-54 304 5 17m-55-450-3 18M2230 2076l8 12" strokeWidth="5" strokeLinecap="round" />
-    </g>
-
     {/* Enclosing garden fences leave all four village entrances completely open. */}
     <g fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M1540 1390V1190Q1540 1000 1770 990H2060M2260 990H2530Q2740 990 2740 1210V1390M2740 1610V1810Q2740 2030 2510 2040H2260M2060 2040H1760Q1510 2040 1510 1810V1610" stroke="#6c7c50" strokeWidth="17" opacity=".2" transform="translate(8 9)" />
@@ -332,7 +354,11 @@ export const OpeningMapScenery = memo(function OpeningMapScenery({ idPrefix, sim
       x < OPENING_MAP_MEMORY_KEEPER_CLEARING.x || x > OPENING_MAP_MEMORY_KEEPER_CLEARING.x + OPENING_MAP_MEMORY_KEEPER_CLEARING.width
       || y < OPENING_MAP_MEMORY_KEEPER_CLEARING.y || y > OPENING_MAP_MEMORY_KEEPER_CLEARING.y + OPENING_MAP_MEMORY_KEEPER_CLEARING.height,
     ).map(([x, y, scale], index) => <use key={`shrub-${index}`} href={href('shrub')} transform={`translate(${x} ${y}) scale(${scale})`} />)}
-    {[...OPENING_MAP_TREES].sort((left, right) => left.y - right.y).map((tree, index) => <use key={tree.id} id={`${prefix}-object-${tree.id}`} href={href(tree.kind === 'fruit' ? 'fruitTree' : tree.kind === 'banyan' ? 'banyan' : tree.kind === 'palm' ? 'palm' : 'bamboo')} transform={`translate(${tree.x} ${tree.y}) scale(${tree.scale})`} style={animateStyle(index)} />)}
+    {[...OPENING_MAP_TREES].sort((left, right) => left.y - right.y).map((tree, index) => {
+      const variants = TREE_VARIANTS[tree.kind];
+      const variant = variants[index % variants.length];
+      return <use key={tree.id} id={`${prefix}-object-${tree.id}`} data-tree-kind={tree.kind} data-tree-variant={variant} href={href(variant)} transform={`translate(${tree.x} ${tree.y}) scale(${tree.scale})`} style={animateStyle(index)} />;
+    })}
 
     {ROCKS.map(([x, y, scale], index) => <use key={`rock-${index}`} href={href('rock')} transform={`translate(${x} ${y}) scale(${scale})`} />)}
     {FLOWERS.map(([x, y], index) => <use key={`flowers-${index}`} className="scenery-flowers" href={href('flowers')} x={x} y={y} style={animateStyle(index)} />)}

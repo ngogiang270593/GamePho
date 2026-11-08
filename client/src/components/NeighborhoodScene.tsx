@@ -17,6 +17,10 @@ export const NeighborhoodGround = memo(function NeighborhoodGround({ id, label =
         <path d="M57 43L64 45M16 14L23 15" stroke="#b7a184" strokeWidth="1" opacity=".5" />
       </pattern>
       <pattern id={`${id}-tiles`} width="20" height="16" patternUnits="userSpaceOnUse"><rect width="20" height="16" fill="#d5c9aa" /><path d="M0 0H20V16H0Z" stroke="#b8b29b" strokeWidth="1" fill="none" /></pattern>
+      <linearGradient id={`${id}-water`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#b6d7bd" /><stop offset=".45" stopColor="#70a99d" /><stop offset="1" stopColor="#477d7b" /></linearGradient>
+      <pattern id={`${id}-ripples`} width="96" height="42" patternUnits="userSpaceOnUse"><path d="M4 20Q24 10 44 20T84 20M22 34Q42 25 62 34" fill="none" stroke="#d7ead0" strokeWidth="2" opacity=".42" /></pattern>
+      <linearGradient id="map-water" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#b6d7bd" /><stop offset=".45" stopColor="#70a99d" /><stop offset="1" stopColor="#477d7b" /></linearGradient>
+      <pattern id="map-ripples" width="96" height="42" patternUnits="userSpaceOnUse"><path d="M4 20Q24 10 44 20T84 20M22 34Q42 25 62 34" fill="none" stroke="#d7ead0" strokeWidth="2" opacity=".42" /></pattern>
     </defs>
     <rect width={landscape === 'me-linh' ? MAP_ONE_WORLD_SIZE.width : 1440} height={landscape === 'me-linh' ? MAP_ONE_WORLD_SIZE.height : 1040} fill={landscape === 'bach-dang' ? '#88af9c' : landscape === 'dien-bien' ? '#8fae84' : `url(#${id}-grass)`} />
     <g transform={landscape === 'me-linh' ? `scale(${MAP_ONE_LAYOUT_SCALE})` : undefined}>
@@ -129,15 +133,21 @@ function Building({ building }: { building: MapBuilding }) {
   </g>;
 }
 
-function Tree({ x, y }: { x: number; y: number }) {
+function Tree({ x, y, variant = 0 }: { x: number; y: number; variant?: number }) {
+  const palettes = [
+    ['#527f5c', '#76a06a', '#d7c884'], ['#466f63', '#83a878', '#e0c58e'],
+    ['#5d7950', '#9aaf6b', '#e8cf91'], ['#3f6d58', '#6e9c72', '#c7d99a'],
+    ['#587563', '#8dae7a', '#e3b97f'], ['#4e7351', '#7fa56a', '#e7d19c'],
+    ['#55705b', '#a2b66e', '#d8c18a'], ['#426b61', '#70a68a', '#efd39b'],
+  ][variant % 8];
   return <g transform={`translate(${x} ${y})`} strokeLinejoin="round">
     <ellipse cy="4" rx="67" ry="23" fill="#465e4733" />
     <path d="M-13 0L-9-94H12L16 0Q0 9-13 0" fill="#947352" stroke="#6c5840" strokeWidth="3" />
     <path d="M0-24L-3-72M-2-46L-22-65M5-59L21-79" fill="none" stroke="#b18a5b" strokeWidth="3" />
-    <path d="M-64-75Q-83-120-47-132Q-48-166-13-165Q17-190 42-159Q81-156 76-124Q102-86 68-72Q45-53 19-64Q-3-48-24-63Q-49-51-64-75" fill="#527f5c" stroke="#42684f" strokeWidth="3" />
-    <path d="M-55-113Q-57-142-26-140Q-6-168 24-147Q53-151 59-126Q26-137 12-114Q-18-134-33-109Z" fill="#76a06a" />
+    <path d="M-64-75Q-83-120-47-132Q-48-166-13-165Q17-190 42-159Q81-156 76-124Q102-86 68-72Q45-53 19-64Q-3-48-24-63Q-49-51-64-75" fill={palettes[0]} stroke="#42684f" strokeWidth="3" />
+    <path d="M-55-113Q-57-142-26-140Q-6-168 24-147Q53-151 59-126Q26-137 12-114Q-18-134-33-109Z" fill={palettes[1]} />
     <path d="M-57-86Q-35-66-16-83M23-84Q45-70 67-91" stroke="#8bac75" strokeWidth="3" fill="none" opacity=".7" />
-    {[[-29, -130], [38, -133], [58, -103], [-48, -97], [3, -145]].map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r="3" fill="#d7c884" />)}
+    {[[-29, -130], [38, -133], [58, -103], [-48, -97], [3, -145]].map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r="3" fill={palettes[2]} />)}
   </g>;
 }
 
@@ -187,8 +197,11 @@ function MenuHouse({ x, y, name, icon, color, roof }: { x: number; y: number; na
 
 function Pond({ x = 1045, y = 720 }: { x?: number; y?: number } = {}) {
   return <g transform={`translate(${x} ${y})`}>
-    <rect x="0" y="13" width="255" height="167" rx="64" fill="#b2aa84" stroke="#7b876b" strokeWidth="4" /><rect x="9" y="22" width="237" height="148" rx="57" fill="#86b5a1" stroke="#d7c89e" strokeWidth="6" />
-    <path d="M29 87Q66 75 106 87M152 129Q187 119 220 129M128 46Q161 38 196 47" stroke="#c5dbb4" strokeWidth="2" fill="none" opacity=".8" />
+    <ellipse cx="128" cy="174" rx="132" ry="16" fill="#3f5d5038" />
+    <rect x="0" y="13" width="255" height="167" rx="64" fill="#b2aa84" stroke="#7b876b" strokeWidth="4" />
+    <rect x="9" y="22" width="237" height="148" rx="57" fill="url(#map-water)" stroke="#d7c89e" strokeWidth="6" />
+    <rect x="16" y="29" width="223" height="134" rx="51" fill="url(#map-ripples)" opacity=".75" />
+    <path d="M29 87Q66 75 106 87M152 129Q187 119 220 129M128 46Q161 38 196 47" stroke="#e2f0cf" strokeWidth="3" fill="none" opacity=".8" />
     {[[57, 61], [158, 97], [91, 125], [197, 60]].map(([x, y], i) => <g key={i} transform={`translate(${x} ${y})`}>
       <path d="M-18 8Q-25-15 3-15Q29-8 18 12L0 6Z" fill="#648c63" stroke="#50795c" strokeWidth="1" />
       <path d="M2-1Q-17-7-11-18Q-1-16 2-1Q14-23 20-12Q21-4 2-1M2-1Q-4-26 3-28Q13-19 2-1" fill={i % 2 ? '#e1a3b0' : '#f3d0c6'} stroke="#bc8394" strokeWidth="1" />
@@ -292,9 +305,9 @@ export function neighborhoodScenery(buildings: readonly MapBuilding[] = BUILDING
         element: <MenuHouse x={place.point.x} y={place.point.y} name={place.name} icon={place.icon} color={index % 2 ? '#dfc795' : '#c6d1a2'} roof={index % 2 ? '#875545' : '#647b58'} />,
       }))),
     ] : []),
-    ...[{ x: 95, y: 465 }, { x: 1335, y: 465 }, { x: 535, y: 745 }, { x: 905, y: 875 }].map((point, i) => {
+    ...[{ x: 95, y: 465 }, { x: 1335, y: 465 }, { x: 535, y: 745 }, { x: 905, y: 875 }, { x: 290, y: 790 }, { x: 1180, y: 360 }, { x: 1120, y: 920 }, { x: 760, y: 180 }].map((point, i) => {
       const position = at(point);
-      return { id: `tree-${i}`, depth: position.y, element: <Tree {...position} /> };
+      return { id: `tree-${i}`, depth: position.y, element: <Tree {...position} variant={i} /> };
     }),
     ...(historyMode && landscape === 'me-linh'
       ? [
